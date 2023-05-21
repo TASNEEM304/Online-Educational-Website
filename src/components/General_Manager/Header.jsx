@@ -30,6 +30,10 @@ const navLinks = [
     display: "Dashboard",
     url: "/Dashboard",
   },
+  {
+    display: "Dashboard",
+    url: "/Dashboard",
+  },
 ];
 
 const Header = () => {
