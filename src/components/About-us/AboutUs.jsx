@@ -142,18 +142,10 @@ const AboutUs = () => {
           </div>
               <button type="button"  className="btn btn-primary mt-4">حفظ</button>
           </Col>
-          </Row>
-          </Container>
-          </section>
-          </Fragment>
-
-     
-  
-  
- 
-
-              
-      
+        </Row>
+      </Container>
+    </section>
+    </Fragment>
   );
 };
 
