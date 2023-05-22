@@ -5,32 +5,19 @@ import { BrowserRouter as Router, Routes, Route ,Link} from "react-router-dom";
 
 const navLinks = [
   {
-    display: "Home",
+    display: "الصفحة الرئيسية",
     url: "/",
-   // path: "/",
+   
   },
   {
-    display: "About",
+    display: "الاستبيانات",
     url: "/About",
     
   },
 
+ 
   {
-    display: "Courses",
-    url: "#",
-    //path: "/Courses",
-  },
-  {
-    display: "Pages",
-    url: "#",
-   // path: "",
-  },
-  {
-    display: "Blog",
-    url: "#",
-  },
-  {
-    display: "Dashboard",
+    display: "لوحة التحكم",
     url: "/Dashboard",
   },
 ];
@@ -69,11 +56,6 @@ const Header = () => {
               </ul>
             </div>
 
-            <div className="nav__right">
-              <p className="mb-0 d-flex align-items-center gap-2">
-                <i class="ri-phone-line"></i> +88 0123456789
-              </p>
-            </div>
           </div>
 
           <div className="mobile__menu">

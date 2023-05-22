@@ -11,18 +11,13 @@ const HeroSection = () => {
           <Col lg="6" md="6">
             <div className="hero__content">
               <h2 className="mb-4 hero__title">
-                Anytime Anywhere <br /> Learn on your <br /> Suitable Schedule
+              مؤسسة سوريين إيجابيين بالمطلق للتنمية والتدريب
               </h2>
               <p className="mb-5">
-                Lorem ipsum dolor sit amet consectetur <br /> adipisicing elit.
-                Aut saepe voluptatum earum delectus <br /> deserunt id iste,
-                quas officiis et repellat!
+              بدأت حملتنا نهاية عام 2017، وفكرة المؤسسة تكمن في التركيز على السعي للنهوض بجيل واعٍ ومثقف يسعى إلى تطوير بلده. فنحن مؤسسة غير ربحية، وهدفنا التأهيل وتنمية قدرات الشباب، فابتكرنا عدة دورات وبرامج تدريبية الهدف منها مساندة الفروع الجامعية الجافة التي تفتقد إلى الجانب العملي، حيث ركزنا على مساندة الطلاب وتأهيلهم لدخول سوق العمل، وفي نهاية عام 2022 استطعنا أن نصل إلى  آلاف الطلاب
               </p>
             </div>
-            <div className="search">
-              <input type="text" placeholder="Search" />
-              <button className="btn">Search</button>
-            </div>
+          
           </Col>
 
           <Col lg="6" md="6">

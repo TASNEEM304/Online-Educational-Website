@@ -11,7 +11,10 @@
 }
 
 .about__content {
-  padding-left: 50px;
+  padding-left: 100px;
+}
+.about__conten {
+  padding-left: 100px;
 }
 
 .about__img img {
