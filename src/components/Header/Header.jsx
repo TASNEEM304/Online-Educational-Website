@@ -5,12 +5,12 @@ import { BrowserRouter as Router, Routes, Route ,Link} from "react-router-dom";
 
 const navLinks = [
   {
-    display: "Home",
+    display: "الصفحة الرئيسية",
     url: "/",
-   // path: "/",
+   
   },
   {
-    display: "About",
+    display: "الاستبيانات",
     url: "/About",
     
   },

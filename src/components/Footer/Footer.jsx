@@ -52,35 +52,35 @@ const Footer = () => {
         <Row>
           <Col lg="3" md="6" className="mb-4">
             <h2 className=" d-flex align-items-center gap-1">
-              <i class="ri-pantone-line"></i> Learners.
+              <i class="ri-pantone-line"></i> تواصل معنا
             </h2>
 
             <div className="follows">
-              <p className="mb-0">Follow us on social media</p>
+            
               <span>
                 {" "}
-                <a href="facebook.com">
+                <a href="https://www.facebook.com/AbsolutelyPositiveSyrian">
                   <i class="ri-facebook-line"></i>
                 </a>
               </span>
 
               <span>
                 {" "}
-                <a href="facebook.com">
+                <a href="">
                   <i class="ri-instagram-line"></i>
                 </a>
               </span>
 
               <span>
                 {" "}
-                <a href="facebook.com">
+                <a href="">
                   <i class="ri-linkedin-line"></i>
                 </a>
               </span>
 
               <span>
                 {" "}
-                <a href="facebook.com">
+                <a href="">
                   <i class="ri-twitter-line"></i>
                 </a>
               </span>
@@ -112,11 +112,11 @@ const Footer = () => {
           </Col>
 
           <Col lg="3" md="6">
-            <h6 className="fw-bold">Get in Touch</h6>
+            <h6 className="fw-bold"> العناوين</h6>
 
-            <p>Address: Sylhet, Bangladesh</p>
-            <p> Phone: +88 0123456789 </p>
-            <p>Email: example@gmail.com</p>
+            <p>العنوان: دمشق -البرامكة</p>
+           
+            <p>Syriaspa@gmail.com:البريد الالكتروني</p>
           </Col>
         </Row>
       </Container>

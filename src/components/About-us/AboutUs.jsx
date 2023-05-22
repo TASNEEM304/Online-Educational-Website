@@ -1,15 +1,20 @@
-import React from "react";
+
+import React ,{Fragment,useEffect,useState} from "react";
 import "./about.css";
 import { Container, Row, Col } from "reactstrap";
 import aboutImg from "../../assests/images/about-us.png";
 import CountUp from "react-countup";
 import "./about.css";
 
+
 import Header from "../Header/Header";
 const AboutUs = () => {
   return (
-    <section>
+    <Fragment>
+<Header />
+<section>
       <Container>
+    
         <Row>
           <Col lg="6" md="6">
             <div className="about__img">
@@ -66,8 +71,9 @@ const AboutUs = () => {
             </div>
           </Col>
         </Row>
-      </Container>
+        </Container>
     </section>
+    </Fragment>
   );
 };
 
