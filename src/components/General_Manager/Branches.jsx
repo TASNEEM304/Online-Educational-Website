@@ -68,20 +68,64 @@ const Getbranches = () => {
    
       
    <Row>
-     <Col lg="6" md="6">
-       
+     <Col lg="12" md="6" lang="ar" style={{marginTop:"10px" ,   textAlign: 'right'}}>
+
+      
+      <Button variant="success" onClick={openModal} style={{fontSize: "10px", 
+                         width: "15%",height:"25%"
+                         }}>أضف فرع جديد
+                        
+                         </Button>
+                         
+                         <br/>
+      <Table striped bordered hover  style={{fontSize: "16px", 
+                         width: "100%"
+                         }}>
+        <thead style={{background:"#ece24c",
+        }}>
+          <tr >
+            <th ></th>
+            <th >الاسم</th>
+            <th>الرقم</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.length === 0 ? (
+            <tr>
+              <td colSpan={3} className="text-center">
+                No Data
+              </td>
+            </tr>
+          ) : (
+            data.map((data) => (
+              <tr key={data.id}>
+                <td style={{width:"20%"}}>
+                {/* <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} /> */}
+                             
+                  <Button variant="danger" onClick={() => Delete(data.id)}>حذف</Button>
+                  {/* <Button variant="primary" href={`/Branches/edit/${data.id}`}>تحرير</Button> */}
+                </td>
+                <td style={{width:"50%"}}>{data.name}</td>
+                <td style={{width:"30%"}}>{data.No}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </Table>
      </Col>
 
-     <Col lg="6" md="6">
-       <div>
-         <h2>جميع الفروع </h2>
+     
+   </Row>
+
+    <div>
+         
          <ReactModal isOpen={modalIsOpen} onRequestClose={closeModal} style={{
           content: {
             width: '70%',
             height : '60%',
             position: 'absolute',
             top: '50%',
-            left: '40%',
+            left: '50%',
             transform: 'translate(-50%, -50%)'
             
           }}}>
@@ -125,56 +169,8 @@ const Getbranches = () => {
 
 
 
-<div className='row' lang="ar" style={{marginTop:"100px" ,   textAlign: 'right'}}>
-<div>
-      
-      <Button variant="success" onClick={openModal} style={{fontSize: "10px", 
-                         width: "15%",height:"25%"
-                         }}>أضف فرع جديد
-                        
-                         </Button>
-                         
-                         <br/>
-      <Table striped bordered hover  style={{fontSize: "16px", 
-                         width: "100%"
-                         }}>
-        <thead style={{background:"#eaeae1",
-        borderBottom: "2px solid blue"}}>
-          <tr >
-            <th ></th>
-            <th >الاسم</th>
-            <th>الرقم</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.length === 0 ? (
-            <tr>
-              <td colSpan={3} className="text-center">
-                No Data
-              </td>
-            </tr>
-          ) : (
-            data.map((data) => (
-              <tr key={data.id}>
-                <td style={{width:"20%"}}>
-                {/* <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} /> */}
-                             
-                  <Button variant="danger" onClick={() => Delete(data.id)}>حذف</Button>
-                  {/* <Button variant="primary" href={`/Branches/edit/${data.id}`}>تحرير</Button> */}
-                </td>
-                <td style={{width:"50%"}}>{data.name}</td>
-                <td style={{width:"30%"}}>{data.No}</td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </Table>
-    </div>  
-    </div> 
-   </div>
 
-     </Col>
-   </Row>
+       </div>
       </Container>
     </section>
     </Fragment>

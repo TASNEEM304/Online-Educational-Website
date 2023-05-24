@@ -3,6 +3,9 @@ import { Container } from "reactstrap";
 import "./header.css";
 import { BrowserRouter as Router, Routes, Route ,Link} from "react-router-dom";
 
+import AuthUser from "../Auth/AuthUser";
+
+
 const navLinks = [
   {
     display: "الصفحة الرئيسية",
@@ -29,13 +32,22 @@ const navLinks = [
     display: "Blog",
     url: "#",
   },
-  {
-    display: "Dashboard",
-    url: "/Dashboard",
-  },
+  // {
+  //   display: "Dashboard",
+  //   url: "/Dashboard",
+  // },
+  // {
+  //   display: "Login",
+  //   url: "/Login",
+  // },
 ];
 
 const Header = () => {
+ 
+  const {getToken,getUser} = AuthUser();
+  
+
+ 
   const menuRef = useRef();
 
   const menuToggle = () => menuRef.current.classList.toggle("active__menu");
@@ -54,18 +66,14 @@ const Header = () => {
             <div className="nav__menu" ref={menuRef} onClick={menuToggle}>
               <ul className="nav__list">
                 {navLinks.map((item, index) => (
+
                   <li key={index} className="nav__item">
                     <Link to={item.url}>{item.display}</Link>
                   </li>
                 ))}
-
-                <li>
-                {/* <a href="/About" onClick={(e) => {
-  e.preventDefault();
-  window.location.replace("/About");
-}}>Dashboard</a> */}
-                
-                </li>
+                  <li className="nav__item">
+                    <Link to= {getToken() == null ? '/Login' : '/Dashboard'} >{ getToken() == null ? 'Login' : 'Dashboard'}</Link>
+                  </li>
               </ul>
             </div>
 
