@@ -5,44 +5,20 @@ import "./footer.css";
 
 const footerQuickLinks = [
   {
-    display: "Home",
-    url: "#",
+    display: "الصفحة الرئيسية",
+    url: "/",
   },
   {
-    display: "About US",
-    url: "#",
+    display: " الاستبيانات",
+    url: "/About",
   },
 
   {
-    display: "Courses",
-    url: "#",
+    display: "لوحة التحكم",
+    url: "/Dashboard",
   },
 
-  {
-    display: "Blog",
-    url: "#",
-  },
-];
-
-const footerInfoLinks = [
-  {
-    display: "Privacy Policy",
-    url: "#",
-  },
-  {
-    display: "Membership",
-    url: "#",
-  },
-
-  {
-    display: "Purchases Guide",
-    url: "#",
-  },
-
-  {
-    display: "Terms of Service",
-    url: "#",
-  },
+ 
 ];
 
 const Footer = () => {
@@ -99,18 +75,7 @@ const Footer = () => {
             </ListGroup>
           </Col>
 
-          <Col lg="3" md="6" className="mb-4">
-            <h6 className="fw-bold">Information</h6>
-            <ListGroup className="link__list">
-              {footerInfoLinks.map((item, index) => (
-                <ListGroupItem key={index} className="border-0 ps-0 link__item">
-                  {" "}
-                  <a href={item.url}>{item.display}</a>
-                </ListGroupItem>
-              ))}
-            </ListGroup>
-          </Col>
-
+          
           <Col lg="3" md="6">
             <h6 className="fw-bold"> العناوين</h6>
 
