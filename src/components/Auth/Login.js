@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { Fragment, useState } from "react"
 import AuthUser from './AuthUser';
+import { Container, Row, Col } from "reactstrap";
+import Header from "../Header/Header";
 import axios from 'axios'
 
 export default function Login() {
@@ -20,6 +22,11 @@ export default function Login() {
     }
 
     return(
+        
+        <section>
+        <Container>
+          
+         <Header />
         <div className="row justify-content-center pt-5">
             <div className="col-sm-6">
                 <div className="card p-4">
@@ -40,6 +47,10 @@ export default function Login() {
                 </div>
             </div>
         </div>
+        </Container>
+        </section>
+        
+
     )
 }
 

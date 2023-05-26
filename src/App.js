@@ -9,11 +9,17 @@ import RecoredBranchesManagers from "./components/General_Manager/RecoredBranche
 import Header from "./components/Header/Header";
 
 
+import DashboardRecep from "./components/Receptionist/DashboardRecep";
+import Cards from "./components/Receptionist/Cards/Card";
+import GetRecordStudent from "./components/Receptionist/ManagementStudent/RecordStudent";
+
+
 import Login from "./components/Auth/Login"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
 
+// proxy=http://your.proxy.server/:port
 
 
   return (
@@ -31,6 +37,14 @@ function App() {
 
         <Route path="/Login" element={<Login />} />
 
+
+
+        <Route path="/dashboardRec" element={<DashboardRecep />} />
+
+        <Route path ='/Cards/index' element={<Cards/>} /> 
+                
+       <Route path='/ManagementStudent/RecordStudent' element={<GetRecordStudent/>} />
+                    
       </Routes>
     </Router>
   );

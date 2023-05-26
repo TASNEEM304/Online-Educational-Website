@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React, {useState, useRef } from "react";
 import { Container } from "reactstrap";
 import "./header.css";
-import { BrowserRouter as Router, Routes, Route ,Link} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route ,Link,useNavigate} from "react-router-dom";
 
 import AuthUser from "../Auth/AuthUser";
 
@@ -42,11 +42,31 @@ const navLinks = [
   //   url: "/Login",
   // },
 ];
+//const navigate = useNavigate();
 
+const logout = () => {
+  localStorage.clear();
+  //navigate('/Login');
+}
 const Header = () => {
  
   const {getToken,getUser} = AuthUser();
   
+
+
+//const [DashBoard, setDashBoard] = useState('');
+
+// if(!getToken() && !getUser()){
+//   setDashBoard('/');
+// }
+
+// else if(getUser().roll_number===0){
+//   setDashBoard('/Dashboard');
+
+// }
+// else if(getUser().roll_number===3){
+//   setDashBoard('/dashboardRec');
+// }
 
  
   const menuRef = useRef();
@@ -66,6 +86,7 @@ const Header = () => {
           <div className="nav d-flex align-items-center gap-5">
             <div className="nav__menu" ref={menuRef} onClick={menuToggle}>
               <ul className="nav__list">
+              
                 {navLinks.map((item, index) => (
 
                   <li key={index} className="nav__item">
@@ -73,9 +94,22 @@ const Header = () => {
                   </li>
                 ))}
                   <li className="nav__item">
-                    <Link to= {getToken() == null ? '/Login' : '/Dashboard'} >{ getToken() == null ? 'Login' : 'Dashboard'}</Link>
+                    
+                          <Link to= {getToken() == null ? '/Login' 
+                                    :getUser().roll_number===0 ?'/dashboard'
+                                    :getUser().roll_number===3 ?'/dashboardRec':'/'} >{ getToken() == null ? 'تسجيل الدخول ': 'لوحة التحكم' } </Link>
+                   
                   </li>
+                  {/* <li className="nav__item">
+                    <Link to={'/'} onClick={logout()}>تسجيل الخروج</Link>
+                  
+                  </li> */}
+
+                  
+
+                  
               </ul>
+              {/* <button onClick={logout()}> تسجيل الخروج</button> */}
             </div>
 
           </div>
