@@ -112,6 +112,8 @@ const Getbranches = () => {
           )}
         </tbody>
       </Table>
+
+      
      </Col>
 
      
