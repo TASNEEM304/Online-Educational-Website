@@ -87,9 +87,9 @@ function BarcodeCard () {
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <div style={{ width: '10cm', height: '7cm', border: '1px solid black', borderRadius: '10px',backgroundColor:'rgba(226, 248, 248, 0.664)', padding: '1cm', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
-          <p>Name: {data.user.first_name}</p>
-          <p>Email: {data.user.email}</p>
-          <p>Phone: {data.user.phone_number}</p>
+          <p> {data.user.first_name} : الاسم </p>
+          <p> {data.user.email} : الايميل</p>
+          <p> {data.user.phone_number}  : رقم الهاتف</p>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Barcode value={data.card.original.data.barcode} width={1} height={30}/>

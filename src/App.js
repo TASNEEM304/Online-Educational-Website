@@ -14,6 +14,9 @@ import Cards from "./components/Receptionist/Cards/Card";
 import GetRecordStudent from "./components/Receptionist/ManagementStudent/RecordStudent";
 
 
+import Scanner from "./components/Receptionist/Scanner";
+
+
 import Login from "./components/Auth/Login"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -44,6 +47,10 @@ function App() {
         <Route path ='/Cards/index' element={<Cards/>} /> 
                 
        <Route path='/ManagementStudent/RecordStudent' element={<GetRecordStudent/>} />
+
+
+       
+       <Route path ='/Scanner' element={<Scanner/>} /> 
                     
       </Routes>
     </Router>

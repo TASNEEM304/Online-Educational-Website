@@ -32,6 +32,10 @@ const HeaderRecep = () => {
         <NavItem>
           <NavLink href="/">الصفحة الرئيسية</NavLink>
         </NavItem>
+
+        <NavItem>
+          <NavLink href="/Scanner"> ماسح البارمود</NavLink>
+        </NavItem>
        
         
         <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
