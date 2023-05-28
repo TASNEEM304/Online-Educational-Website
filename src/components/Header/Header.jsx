@@ -97,6 +97,7 @@ const Header = () => {
                     
                           <Link to= {getToken() == null ? '/Login' 
                                     :getUser().roll_number===0 ?'/dashboard'
+                                    :getUser().roll_number===2 ?'/dashboardBrcMgr'
                                     :getUser().roll_number===3 ?'/dashboardRec':'/'} >{ getToken() == null ? 'تسجيل الدخول ': 'لوحة التحكم' } </Link>
                    
                   </li>
