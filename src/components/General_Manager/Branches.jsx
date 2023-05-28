@@ -3,8 +3,6 @@ import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import Header from "./Header";
 
 import axios from 'axios'
-
-  import { Routes, Route, Link } from 'react-router-dom'
   
 
 import ReactModal from 'react-modal';
@@ -20,8 +18,10 @@ const Getbranches = () => {
     Getbranches()
   },[])
   const Getbranches = async ()=>{
+    debugger
      return await axios.get('http://localhost:8000/api/branch/index').then((res)=>{
-      setdata(res.data.data);
+      setdata(res.data.data.data);
+      console.log(res.data)
      
      
    });
@@ -60,7 +60,7 @@ const Getbranches = () => {
 
 
   return (
-    <Fragment>
+<Fragment>
 <Header />
 <section>
       <Container>
@@ -149,7 +149,7 @@ const Getbranches = () => {
                               </div>   
                         </div>
                         <div className="col-md-6">
-                               <div className="form-group">
+                               <div className="form-group mt-2">
                                        <label>الأسم:</label>
                                        
                                       <input type='text' 
@@ -175,7 +175,7 @@ const Getbranches = () => {
        </div>
       </Container>
     </section>
-    </Fragment>
+</Fragment>
     
   );
 };
