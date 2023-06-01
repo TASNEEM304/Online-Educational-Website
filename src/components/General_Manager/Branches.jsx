@@ -1,7 +1,7 @@
 import React ,{Fragment,useEffect,useState} from "react";
 import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import Header from "./Header";
-
+import ReactPaginate from 'react-paginate';
 import axios from 'axios'
   
 
@@ -9,24 +9,12 @@ import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 
 const Getbranches = () => {
-  const [data,setdata] = useState([])
+  //const [data,setdata] = useState([])
   const [No ,setNo] = useState("");
   const [name ,setName] = useState("");
   
   
-  useEffect(()=>{
-    Getbranches()
-  },[])
-  const Getbranches = async ()=>{
-    debugger
-     return await axios.get('http://localhost:8000/api/branch/index').then((res)=>{
-      setdata(res.data.data.data);
-      console.log(res.data)
-     
-     
-   });
-   
-  }
+
   const store = async (e) => {
     debugger
     e.preventDefault()
@@ -56,6 +44,28 @@ const Getbranches = () => {
   
   
 
+  // useEffect(()=>{
+  //   Getbranches()
+  // },[])
+  // const Getbranches = async ()=>{
+  //   debugger
+  //    return await axios.get('http://localhost:8000/api/branch/index').then((res)=>{
+  //     setdata(res.data.data.data);
+  //     console.log(res.data)
+  //  });
+  // }
+
+
+
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+
+  const handlePageClick = async ({ selected }) => {
+    debugger
+    const response = await axios.get(`http://localhost:8000/api/branch/index?page=${selected}`);
+    setData(response.data.data.data);
+    setCurrentPage(selected);
+  };
 
 
 
@@ -112,6 +122,16 @@ const Getbranches = () => {
           )}
         </tbody>
       </Table>
+      <div>
+      {/* Render DataDisplay component with data */}
+      <ReactPaginate
+        pageCount={3} // Total number of pages
+        onPageChange={handlePageClick}
+        forcePage={currentPage}
+        containerClassName="pagination"
+        activeClassName="active"
+      />
+    </div>
 
       
      </Col>
