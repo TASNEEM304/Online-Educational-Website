@@ -22,6 +22,11 @@ import Scanner from "./components/Receptionist/Scanner";
 import DashboardBrMgr from "./components/Branch_Manger/DashboardBrMgr";
 import GetClassRoom from "./components/Branch_Manger/Codes/ClassRooms/index";
 
+
+
+//Scientific_Affairs
+import DashboardScientAff from "./components/Scientific_Affairs/DashboardScientAff" 
+
 function App() {
 
 
@@ -54,7 +59,10 @@ function App() {
        {/* Branch_Manger */}
        <Route path="/dashboardBrcMgr" element={<DashboardBrMgr />} />
        <Route path="/Codes/ClassRoom" element={<GetClassRoom />} />
-                    
+
+
+       {/*Dashboard*/}
+       <Route path="/dashboardScientAff" element={<DashboardScientAff />} />
       </Routes>
     </Router>
   );

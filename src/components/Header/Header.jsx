@@ -97,8 +97,10 @@ const Header = () => {
                     
                           <Link to= {getToken() == null ? '/Login' 
                                     :getUser().roll_number===0 ?'/dashboard'
+                                    :getUser().roll_number===1 ?'/dashboardScientAff'
                                     :getUser().roll_number===2 ?'/dashboardBrcMgr'
-                                    :getUser().roll_number===3 ?'/dashboardRec':'/'} >{ getToken() == null ? 'تسجيل الدخول ': 'لوحة التحكم' } </Link>
+                                    :getUser().roll_number===3 ?'/dashboardRec'
+                                    :'/'} >{ getToken() == null ? 'تسجيل الدخول ': 'لوحة التحكم' } </Link>
                    
                   </li>
                   {/* <li className="nav__item">
