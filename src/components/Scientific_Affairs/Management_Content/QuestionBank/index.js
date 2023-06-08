@@ -85,7 +85,7 @@ useEffect(()=>{
   },[])
 const Getbranches = async ()=>{
     return await axios.get('http://localhost:8000/api/branch/index').then((res)=>{
-     setbranches(res.data.data);
+     setbranches(res.data.data.data);
     
     
   });
@@ -95,8 +95,9 @@ useEffect(()=>{
     GetCourses()
   },[])
 const GetCourses = async ()=>{
+  
     return await axios.get('http://localhost:8000/api/course/index').then((res)=>{
-     setCourses(res.data.data);
+     setCourses(res.data.data.data);
     
     
   });
