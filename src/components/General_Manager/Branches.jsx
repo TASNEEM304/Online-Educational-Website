@@ -3,80 +3,136 @@ import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import Header from "./Header";
 import ReactPaginate from 'react-paginate';
 import axios from 'axios'
-  
-
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
+import AuthUser from  '../Auth/AuthUser';
 
 const Getbranches = () => {
-  //const [data,setdata] = useState([])
+
+  const {http} = AuthUser();
   const [No ,setNo] = useState("");
   const [name ,setName] = useState("");
   const [searchTerm, setSearchTerm] = useState('');
-  
-  
-
-  const store = async (e) => {
-    debugger
-    e.preventDefault()
-   await axios.post('http://localhost:8000/api/branch/store',{No:No,name:name}).catch(function (error) {
-    console.log(error);
-  });
-  setNo('');
-  setName('');
-  Getbranches();
-  closeModal();
-  }
-  const Delete= async (id) =>{
-    
-     return await axios.post(`http://localhost:8000/api/branch/destroy/${id}`).then((res)=>{
-        alert(res.data.message);
-        Getbranches();
-     })
-    
-  }
-  
-  
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   
   
-  
 
-  // useEffect(()=>{
-  //   Getbranches()
-  // },[])
-  // const Getbranches = async ()=>{
-  //   debugger
-  //    return await axios.get('http://localhost:8000/api/branch/index').then((res)=>{
-  //     setdata(res.data.data.data);
-  //     console.log(res.data)
-  //  });
-  // }
-
-
-
-  const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(0);
-
-  const handlePageClick = async ({ selected }) => {
+///============================
+/// store
+///=============================
+  const store = async (e) => {
     debugger
-    const response = await axios.get(`http://localhost:8000/api/branch/index?page=${selected}`);
-    setData(response.data.data.data);
-    setCurrentPage(selected);
+    e.preventDefault()
+    http.post('branch/store',{No:No,name:name}).catch(function (error) {
+
+  });
+  setNo('');
+  setName('');
+  closeModal();
+  }
+
+  
+  const handleStore = () => {
+    debugger
+    setData(data.map((item) => (item.id === editedItem.id ? editedItem : item)));
+    
+  };
+///============================
+/// Delete
+///=============================
+
+  const Delete= async (id) =>{
+    
+       http.post(`branch/destroy/${id}`).then((res)=>{
+        alert(res.data.message);
+        
+     })
+    
+  }
+
+///============================
+/// loadData
+///=============================
+useEffect(() => {
+  const loadData = async () => {
+    http.get(`branch/index?page=1`).then((res)=>{
+      setData(res.data.data.data);
+      setCurrentPage(1);
+     }).catch(function (error) {
+
+     }); 
   };
 
+  loadData();
+}, []);
+
+///============================
+/// handlePageClick
+///=============================
+
+const handlePageClick = async ({ selected }) => {
+http.get(`branch/index?page=${selected}`).then((res)=>{
+setData(res.data.data.data);
+setCurrentPage(selected);
+}).catch(function (error) {
+
+});
+};
+
+///============================
+/// Search
+///=============================
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    setCurrentPage(0); // reset page number when search term changes
+    setCurrentPage(1); // reset page number when search term changes
   };
   const handleSearchClick = () => {
     console.log('Search term:', searchTerm);
     // your code to perform the search goes here
   };
+
+//=============================
+// Update
+//=============================
+
+const Update = async (editedItem) => {
+  debugger
+  http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
+  console.log(error);
+});
+}
+
+
+  const [editing, setEditing] = useState(false);
+  const [editedItem, setEditedItem] = useState({});
+
+  const handleEditClick = (item) => {
+    setEditedItem(item);
+    setEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    debugger
+    setData(data.map((item) => (item.id === editedItem.id ? editedItem : item)));
+    setEditing(false);
+    Update(editedItem);
+
+  };
+
+  const handleCancelClick = () => {
+    setEditing(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setEditedItem((prevState) => ({ ...prevState, [name]: value }));
+  }
 
   return (
 <Fragment>
@@ -135,14 +191,28 @@ const Getbranches = () => {
           ) : (
             data.map((data) => (
               <tr key={data.id}>
-                <td style={{width:"20%"}}>
+                {/* <td style={{width:"20%"}}> */}
+  
+  
                 {/* <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} /> */}
                              
-                  <Button variant="danger" onClick={() => Delete(data.id)}>حذف</Button>
+                  {/* <Button variant="danger" onClick={() => Delete(data.id)}>حذف</Button> */}
                   {/* <Button variant="primary" href={`/Branches/edit/${data.id}`}>تحرير</Button> */}
-                </td>
-                <td style={{width:"50%"}}>{data.name}</td>
-                <td style={{width:"30%"}}>{data.No}</td>
+                {/* </td> */}
+                <td>
+                {!editing || editedItem.id !== data.id ? (
+                  <button onClick={() => handleEditClick(data)}>Edit</button>
+                ) : (
+                  <>
+                    <button onClick={handleSaveClick}>Save</button>
+                    <button onClick={handleCancelClick}>Cancel</button>
+                  </>
+                )}
+              </td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
+                {/* <td style={{width:"50%"}}>{data.name}</td> */}
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.No}</td>
+    
               </tr>
             ))
           )}
@@ -211,7 +281,7 @@ const Getbranches = () => {
                 
            
         </div>
-      </ReactModal> 
+         </ReactModal> 
 
 
 

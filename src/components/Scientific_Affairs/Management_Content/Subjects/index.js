@@ -47,7 +47,7 @@ const store = async (event) => {
  } catch (error) {
    console.error("Error adding service", error);
  }
- GetSubjects();
+ //GetSubjects();
  closeModal();
 };
 const Delete= async (id) =>{
@@ -73,10 +73,19 @@ const closeModal = () => setModalIsOpen(false);
 
 
 const [data, setData] = useState([]);
-const [currentPage, setCurrentPage] = useState(0);
+const [currentPage, setCurrentPage] = useState(1);
+
+useEffect(() => {
+  const loadData = async () => {
+    const response = await axios.get('http://localhost:8000/api/subject/index?page=1');
+    setData(response.data.data.data);
+  };
+
+  loadData();
+}, []);
 
 const handlePageClick = async ({ selected }) => {
- debugger
+ 
  const response = await axios.get(`http://localhost:8000/api/subject/index?page=${selected}`);
  setData(response.data.data.data);
  setCurrentPage(selected);
@@ -155,7 +164,7 @@ return (
      <div>
      {/* Render DataDisplay component with data */}
      <ReactPaginate
-       pageCount={3} // Total number of pages
+       pageCount={9} // Total number of pages
        onPageChange={handlePageClick}
        forcePage={currentPage}
        containerClassName="pagination"

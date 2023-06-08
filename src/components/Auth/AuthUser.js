@@ -40,7 +40,7 @@ export default function AuthUser(){
         headers:{
             "Content-type" : 'application/json',
             'X-Requested-With':'XMLHttpRequest',
-            "Authorization" : `Bearer ${token} `,
+            'Authorization' : `Bearer ${token}`,
             "Accept":'application/json',
             "Access-Control-Allow-Origin":"http://localhost:3000",
             "credentials":true, 
