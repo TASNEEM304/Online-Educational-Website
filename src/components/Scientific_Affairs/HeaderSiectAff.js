@@ -38,7 +38,10 @@ const HeaderSiectAff = () => {
              ادارة المحتوى
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem href="/Codes/ClassRoom">
+          <DropdownItem href="/Subjects/index">
+             المواد العلمية
+            </DropdownItem>
+            <DropdownItem href="/QuestionBank/index">
              بنك الأسئلة
             </DropdownItem>
            

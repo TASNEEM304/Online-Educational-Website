@@ -11,15 +11,13 @@ import * as AiIcons from "react-icons/ai";
 
  //const endpoint = 'http://localhost:8000/api/branch/store'
 
-export const GetSubjects= () => {
+export const GetQuestionBank= () => {
 
 
- const [name ,setName] = useState("");
- const [content ,setcontent] = useState(null);
- 
- const [price ,setprice] = useState("");
- const [houers ,sethouers] = useState("");
- const [number_of_lessons ,setnumber_of_lessons] = useState("");
+  const [course_id ,setcourseid] = useState("");
+  const [model ,setmodel] = useState("");
+  const [file ,setfile] = useState(null);
+  const [branch_id ,setbranchid] = useState("");
 
 
 
@@ -30,14 +28,14 @@ const store = async (event) => {
  event.preventDefault();
 
  const formData = new FormData();
- formData.append("name", name);
- formData.append("content", content);
- formData.append("price", price);
- formData.append("houers", houers);
- formData.append("number_of_lessons", number_of_lessons);
+ formData.append("course_id", course_id);
+ formData.append("model", model);
+ formData.append("file", file);
+ formData.append("branch_id", branch_id);
+
 
  try {
-   const response = await axios.post("http://localhost:8000/api/subject/store", formData, {
+   const response = await axios.post("http://localhost:8000/api/qbank/store", formData, {
      headers: {
        "Content-Type": "multipart/form-data",
      },
@@ -47,21 +45,21 @@ const store = async (event) => {
  } catch (error) {
    console.error("Error adding service", error);
  }
- GetSubjects();
+ GetQuestionBank();
  closeModal();
 };
 const Delete= async (id) =>{
  
-  return await axios.post(`http://localhost:8000/api/subject/destroy/${id}`).then((res)=>{
+  return await axios.post(`http://localhost:8000/api/qbank/destroy/${id}`).then((res)=>{
      alert(res.data.message);
-     GetSubjects();
+     GetQuestionBank();
   })
  
 }
 
 const handleFileChange = (event) => {
  if (event.target.files) {
-   setcontent(event.target.files[0]);
+   setfile(event.target.files[0]);
  }
 };
 
@@ -77,10 +75,32 @@ const [currentPage, setCurrentPage] = useState(0);
 
 const handlePageClick = async ({ selected }) => {
  debugger
- const response = await axios.get(`http://localhost:8000/api/subject/index?page=${selected}`);
+ const response = await axios.get(`http://localhost:8000/api/qbank/index?page=${selected}`);
  setData(response.data.data.data);
  setCurrentPage(selected);
 };
+const [Branches,setbranches] = useState([])
+useEffect(()=>{
+    Getbranches()
+  },[])
+const Getbranches = async ()=>{
+    return await axios.get('http://localhost:8000/api/branch/index').then((res)=>{
+     setbranches(res.data.data);
+    
+    
+  });
+}
+const [Courses,setCourses] = useState([])
+useEffect(()=>{
+    GetCourses()
+  },[])
+const GetCourses = async ()=>{
+    return await axios.get('http://localhost:8000/api/course/index').then((res)=>{
+     setCourses(res.data.data);
+    
+    
+  });
+}
 
 
 
@@ -114,13 +134,10 @@ return (
         <tr>
                    
                    <th ></th>
-                   <th >عدد الدروس</th>
-                   <th >عدد الساعات </th>
-                               
-                              
-                 <th>السعر</th>
-                  <th>المحتوى</th>
-              <th>اسم المادة</th>
+                   <th>الفرع</th>
+                <th>ملف الاسئلة</th>
+                <th>النموذج</th>
+                <th>الدورة</th>
                   
                  </tr>
        </thead>
@@ -141,12 +158,13 @@ return (
                  {/* <Button variant="primary" href={`/Branches/edit/${data.id}`}>تحرير</Button> */}
                </td>
               
-               <td style={{width:"30%"}}>{data.number_of_lessons}</td>
-               <td style={{width:"30%"}}>{data.houers}</td>
-                                 
-               <td style={{width:"30%"}}>{data.price}</td>
-                <td style={{width:"30%"}}>{data.content}</td>
-                  <td style={{width:"30%"}}>{data.name}</td>
+               
+
+                  <td style={{width:"30%"}}>{data.Branches}</td>
+                <td style={{width:"30%"}}>{data.file}</td>
+                <td style={{width:"30%"}}>{data.model}</td>
+                <td style={{width:"30%"}}>{data.course_id}</td>
+               
              </tr>
            ))
          )}
@@ -195,65 +213,47 @@ return (
 
 
                               <div className="form-group mt-2">
-                                      <label>اسم المادة</label>
-                                      <input type='text' 
-                                             className='form-control' 
-                                             placeholder='ادخل اسم المادة '
-                                             Value={name} 
-                                             onChange={(e)=>setName(e.target.value)}
-                                             />
+                                      <label> الدورة</label>
+                                      <select className='form-control'   onChange={(e)=>setcourseid(e.target.value)}>
+         <option value="">الرجاء اختيار الدورة</option>
+         {Courses.map(option => (
+             <option key={option.id} value={option.id} >{option.name}</option>
+                        ))}
+            </select>
                              </div>  
                              <div className="form-group mt-2">
-                                      <label>المحتوى العلمي </label>
-                                      <input type='file' 
-                                             className='form-control' 
-                                             placeholder='ادخل المحتوى العلمي  '
-                                         
-                                             onChange={(event) => setcontent(event.target.files[0])}
-                                             />
+                                      <label>النموذج  </label>
+                                      <input
+           value={model} className='form-control'
+           onChange = {(e)=> setmodel(e.target.value)}
+          
+            />   
                              </div>   
                   
                           
                              <div className="form-group mt-2">
-                                      <label>السعر </label>
-                                      <input type='number' 
-                                             className='form-control' 
-                                             placeholder='ادخل السعر  '
-                                             Value={price} 
-                                             onChange={(e)=>setprice(e.target.value)}
-                                             />
+                             <label>ملف الأسئلة </label>
+                           <input className='form-control'  type="file" onChange={(event) => setfile(event.target.files[0])} />
+
                              </div>   
                      
                        
                              <div className="form-group mt-2">
-                                      <label>عدد الساعات </label>
-                                      <input type='number' 
-                                             className='form-control' 
-                                             placeholder='ادخل عدد الساعات  '
-                                             Value={houers} 
-                                             onChange={(e)=>sethouers(e.target.value)}
-                                             />
+                             <label>الفرع </label>
+                <select className='form-control'  onChange={(e)=>setbranchid(e.target.value)}>
+                                                    <option value="">الرجاء اختيار الفرع</option>
+                                                   {Branches.map(option => (
+                                                     <option key={option.id} value={option.id} >{option.name}</option>
+                                                    ))}
+                                            </select>
                              </div>   
                     
 
 
 
                     
-                             <div className="form-group mt-2">
-                                      <label>عدد الدروس </label>
-                                      <input type='number' 
-                                             className='form-control' 
-                                             placeholder='ادخل عدد الدروس  '
-                                             Value={number_of_lessons} 
-                                             onChange={(e)=>setnumber_of_lessons(e.target.value)}
-                                             />
-                             </div>   
-
-
-
-
-
-                       </div>
+                        
+               </div>
                </div>
                    <button type="button" onClick={store} className="btn btn-primary mt-4">حفظ</button>
                

@@ -12,6 +12,7 @@ const Getbranches = () => {
   //const [data,setdata] = useState([])
   const [No ,setNo] = useState("");
   const [name ,setName] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   
   
 
@@ -68,16 +69,41 @@ const Getbranches = () => {
   };
 
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(0); // reset page number when search term changes
+  };
+  const handleSearchClick = () => {
+    console.log('Search term:', searchTerm);
+    // your code to perform the search goes here
+  };
 
   return (
 <Fragment>
 <Header />
 <section>
       <Container>
+    
+      <div className="container mt-4">
+      <div className="row">
+      <div className="col-md-6">
 
-   
-      
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          
+      <button className="btn btn-primary" type="button" onClick={() => console.log('Search term:', searchTerm)}>بحث</button>
+      </div>
+      </div>
+      </div>
+      </div>
    <Row>
+    
      <Col lg="12" md="6" lang="ar" style={{marginTop:"10px" ,   textAlign: 'right'}}>
 
       

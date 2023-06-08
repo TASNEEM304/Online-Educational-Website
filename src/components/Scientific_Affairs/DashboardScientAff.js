@@ -17,11 +17,9 @@ const DashboardScientAff = () => {
 
      <Col lg="6" md="6">
        <div>
-         <h2>About Us</h2>
+         <h2> ادارة الشؤون العلمية</h2>
          <p>
-           Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-           Excepturi cupiditate animi deserunt libero nesciunt corporis
-           explicabo nobis ex quo molestiae!
+          
          </p>
 
        </div>

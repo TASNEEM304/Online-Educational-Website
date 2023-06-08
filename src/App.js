@@ -26,6 +26,9 @@ import GetClassRoom from "./components/Branch_Manger/Codes/ClassRooms/index";
 
 //Scientific_Affairs
 import DashboardScientAff from "./components/Scientific_Affairs/DashboardScientAff" 
+import {GetSubjects} from "./components/Scientific_Affairs/Management_Content/Subjects/index";
+import {GetQuestionBank} from "./components/Scientific_Affairs/Management_Content/QuestionBank/index";
+
 
 function App() {
 
@@ -63,6 +66,9 @@ function App() {
 
        {/*Dashboard*/}
        <Route path="/dashboardScientAff" element={<DashboardScientAff />} />
+       <Route path="/Subjects/index" element={<GetSubjects />} />
+       <Route path="/QuestionBank/index" element={<GetQuestionBank />} />
+       
       </Routes>
     </Router>
   );
