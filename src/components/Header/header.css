@@ -1,7 +1,7 @@
 .header {
     width: 100%;
     height: 80px;
-    background: rgba(226, 248, 248, 0.664);
+    background: linear-gradient(to right, #2980b9, #550505);
     line-height: 80px;
 }
 

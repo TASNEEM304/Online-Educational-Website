@@ -1,4 +1,23 @@
-.demo {
+/* style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}} */
+
+.card {
+    text-align: right;
+    height: 500px;
+    font-size: 10px;
+    background-color: #f8f9fa;
+    margin-top: 15px;
+}
+
+.card-body {
+    text-align: center;
+    font-size: 16px;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+
+/* .demo {
     font-family: 'Noto Sans', sans-serif;
 }
 
@@ -203,4 +222,4 @@
     .panel .panel-heading .btn_group {
         text-align: center;
     }
-}
+} */
