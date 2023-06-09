@@ -8,18 +8,21 @@ import ReactPaginate from 'react-paginate';
 
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
+import AuthUser from  '../../../Auth/AuthUser';
 
  //const endpoint = 'http://localhost:8000/api/branch/store'
 
 export const GetSubjects= () => {
 
-
+  const {http} = AuthUser();
  const [name ,setName] = useState("");
  const [content ,setcontent] = useState(null);
+ const [searchTerm, setSearchTerm] = useState('');
  
  const [price ,setprice] = useState("");
  const [houers ,sethouers] = useState("");
  const [number_of_lessons ,setnumber_of_lessons] = useState("");
+ const pageCount = 20;
 
 
 
@@ -51,12 +54,12 @@ const store = async (event) => {
  closeModal();
 };
 const Delete= async (id) =>{
- 
-  return await axios.post(`http://localhost:8000/api/subject/destroy/${id}`).then((res)=>{
-     alert(res.data.message);
-     GetSubjects();
-  })
- 
+    
+  http.post(`subject/destroy/${id}`).then((res)=>{
+   alert(res.data.message);
+  // loadData();
+})
+
 }
 
 const handleFileChange = (event) => {
@@ -64,6 +67,22 @@ const handleFileChange = (event) => {
    setcontent(event.target.files[0]);
  }
 };
+
+
+useEffect(() => {
+  const loadData = async () => {
+    http.get(`subject/index?page=1`).then((res)=>{
+      setData(res.data.data.data);
+      setCurrentPage(1);
+     }).catch(function (error) {
+
+     }); 
+  };
+
+  loadData();
+}, []);
+
+
 
 
 const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -75,23 +94,68 @@ const closeModal = () => setModalIsOpen(false);
 const [data, setData] = useState([]);
 const [currentPage, setCurrentPage] = useState(1);
 
-useEffect(() => {
-  const loadData = async () => {
-    const response = await axios.get('http://localhost:8000/api/subject/index?page=1');
-    setData(response.data.data.data);
-  };
 
-  loadData();
-}, []);
 
 const handlePageClick = async ({ selected }) => {
- 
- const response = await axios.get(`http://localhost:8000/api/subject/index?page=${selected}`);
- setData(response.data.data.data);
- setCurrentPage(selected);
+  http.get(`subject/index?page=${selected}`).then((res)=>{
+  setData(res.data.data.data);
+  setCurrentPage(selected);
+  }).catch(function (error) {
+  
+  });
+  };
+
+///============================
+/// Search
+///=============================
+
+const handleSearchChange = (event) => {
+  setSearchTerm(event.target.value);
+  setCurrentPage(1); // reset page number when search term changes
+};
+const handleSearchClick = () => {
+  console.log('Search term:', searchTerm);
+  // your code to perform the search goes here
 };
 
 
+
+//=============================
+// Update
+//=============================
+
+const Update = async (editedItem) => {
+  debugger
+  http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
+  console.log(error);
+});
+}
+
+
+  const [editing, setEditing] = useState(false);
+  const [editedItem, setEditedItem] = useState({});
+
+  const handleEditClick = (item) => {
+    setEditedItem(item);
+    setEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    debugger
+    setData(data.map((item) => (item.id === editedItem.id ? editedItem : item)));
+    setEditing(false);
+    Update(editedItem);
+
+  };
+
+  const handleCancelClick = () => {
+    setEditing(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setEditedItem((prevState) => ({ ...prevState, [name]: value }));
+  }
 
 
 return (
@@ -101,7 +165,24 @@ return (
 <HeaderSiectAff />
 <section>
      <Container>
+     <div className="container mt-4">
+      <div className="row">
+      <div className="col-md-6">
 
+          <div className="input-group mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          
+      <button className="btn btn-primary" type="button" onClick={() => console.log('Search term:', searchTerm)}>بحث</button>
+      </div>
+      </div>
+      </div>
+      </div>
   
      
   <Row>
@@ -133,44 +214,76 @@ return (
                   
                  </tr>
        </thead>
-       <tbody>
-         {data.length === 0 ? (
-           <tr>
-             <td colSpan={3} className="text-center">
-               No Data
-             </td>
-           </tr>
-         ) : (
-           data.map((data) => (
-             <tr key={data.id}>
-               <td style={{width:"20%"}}>
-               {/* <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} /> */}
-                            
-                 <Button variant="danger" onClick={() => Delete(data.id)}>حذف</Button>
-                 {/* <Button variant="primary" href={`/Branches/edit/${data.id}`}>تحرير</Button> */}
-               </td>
-              
-               <td style={{width:"30%"}}>{data.number_of_lessons}</td>
-               <td style={{width:"30%"}}>{data.houers}</td>
-                                 
-               <td style={{width:"30%"}}>{data.price}</td>
-                <td style={{width:"30%"}}>{data.content}</td>
-                  <td style={{width:"30%"}}>{data.name}</td>
-             </tr>
-           ))
-         )}
-       </tbody>
+       
+
+
+<tbody>
+          {data.length === 0 ? (
+            <tr>
+              <td colSpan={3} className="text-center">
+                No Data
+              </td>
+            </tr>
+          ) : (
+            data.map((data) => (
+              <tr key={data.id}>
+                {/* <td style={{width:"20%"}}> */}
+  
+  
+                {/* <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} /> */}
+                             
+                  {/* <Button variant="danger" onClick={() => Delete(data.id)}>حذف</Button> */}
+                  {/* <Button variant="primary" href={`/Branches/edit/${data.id}`}>تحرير</Button> */}
+                {/* </td> */}
+                <td>
+                {!editing || editedItem.id !== data.id ? (
+                  <button onClick={() => handleEditClick(data)}>Edit</button>
+                ) : (
+                  <>
+                    <button onClick={handleSaveClick}>Save</button>
+                    <button onClick={handleCancelClick}>Cancel</button>
+                  </>
+                )}
+              </td>
+              <td>{editing && editedItem.id === data.id ? <input type="text" name="number_of_lessons" value={editedItem.number_of_lessons} onChange={handleInputChange} /> : data.number_of_lessons}</td>
+
+                {/* <td style={{width:"50%"}}>{data.name}</td> */}
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="houers" value={editedItem.houers} onChange={handleInputChange} /> : data.houers}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="price" value={editedItem.price} onChange={handleInputChange} /> : data.price}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="content" value={editedItem.content} onChange={handleInputChange} /> : data.content}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
+
+              </tr>
+            ))
+          )}
+        </tbody>
+      
+
+ 
      </Table>
-     <div>
-     {/* Render DataDisplay component with data */}
-     <ReactPaginate
-       pageCount={9} // Total number of pages
-       onPageChange={handlePageClick}
-       forcePage={currentPage}
-       containerClassName="pagination"
-       activeClassName="active"
-     />
-   </div>
+     <div className="App">
+      {/* your code to display the data goes here */}
+      <ReactPaginate
+        previousLabel={'<'}
+        nextLabel={'>'}
+        breakLabel={'...'}
+        pageCount={pageCount}
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        pageClassName={'page-item'}
+        activeClassName={'active'}
+        previousClassName={'page-item'}
+        nextClassName={'page-item'}
+        breakClassName={'page-item'}
+        pageLinkClassName={'page-link'}
+        previousLinkClassName={'page-link'}
+        nextLinkClassName={'page-link'}
+        breakLinkClassName={'page-link'}
+        disableInitialCallback={true}
+      />
+    </div>
+
 
      
     </Col>
