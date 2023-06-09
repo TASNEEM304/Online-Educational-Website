@@ -20,7 +20,7 @@ const Getbranches = () => {
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   
-  
+  const pageCount = 20;
 
 ///============================
 /// store
@@ -218,14 +218,25 @@ const Update = async (editedItem) => {
           )}
         </tbody>
       </Table>
-      <div>
-      {/* Render DataDisplay component with data */}
+      <div className="App">
+      {/* your code to display the data goes here */}
       <ReactPaginate
-        pageCount={3} // Total number of pages
+        previousLabel={'<'}
+        nextLabel={'>'}
+        breakLabel={'...'}
+        pageCount={pageCount}
         onPageChange={handlePageClick}
-        forcePage={currentPage}
-        containerClassName="pagination"
-        activeClassName="active"
+        containerClassName={'pagination'}
+        pageClassName={'page-item'}
+        activeClassName={'active'}
+        previousClassName={'page-item'}
+        nextClassName={'page-item'}
+        breakClassName={'page-item'}
+        pageLinkClassName={'page-link'}
+        previousLinkClassName={'page-link'}
+        nextLinkClassName={'page-link'}
+        breakLinkClassName={'page-link'}
+        disableInitialCallback={true}
       />
     </div>
 
