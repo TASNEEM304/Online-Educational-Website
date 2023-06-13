@@ -107,7 +107,10 @@ const Header = () => {
                     <Link to={'/'} onClick={logout()}>تسجيل الخروج</Link>
                   
                   </li> */}
-
+<li className="nav__item">
+                    <Link to={'/Register'}>تسجيل </Link>
+                  
+                  </li>
                   
 
                   
