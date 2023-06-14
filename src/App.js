@@ -20,8 +20,8 @@ import Scanner from "./components/Receptionist/Scanner";
 
 //Branch_Manger
 import DashboardBrMgr from "./components/Branch_Manger/DashboardBrMgr";
-import GetClassRoom from "./components/Branch_Manger/Codes/ClassRooms/index";
-
+import {GetClassRoom} from "./components/Branch_Manger/Codes/ClassRooms/index";
+import GetRecordRecptions from "./components/Branch_Manger/ManagementRecptiones/RecoredRecpitions";
 
 
 //Scientific_Affairs
@@ -62,6 +62,7 @@ function App() {
        {/* Branch_Manger */}
        <Route path="/dashboardBrcMgr" element={<DashboardBrMgr />} />
        <Route path="/Codes/ClassRoom" element={<GetClassRoom />} />
+       <Route path="/ManagementRecptiones/RecoredRecpitions" element={<GetRecordRecptions />} />
 
 
        {/*Dashboard*/}

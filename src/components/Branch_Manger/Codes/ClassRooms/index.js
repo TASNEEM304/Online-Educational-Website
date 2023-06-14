@@ -1,115 +1,222 @@
-import React,{useEffect,useState, Fragment } from 'react'
+import React ,{Fragment,useEffect,useState} from "react";
+import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
+import Header from "../../HeaderBrcMgr";
+import ReactPaginate from 'react-paginate';
 import axios from 'axios'
-import { Link ,useNavigate} from 'react-router-dom'
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
-import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
-import HeaderBrcMgr from "../../HeaderBrcMgr";
+import AuthUser from  '../../../Auth/AuthUser';
 
+export const GetClassRoom = () => {
 
-  //const endpoint = 'http://localhost:8000/api/branch/store'
-
-const GetClassRoom = () => {
- 
-
-const [data,setClassRoom ] = useState([])
+  const {http} = AuthUser();
+const [data, setData] = useState([]);
+const [searchTerm, setSearchTerm] = useState("");
 const [No ,setNo] = useState("");
 const [name ,setName] = useState("");
 const [size ,setSize] = useState("");
 const [branch_id ,setbranchid] = useState("");
-
- useEffect(()=>{
-  GetClassRoom()
- },[])
-const GetClassRoom = async ()=>{
-   return await axios.get('http://localhost:8000/api/class/index').then((res)=>{
-    setClassRoom(res.data.data.data);
-   
-   
- });
- 
- //console.log(response.data.data)
-}
-
-const Delete= async (id) =>{
-  
-   return await axios.post(`http://localhost:8000/api/class/destroy/${id}`).then((res)=>{
-      alert(res.data.message);
-   })
-  //GetClassRoom()
-  //history('/index');
-}
-
-
-
-
-
-
-
+const [currentPage, setCurrentPage] = useState(0);
+const [pageCount, setpageCount] = useState(0);
 const [modalIsOpen, setModalIsOpen] = useState(false);
+  
+  const openModal = () => setModalIsOpen(true);
+  const closeModal = () => setModalIsOpen(false);
+  
+  
+///============================
+/// store
+///=============================
+  const store = async (e) => {
+    debugger
+    e.preventDefault()
+    http.post('class/store',{No:No,name:name,size:size,branch_id:branch_id}).catch(function (error) {
 
-const openModal = () => setModalIsOpen(true);
-const closeModal = () => setModalIsOpen(false);
-
-
-
-const [Branches,setbranches] = useState([])
-useEffect(()=>{
-    Getbranches()
-  },[])
-const Getbranches = async ()=>{
-    return await axios.get('http://localhost:8000/api/branch/index').then((res)=>{
-     setbranches(res.data.data);
-    
-    
   });
+  setNo('');
+  setName('');
+  setSize('');
+  setbranchid('');
+  closeModal();
+  loadData();
+  }
+
+///============================
+/// Delete
+///=============================
+
+  const Delete= async (id) =>{
+    
+       http.post(`class/destroy/${id}`).then((res)=>{
+        alert(res.data.message);
+        loadData();
+        
+     })
+    
+  }
+
+///============================
+/// loadData
+///=============================
+useEffect(() => {
+  loadData();
+}, []);
+const loadData = async () => {
+  debugger
+    http.get(`class/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+      setData(res.data.data.data);
+      setpageCount(res.data.data.total/res.data.data.data.length);
+     }).catch(function (error) {
+  
+     });
+  
+   
+};
+///============================
+/// handlePageClick
+///=============================
+
+const handlePageClick = async ({ selected }) => {
+http.get(`class/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+  setData(res.data.data.data);
+   setCurrentPage(selected);
+}).catch(function (error) {
+
+});
+};
+
+///============================
+/// Search
+///=============================
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    
+    //setCurrentPage(1); // reset page number when search term changes
+  };
+  const handleSearchClick = () => {
+    loadData();
+  };
+
+//=============================
+// Update
+//=============================
+
+const Update = async (editedItem) => {
+  debugger
+  http.post(`class/update/${editedItem.id}`,editedItem).catch(function (error) {
+  console.log(error);
+});
 }
 
 
+  const [editing, setEditing] = useState(false);
+  const [editedItem, setEditedItem] = useState({});
 
+  const handleEditClick = (item) => {
+    setEditedItem(item);
+    setEditing(true);
+  };
 
-let history=useNavigate();
+  const handleSaveClick = () => {
+    debugger
+    setData(data.map((item) => (item.id === editedItem.id ? editedItem : item)));
+    setEditing(false);
+    Update(editedItem);
+
+  };
+
+  const handleCancelClick = () => {
+    setEditing(false);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setEditedItem((prevState) => ({ ...prevState, [name]: value }));
+  }
+
+  
+  // const [Branches,setBranches] = useState([])
+  // useEffect(()=>{
+  //   Getbranches()
+  //   },[])
+  // const Getbranches = async ()=>{
+  //   http.get(`class/index?page=1`).then((res)=>{
+  //      setBranches(res.data.data);
+      
+      
+  //   });
+  // }
+  
+
+  return (
+<Fragment>
+<Header />
+
+{/* <div className="container-fluid"></div> */}
+ 
+<Container>
     
-    const store = async (e) => {
-      debugger
-        e.preventDefault()
-       await axios.post('http://localhost:8000/api/class/store',{No:No,name:name,size:size,branch_id:branch_id})
-       .catch(function (error) {
-        console.log(error);
-      });
-      GetClassRoom();
-      closeModal();
-      }
-
- return (
-
-  <Fragment>
-<HeaderBrcMgr />
-<section>
-      <Container>
-
-   
-      
    <Row>
-     <Col lg="12" md="6" lang="ar" style={{marginTop:"10px" ,   textAlign: 'right'}}>
+    
+     <Col lg="12" lang="ar">
 
-      
-      <Button variant="success" onClick={openModal} style={{fontSize: "10px", 
-                         width: "15%",height:"25%"
-                         }}>أضف قاعة جديدة
-                        
-                         </Button>
-                         
-                         <br/>
-      <Table striped bordered hover  style={{fontSize: "16px", 
+       
+     <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
+               <div className="card-header">
+                <div className="row">
+                
+                <div className="col-md-4">
+
+<div className="input-group mb-2">
+  <input
+    type="text"
+    className="form-control"
+    placeholder=" بحث....   "
+    value={searchTerm}
+    onChange={handleSearchChange}
+    
+  />
+  <div className="input-group-append">
+    <span className="input-group-text">
+    <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
+
+    </span>
+  </div>
+                
+</div>
+</div>
+<div className="col-md-2">
+                </div>
+<div className="col-md-6">
+<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف   قاعة دراسية
+
+</Button>
+</div>
+
+                </div>
+             
+
+              </div>
+              <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
+                         width: "100%",
+                         height : "100%",
+                         padding: "0"
+                         }}>
+                   
+                   
+              <Table style={{fontSize: "16px", 
                          width: "100%"
                          }}>
-        <thead style={{background:"#ece24c",
+        <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
         }}>
           <tr >
-            <th ></th>
-            <th >الاسم</th>
-            <th>الرقم</th>
+        
+            <th style={{ width: "20%" }}></th>
+            <th style={{ width: "30%" }}>الفرع</th>
+            <th style={{ width: "30%" }}>سعة القاعة</th>
+            <th style={{ width: "30%" }}> الأسم</th>
+            <th style={{ width: "30%" }}>الرقم</th>
           </tr>
         </thead>
         <tbody>
@@ -122,19 +229,55 @@ let history=useNavigate();
           ) : (
             data.map((data) => (
               <tr key={data.id}>
-                <td style={{width:"20%"}}>
-                {/* <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} /> */}
-                             
-                {/* <Button variant="danger" onClick={() => Delete(data.id)}>حذف</Button> */}
-                  {/* <Button variant="primary" href={`/Branches/edit/${data.id}`}>تحرير</Button> */}
-                </td>
-                <td style={{width:"50%"}}>{data.name}</td>
-                <td style={{width:"30%"}}>{data.No}</td>
+  
+                          
+                <td>
+
+                {!editing || editedItem.id !== data.id ? (
+                <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+                
+                ) : (
+                  <>
+                    <button onClick={handleSaveClick}>Save</button>
+                    <button onClick={handleCancelClick}>Cancel</button>
+                  </>
+                )}
+                <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+                   
+              </td>
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.branch_id}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="size" value={editedItem.size} onChange={handleInputChange} /> : data.size}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.No}</td>
+
               </tr>
             ))
           )}
         </tbody>
-      </Table>
+              </Table>
+              </div>
+              <div className="card-footer text-muted">
+                  
+              <ReactPaginate
+        pageCount={pageCount} // Total number of pages
+        onPageChange={handlePageClick}
+        containerClassName={'pagination'}
+        pageClassName={'page-item'}
+        activeClassName={'active'}
+        previousClassName={'page-item'}
+        nextClassName={'page-item'}
+        breakClassName={'page-item'}
+        pageLinkClassName={'page-link #550505'}
+        previousLinkClassName={'page-link'}
+        nextLinkClassName={'page-link'}
+        breakLinkClassName={'page-link'}
+        disableInitialCallback={true}
+        previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+        nextLabel={<AiIcons.AiOutlineDoubleRight />}
+      />
+                                </div>
+            </div>
+      
 
       
      </Col>
@@ -142,184 +285,146 @@ let history=useNavigate();
      
    </Row>
 
-    <div>
-         
-         <ReactModal isOpen={modalIsOpen} onRequestClose={closeModal} style={{
-          content: {
-            width: '70%',
-            height : '60%',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)'
-            
-          }}}>
-      <AiIcons.AiOutlineClose onClick={closeModal} style={{  width: '5%' , height : '5%' }} />
-        <div lang="ar" style={{marginTop:"100px" ,   textAlign: 'right'}}>
-        
-            
-                <div lang="ar" className="row">
-                  
-                        <div className="col-md-6">
-                              <div className="form-group mt-2">
-                                       <label>:الرقم</label>
-                                       <input type='number' 
-                                              className='form-control' 
-                                              placeholder=' ادخل رقم القاعة'
-                                              Value={No} 
-                                              onChange={(e)=>setNo(e.target.value)}
-                                              />
-                              </div>   
-                        </div>
-                        <div className="col-md-6">
-                               <div className="form-group mt-2">
-                                       <label>:الأسم</label>
-                                       
-                                      <input type='text' 
-                                       className='form-control' 
-                                       placeholder='ادخل اسم القاعة'
-                                       Value={name} 
-                                       onChange={(e)=>setName(e.target.value)}
-                                       />
-                               </div>
-                        </div>
-                        <div className="col-md-6">
-                               <div className="form-group mt-2">
-                                       <label>:السعى</label>
-                                       
-                                      <input type='text' 
-                                       className='form-control' 
-                                       placeholder='ادخل سعة القاعة'
-                                       Value={name} 
-                                       onChange={(e)=>setSize(e.target.value)}
-                                       />
-                               </div>
-                        </div>
-                </div>
-                    <button type="button" onClick={store} className="btn btn-primary mt-4">حفظ</button>
-                
-           
-        </div>
-      </ReactModal> 
-
-
-
-
-
-
-       </div>
-      </Container>
-    </section>
-</Fragment>
-
-          
-
-//   <div className="services">
-//   <MDBContainer>
-
-//                <ReactModal isOpen={modalIsOpen} onRequestClose={closeModal} style={{ backgroundColor: 'white', width: '10%' , height : '10%'}}>
-//                            <AiIcons.AiOutlineClose onClick={closeModal} style={{  width: '5%' , height : '5%' }} />
-//                            <div lang="ar" style={{ textAlign: 'right'}}>
-        
-            
-//                                <Form className="d-grid gap-2" style={{margin:"5rem"}}>
-//                                            <Form.Group className="mb-3" controlId='formNo'>
-//                                                     <Form.Control type='text' placeholder=' ادخل رقم القاعة' required onChange={(e)=>setNo(e.target.value)}> 
-                                        
-//                                                     </Form.Control>
-//                                            </Form.Group>
-//                                            <Form.Group className="mb-3" controlId='formName'>
-//                                            <Form.Control type='text' placeholder=' ادخل اسم القاعة' required onChange={(e)=>setName(e.target.value)}> 
-                               
-//                                            </Form.Control>
-//                                            </Form.Group>
-//                                            <Form.Group className="mb-3" controlId='formSize'>
-//                                            <Form.Control type='text' placeholder=' ادخل سعة القاعة' required onChange={(e)=>setSize(e.target.value)}> 
-                               
-//                                            </Form.Control>
-//                                            </Form.Group>
-//                                            <Form.Group className="mb-3" controlId='formName'>
-//                                            <select  onChange={(e)=>setbranchid(e.target.value)}>
-//                                                    <option value="">--Please select an option--</option>
-//                                                    {Branches.map(option => (
-//                                                      <option key={option.id} value={option.id} >{option.name}</option>
-//                                                    ))}
-//                                            </select>
-  
     
-//                                </Form.Group>
+      </Container>
+
+      <div>
 
 
-//                                <Button type="submit" onClick={(e)=>store(e)}>
-//                                    حفظ
-//                                </Button>
-//                                </Form>
-               
-                    
-//                            </div>
-//                </ReactModal>
-//                <AiIcons.AiOutlinePlus  onClick={openModal} style={{ background :"green" }} title='نت'/>
-                          
-//               <div lang="ar" style={{marginTop:"100px" ,   textAlign: 'right'}}>
-//                         <h2>جميع القاعات</h2>
-//                         <MDBRow>
-//                           <MDBCol size="12">
-//                           <AiIcons.AiOutlinePlus  onClick={openModal} style={{ background :"green" }} title='نت'/>
-//                             <MDBTable>
-//                               <MDBTableHead dark>
-//                                 <tr>
-//                                 <th scope='col'></th>
-//                                 <th scope='col'>الفرع</th>
-//                                 <th scope='col'>سعة القاعة</th>
-//                                 <th scope='col'>الأسم</th>
-//                                 <th scope='col'>الرقم</th>
-                                 
-//                                 </tr>
-                                
+
+<ReactModal isOpen={modalIsOpen}
+style={{
+ overlay: {
+   backgroundColor: 'rgba(0, 0, 0, 0.5)',
+   zIndex: 9999,
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center'
+ },
+ content: {
+   width: '800px',
+   height: 'auto',
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   borderRadius: '10px',
+   background: '#fff',
+   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+   padding: 0,
+   paddingTop :0,
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center'
+ }
+}}>
+
+
+<div class="card" style={{ 
+textAlign: 'right',
+width: '800px',
+height: 'auto',
+padding: 0,
+background: '#fff',
+boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+display: 'flex',
+flexDirection: 'column',
+}}>
+      <div class="card-header">
+
+           <div className="row">
+               <div className="col-md-6">سجل جديد </div>
+               <div className="col-md-6">
+               <AiIcons.AiOutlineClose onClick={closeModal} /></div>
+
+           </div>
+
+     </div>
+     <div class="card-body">
+
+     <div lang="ar" className="row">
+         
+         {/* <div className="col-md-6">
+               <div className="form-group mt-2">
+                        <label>الفرع</label>
+                        <select className='form-control'   onChange={(e)=>setBranches(e.target.value)}>
+         <option value="">الرجاء اختيار الفرع</option>
+         {Branches.map(option => (
+             <option key={option.id} value={option.id} >{option.name}</option>
+                        ))}
+            </select>
               
-//                               </MDBTableHead>
-              
-//                               {
-                                
-//                                 ClassRoom.length === 0 ? (
-//                                   <MDBTableBody className='align-center mb-0'>
-//                                   <tr>
-//                                      <td colSpan={8} className='text-center mb-0'>
-//                                     No Data 
-//                                      </td>
-//                                   </tr>
-//                                   </MDBTableBody>
-//                                 ):(
-//                                   ClassRoom.map((data)=>(
-//                                     <MDBTableBody >
-//                                       <tr>
-//                                       <td>
-//                                            <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-//                                       </td>
-//                                       <td>{data.branch_id}</td>
-//                                       <td>{data.size}</td>
-//                                       <td>{data.name}</td>
-//                                       <td>{data.No}</td>
-                                      
-                                      
-//                                       </tr>
-                  
-//                                     </MDBTableBody>
-                  
-                  
-//                                       ))
-//                                     )
-//                                   }
-//                                 </MDBTable>
-//                               </MDBCol>
-//                             </MDBRow>
-              
-//               </div>
+               </div>   
+         </div> */}
+         <div className="col-md-6">
+                <div className="form-group mt-2">
+                        <label>حجم القاعة</label>
+                        
+                       <input type='number' 
+                        className='form-control' 
+                        placeholder='ادخل سعة القاعة  '
+                        Value={size} 
+                        onChange={(e)=>setSize(e.target.value)}
+                        />
+                </div>
+         </div>
+
+         <div className="col-md-6">
+                <div className="form-group mt-2">
+                        <label>اسم القاعة</label>
+                        
+                       <input type='text' 
+                        className='form-control' 
+                        placeholder='ادخل اسم القاعة  '
+                        Value={name} 
+                        onChange={(e)=>setSize(e.target.value)}
+                        />
+                </div>
+         </div>
 
 
-//  </MDBContainer>
-//    </div>
- )
-}
 
-export default GetClassRoom;
+         <div className="col-md-6">
+                <div className="form-group mt-2">
+                        <label>رمز القاعة</label>
+                        
+                       <input type='number' 
+                        className='form-control' 
+                        placeholder='ادخل رمز القاعة  '
+                        Value={No} 
+                        onChange={(e)=>setNo(e.target.value)}
+                        />
+                </div>
+         </div>
+
+        
+
+
+
+
+ </div>
+           
+     </div>
+     <div class="card-footer text-muted">
+          <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
+     </div>
+   </div>
+
+
+</ReactModal> 
+
+
+
+
+
+
+</div>  
+</Fragment>
+    
+  );
+};
+
+
+
+
+
