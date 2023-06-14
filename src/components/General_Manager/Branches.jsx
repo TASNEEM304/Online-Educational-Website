@@ -17,6 +17,8 @@ const Getbranches = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setpageCount] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [editedItem, setEditedItem] = useState({});
   
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
@@ -65,8 +67,6 @@ const loadData = async () => {
      }).catch(function (error) {
   
      });
-  
-   
 };
 ///============================
 /// handlePageClick
@@ -104,10 +104,6 @@ const Update = async (editedItem) => {
   console.log(error);
 });
 }
-
-
-  const [editing, setEditing] = useState(false);
-  const [editedItem, setEditedItem] = useState({});
 
   const handleEditClick = (item) => {
     setEditedItem(item);
@@ -167,6 +163,7 @@ const Update = async (editedItem) => {
 
     </span>
   </div>
+  
                 
 </div>
 </div>
@@ -204,7 +201,7 @@ const Update = async (editedItem) => {
           {data.length === 0 ? (
             <tr>
               <td colSpan={3} className="text-center">
-                No Data
+                
               </td>
             </tr>
           ) : (

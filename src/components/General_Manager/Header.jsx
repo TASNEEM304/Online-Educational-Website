@@ -94,6 +94,9 @@ const Header = () => {
     <NavItem>
       <NavLink href="/" style={{color: 'white', fontSize: '14px'}}>الصفحة الرئيسية</NavLink>
     </NavItem>
+    <NavItem>
+      <NavLink href="/RecoredBranchesManagers" style={{color: 'white', fontSize: '14px'}}>إضافة موظفين</NavLink>
+    </NavItem>
     <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
       <DropdownToggle nav caret  style={{color: 'white', fontSize: '14px'}}>
         الترميزات

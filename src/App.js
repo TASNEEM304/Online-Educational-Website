@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./components/Auth/Login"
+import Login from "./components/Auth/Login";
+import Register from "./components/Auth/Register";
 import Home from "./pages/Home";
 import Courses from "./components/Courses-section/Courses";
 import AboutUs from "./components/About-us/AboutUs";
@@ -14,8 +15,9 @@ import RecoredBranchesManagers from "./components/General_Manager/RecoredBranche
 import DashboardRecep from "./components/Receptionist/DashboardRecep";
 import Cards from "./components/Receptionist/Cards/Card";
 import GetRecordStudent from "./components/Receptionist/ManagementStudent/RecordStudent";
+import GetRecordStudentdetails from "./components/Receptionist/ManagementStudent/RecordStudent/details"
 import Scanner from "./components/Receptionist/Scanner";
-
+import QRScanner from "./components/Receptionist/Cards/Scan";
 
 
 //Branch_Manger
@@ -48,14 +50,16 @@ function App() {
 
 
         <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
 
 
         {/* Receptionist  */}
         <Route path="/dashboardRec" element={<DashboardRecep />} />
         <Route path ='/Cards/index' element={<Cards/>} />                 
         <Route path='/ManagementStudent/RecordStudent' element={<GetRecordStudent/>} />
+        <Route path='/ManagementStudent/RecordStudent/details' element={<GetRecordStudentdetails/>} />
         <Route path ='/Scanner' element={<Scanner/>} /> 
-
+        <Route path ='/QRScanner' element={<QRScanner/>} /> 
 
       
 
