@@ -27,6 +27,9 @@ import RecoredTranier from "./components/Branch_Manger/Trainer_Management/Recore
 
 import {GetClassRoom} from "./components/Branch_Manger/Codes/ClassRooms/index";
 import GetRecordRecptions from "./components/Branch_Manger/ManagementRecptiones/RecoredRecpitions";
+import GetRecordRecptionsdetails from "./components/Branch_Manger/ManagementRecptiones/RecoredRecpitions/details";
+import GetTrainerdetails from "./components/Branch_Manger/Trainer_Management/details";
+import GetQuestionner from "./components/Branch_Manger/ViewQuestionnaire/questionnaire";
 
 
 //Scientific_Affairs
@@ -71,8 +74,10 @@ function App() {
        <Route path="/Codes/ClassRoom" element={<GetClassRoom />} />
        <Route path="/Trainer_Management/RecoredTranier" element={<RecoredTranier />} />
        <Route path="/ManagementRecptiones/RecoredRecpitions" element={<GetRecordRecptions />} />
-
-
+       <Route path='/Trainer_Management/details' element={<GetTrainerdetails/>} />
+       <Route path='/ManagementRecptiones/RecoredRecpitions/details' element={<GetRecordRecptionsdetails/>} />
+       <Route path='/ViewQuestionnaire/questionnaire' element={<GetQuestionner/>} />
+       
        {/*Dashboard*/}
        <Route path="/dashboardScientAff" element={<DashboardScientAff />} />
        <Route path="/Subjects/index" element={<GetSubjects />} />

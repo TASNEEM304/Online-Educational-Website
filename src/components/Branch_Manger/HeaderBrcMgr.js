@@ -102,19 +102,46 @@ const HeaderBrcMgr = () => {
           <NavLink href="/Codes/ClassRoom">القاعات</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/Trainer_Management/RecoredTranier">  إدارة سجلات المتدربين</NavLink>
+          <NavLink href="/ViewQuestionnaire/questionnaire">استطلاع الاستبيانات</NavLink>
         </NavItem>
-        {/* <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
+        <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
           <DropdownToggle nav caret>
-             الترميزات
+             تسجيل
           </DropdownToggle>
           <DropdownMenu>
-            <DropdownItem href="/Codes/ClassRoom">
-             القاعات
+            <DropdownItem href="/Trainer_Management/RecoredTranier">
+             تسجيل المدربين
+            </DropdownItem>
+            <DropdownItem href="/ManagementRecptiones/RecoredRecpitions">
+             تسجيل موظفين
             </DropdownItem>
            
           </DropdownMenu>
-        </Dropdown> */}
+           </Dropdown>
+
+           <Dropdown nav isOpen={dropdownOpen1} toggle={toggleDropdown1}>
+          <DropdownToggle nav caret>
+             ادارةالملفات الشخصية
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem href="/Trainer_Management/details">
+             ملفات المدربين 
+            </DropdownItem>
+            <DropdownItem href="/ManagementRecptiones/RecoredRecpitions/details">
+             ملفات الموظفين
+            </DropdownItem>
+           
+          </DropdownMenu>
+           </Dropdown>
+
+
+
+
+
+
+
+
+
         {/* <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
           <DropdownToggle nav caret>
              إدارة سجلات المتدربين
