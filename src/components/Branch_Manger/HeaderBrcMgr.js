@@ -92,59 +92,42 @@ const HeaderBrcMgr = () => {
 
   return (
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <Navbar className="header" light expand="lg">
-  <NavbarBrand href="/">
-    <img src={logo} className="logo" alt="Logo" style={{maxWidth:'100px',height:'auto',borderRadius:'50%'}} />
-  </NavbarBrand>
-  <Nav className="mr-auto" navbar>
-    <NavItem>
-      <NavLink href="/" style={{color: 'white', fontSize: '14px'}}>الصفحة الرئيسية</NavLink>
-    </NavItem>
-    <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
-      <DropdownToggle nav caret  style={{color: 'white', fontSize: '14px'}}>
-      الترميزات 
-      </DropdownToggle>
-      <DropdownMenu>
-      <DropdownItem href="/Codes/ClassRoom">
-              القاعات
-             </DropdownItem>
+    <Navbar className="header" light expand="md">
+      <NavbarBrand href="/">مدير الفرع</NavbarBrand>
+      <Nav className="mr-auto" navbar>
+        <NavItem>
+          <NavLink href="/">الصفحة الرئيسية</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/Codes/ClassRoom">القاعات</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/Trainer_Management/RecoredTranier">  إدارة سجلات المتدربين</NavLink>
+        </NavItem>
+        {/* <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
+          <DropdownToggle nav caret>
+             الترميزات
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem href="/Codes/ClassRoom">
+             القاعات
+            </DropdownItem>
            
-      </DropdownMenu>
-      
-    
-      
-       
-      
-    </Dropdown>
-    <Dropdown nav isOpen={dropdownOpen1} toggle={toggleDropdown1}>
-    <DropdownToggle nav caret  style={{color: 'white', fontSize: '14px'}}>
-      تسجيل  
-      </DropdownToggle>
-      <DropdownMenu>
-      
-             <DropdownItem href="/ManagementRecptiones/RecoredRecpitions">
-                تسجيل موظف استقبال
-             </DropdownItem>
-      </DropdownMenu>
-      </Dropdown>
-  </Nav>
-</Navbar>
+          </DropdownMenu>
+        </Dropdown> */}
+        {/* <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
+          <DropdownToggle nav caret>
+             إدارة سجلات المتدربين
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem href="/Trainer_Management/RecoredTranier">
+             تسجيل المتدربين
+            </DropdownItem>
+           
+          </DropdownMenu>
+        </Dropdown> */}
+      </Nav>
+    </Navbar>
   );
 };
 
