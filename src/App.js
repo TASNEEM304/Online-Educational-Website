@@ -22,7 +22,7 @@ import QRScanner from "./components/Receptionist/Cards/Scan";
 
 //Branch_Manger
 import DashboardBrMgr from "./components/Branch_Manger/DashboardBrMgr";
-import GetClassRoom from "./components/Branch_Manger/Codes/ClassRooms/index";
+//import GetClassRoom from "./components/Branch_Manger/Codes/ClassRooms/index";
 import RecoredTranier from "./components/Branch_Manger/Trainer_Management/RecoredTranier";
 
 import {GetClassRoom} from "./components/Branch_Manger/Codes/ClassRooms/index";
