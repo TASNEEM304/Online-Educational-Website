@@ -25,6 +25,8 @@ import DashboardBrMgr from "./components/Branch_Manger/DashboardBrMgr";
 import GetClassRoom from "./components/Branch_Manger/Codes/ClassRooms/index";
 import RecoredTranier from "./components/Branch_Manger/Trainer_Management/RecoredTranier";
 
+import {GetClassRoom} from "./components/Branch_Manger/Codes/ClassRooms/index";
+import GetRecordRecptions from "./components/Branch_Manger/ManagementRecptiones/RecoredRecpitions";
 
 
 //Scientific_Affairs
@@ -68,6 +70,7 @@ function App() {
        <Route path="/dashboardBrcMgr" element={<DashboardBrMgr />} />
        <Route path="/Codes/ClassRoom" element={<GetClassRoom />} />
        <Route path="/Trainer_Management/RecoredTranier" element={<RecoredTranier />} />
+       <Route path="/ManagementRecptiones/RecoredRecpitions" element={<GetRecordRecptions />} />
 
 
        {/*Dashboard*/}
