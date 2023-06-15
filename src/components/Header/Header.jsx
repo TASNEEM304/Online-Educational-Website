@@ -104,7 +104,7 @@ const Header = () => {
                    
                   </li>
                   {/* <li className="nav__item">
-                    <Link to={'/'} onClick={logout()}>تسجيل الخروج</Link>
+                    <Link to={'/logOut'} onClick={logout()}>تسجيل الخروج</Link>
                   
                   </li> */}
 <li className="nav__item">

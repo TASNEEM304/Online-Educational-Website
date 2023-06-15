@@ -32,8 +32,13 @@ const HeaderBrcMgr = () => {
         <NavItem>
           <NavLink href="/">الصفحة الرئيسية</NavLink>
         </NavItem>
-        
-        <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
+        <NavItem>
+          <NavLink href="/Codes/ClassRoom">القاعات</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/Trainer_Management/RecoredTranier">  إدارة سجلات المتدربين</NavLink>
+        </NavItem>
+        {/* <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
           <DropdownToggle nav caret>
              الترميزات
           </DropdownToggle>
@@ -43,7 +48,18 @@ const HeaderBrcMgr = () => {
             </DropdownItem>
            
           </DropdownMenu>
-        </Dropdown>
+        </Dropdown> */}
+        {/* <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
+          <DropdownToggle nav caret>
+             إدارة سجلات المتدربين
+          </DropdownToggle>
+          <DropdownMenu>
+            <DropdownItem href="/Trainer_Management/RecoredTranier">
+             تسجيل المتدربين
+            </DropdownItem>
+           
+          </DropdownMenu>
+        </Dropdown> */}
       </Nav>
     </Navbar>
   );
