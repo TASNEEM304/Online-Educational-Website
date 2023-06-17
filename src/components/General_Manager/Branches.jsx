@@ -7,6 +7,8 @@ import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../Auth/AuthUser';
 
+
+
 const Getbranches = () => {
 
   const {http} = AuthUser();
@@ -27,17 +29,23 @@ const Getbranches = () => {
 ///============================
 /// store
 ///=============================
-  const store = async (e) => {
-    debugger
-    e.preventDefault()
-    http.post('branch/store',{No:No,name:name}).catch(function (error) {
+const store = () =>{
+      
+  http.post('branch/store',{No:No,name:name}).then((res)=>{
+    const data=res.data;
+    alert("تمت العملية بنجاح ")
+   
+  }).catch(function (error) {
+    console.log(error);
+    });
+ 
+    setNo('');
+    setName('');
+    closeModal();
+    loadData();
+}
 
-  });
-  setNo('');
-  setName('');
-  closeModal();
-  loadData();
-  }
+  
 
 ///============================
 /// Delete
