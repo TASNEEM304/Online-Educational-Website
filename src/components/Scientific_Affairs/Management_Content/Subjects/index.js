@@ -30,14 +30,13 @@ const [number_of_lessons ,setnumber_of_lessons] = useState("");
 ///============================
 /// store
 ///=============================
-  const store = async (e) => {
+  const store = async () => {
     debugger
-    e.preventDefault()
     http.post('subject/store',{name:name,content:content,price:price,houers:houers,number_of_lessons:number_of_lessons}).catch(function (error) {
 
   });
   setName('');
-  setcontent('');
+  //setcontent('');
   setprice('');
   sethouers('');
   setnumber_of_lessons('');

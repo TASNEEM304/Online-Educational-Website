@@ -6,16 +6,19 @@ import Header from "../HeaderBrcMgr";
 import ReactPaginate from 'react-paginate';
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Course() {
     const navigate = useNavigate();
     const {http} = AuthUser();
-    const [branch_id,setBranchId] =useState();
     const [subject_id,setSubjectId] =useState();
     const [trainer_id,setTrainerId] =useState();
+    const [subjects,setSubject] =useState([]);
+    const [trainers,setTrainer] =useState([]);
     const [start,setStart] =useState();
     const [end,setEnd] =useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [Branches,setbranches] = useState([]);
     const [editing, setEditing] = useState(false);
     const [editedItem, setEditedItem] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
@@ -35,8 +38,10 @@ export default function Course() {
                    }, []);
    const loadData = async () => {
       debugger
-      http.get(`course/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+      http.get(`receptionist/course/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
        setData(res.data.data.data);
+       toast.success('تم الحفظ بنجاح!');
+
        setpageCount(res.data.data.total/res.data.data.data.length);
       }).catch(function (error) {
       
@@ -46,11 +51,21 @@ export default function Course() {
 // store
 //=============================
     const store = () =>{
-      http.post('register',{branch_id:branch_id,subject_id:subject_id,trainer_id:trainer_id,start:start,end:end}).then((res)=>{
-         
+      debugger
+      http.post('receptionist/course/store',{subject_id:subject_id,trainer_id:trainer_id,start:start,end:end}).then((res)=>{
+        toast.success('تم الحفظ بنجاح!');
+
       }).catch(function (error) {
     
         });
+
+        
+  setSubjectId('');
+  setTrainerId('');
+  setStart('');
+  setEnd('');
+  closeModal();
+  loadData();
      
     }
 
@@ -72,22 +87,29 @@ const Delete= async (id) =>{
 // Getbranches
 //=============================
       useEffect(()=>{
-        Getbranches()
+        GetTrainerId()
       },[])
 
-      const Getbranches = async ()=>{
-          http.get('branch/index').then((res)=>{
-           setbranches(res.data.data.data);
+      const GetTrainerId = async ()=>{
+          http.get('trainerProfile/view').then((res)=>{
+            setTrainer(res.data.data);
         });
       }
-
-
+      useEffect(()=>{
+        GetSubjectId()
+      },[])
+      
+      const GetSubjectId = async ()=>{
+          http.get('subject/view').then((res)=>{
+            setSubject(res.data.data);
+        });
+      }
 ///============================
 /// handlePageClick
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`receptionist/course/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -114,7 +136,7 @@ loadData();
 
 const Update = async (editedItem) => {
 debugger
-http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
+http.post(`course/update/${editedItem.id}`,editedItem).catch(function (error) {
 console.log(error);
 });
 }
@@ -129,7 +151,6 @@ debugger
 setData(data.map((item) => (item.id === editedItem.id ? editedItem : item)));
 setEditing(false);
 Update(editedItem);
-
 };
 
 const handleCancelClick = () => {
@@ -169,7 +190,7 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
   <input
     type="text"
     className="form-control"
-    placeholder="إبحث عن اسم أو رقم"
+    placeholder="إبحث عن التاريخ"
     value={searchTerm}
     onChange={handleSearchChange}
     
@@ -208,10 +229,17 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
                          }}>
         <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
         }}>
+          
           <tr >
-            <th style={{ width: "20%" }}></th>
-            <th style={{ width: "50%" }}>الاسم</th>
-            <th style={{ width: "30%" }}>الرقم</th>
+            <th style={{ width: "10%" }}></th>
+            <th style={{ width: "10%" }}>الاعتماد</th>
+            <th style={{ width: "15%" }}>تاريخ الإنتهاء</th>
+            <th style={{ width: "15%" }}>تاريخ البدأ</th>
+            <th style={{ width: "10%" }}>عدد الجلسات</th>
+            <th style={{ width: "10%" }}>عدد الساعات</th>
+            <th style={{ width: "10%" }}>التسعير</th>
+            <th style={{ width: "15%" }}>اسم المدرب</th>
+            <th style={{ width: "15%" }}>اسم المادة</th>
           </tr>
         </thead>
         <tbody>
@@ -240,8 +268,14 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
                    
               </td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.No}</td>
+                <td>{data.approved == 0 ? 'ليس معتمد' : ''}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.end}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.start}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.number_of_lessons}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.houers}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.price}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name+' '+data.last_name}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.No} onChange={handleInputChange} /> : data.name}</td>
     
               </tr>
             ))
@@ -322,102 +356,74 @@ flexDirection: 'column',
       <div class="card-header">
 
            <div className="row">
-               <div className="col-md-6">اضافة طالب</div>
+               <div className="col-md-6">اضافة دورة</div>
                <div className="col-md-6">
                <AiIcons.AiOutlineClose onClick={closeModal} /></div>
 
            </div>
 
      </div>
-     
-const [branch_id,setBranchId] =useState();
-const [subject_id,setSubjectId] =useState();
-const [trainer_id,setTrainerId] =useState();
-const [start,setStart] =useState();
-const [end,setEnd] =useState();
      <div class="card-body">
      <div className="row">
                         <div className="col-md-6">
-                              <div className="form-group mt-2">
-                                       <label>first_name:</label>
-                                       <input type="text" className="form-control" placeholder="Enter first_name"
-                                           onChange={e=>setBranchId(1)}
-                                       id="first_name" />
-                              </div>   
+                               <div className="form-group mt-2">
+                                       <label>:المادة</label>
+                                       <select  onChange={(e)=>setSubjectId(e.target.value)}>
+                                                  {subjects!=null?subjects.map(option => (
+                                                    <option key={option.id} value={option.id} >{option.id}</option>
+                                                  )):null}
+                                          </select>
+                               </div>
                         </div>
                         <div className="col-md-6">
-                               <div className="form-group mt-2">
-                                       <label>last_name:</label>
-                                       <input type="text" className="form-control" placeholder="Enter last_name"
-                                           onChange={e=>subject_id(1)}
-                                       id="last_name" />
-                               </div>
+                        <div className="form-group mt-2">
+                                       <label>:المدرب</label>
+                                      
+                                        <select  onChange={(e) => setTrainerId(e.target.value)}>
+                                                   {trainers.map(option => (
+                                                     <option key={option.id} value={option.id} >{option.id}</option>
+                                                   ))}
+                                           </select>
+                                </div> 
                         </div>
                     </div>
 
                     <div className="row">
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>birth_day:</label>
-                                       <input type="date" className="form-control" placeholder="Enter birth_day"
-                                           onChange={e=>start()}
+                                       <label>:تاريخ البدأ</label>
+                                       <input type="date" className="form-control"
+                                           onChange={e=>setStart(e.target.value)}
                                        id="birth_day" />
                                 </div>  
                         </div>
+                        
                         <div className="col-md-6">
+                        <div className="form-group mt-2">
+                                       <label>:تاريخ الإنتهاء</label>
+                                       <input type="date" className="form-control"
+                                           onChange={e=>setEnd(e.target.value)}
+                                       id="birth_day" />
+                                </div> 
                                 
-                                <div className="form-group mt-2">
-                                       <label>Number:</label>
-                                       <input type="number" className="form-control" placeholder="Enter phone_number"
-                                           onChange={e=>trainer_id(1)}
-                                       id="phone_number" />
-                                </div>
                         </div>
 
                        
                         
                     </div>
 
-                  
-
-                    <div className="row">
-
-                    <div className="col-md-6">
-                                {/* <div className="form-group mt-2">
-                                        <label>roll_number:</label>
-                                        <input type="number" className="form-control" placeholder="Enter roll_number"
-                                            onChange={e=>setRoll(e.target.value)}
-                                       id="roll_number" />
-                                </div> */}
-                        </div>
-                        <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>setBranchId:</label>
-                                        <select  onChange={(e)=>setBranchId(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Branches.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>
-                                </div>
-                        </div>
-                    
-                    </div>
            
      </div>
      <div class="card-footer text-muted">
-          <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
+          <a href="#" onClick={store} class="btn btn-primary">حفظ</a>
+      <ToastContainer />
      </div>
    </div>
 
-
+   <div>
+      
+    </div>
 </ReactModal> 
-
-
-
-
-
-
 </div>  
 </Fragment>
     

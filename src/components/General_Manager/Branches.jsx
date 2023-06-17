@@ -6,7 +6,6 @@ import axios from 'axios'
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../Auth/AuthUser';
-
 const Getbranches = () => {
 
   const {http} = AuthUser();
@@ -30,7 +29,7 @@ const Getbranches = () => {
   const store = async (e) => {
     debugger
     e.preventDefault()
-    http.post('branch/store',{No:No,name:name}).catch(function (error) {
+    http.post('general_admin/branch/store',{No:No,name:name}).catch(function (error) {
 
   });
   setNo('');
@@ -45,7 +44,7 @@ const Getbranches = () => {
 
   const Delete= async (id) =>{
     
-       http.post(`branch/destroy/${id}`).then((res)=>{
+       http.post(`general_admin/branch/destroy/${id}`).then((res)=>{
         alert(res.data.message);
         loadData();
         
@@ -61,7 +60,7 @@ useEffect(() => {
 }, []);
 const loadData = async () => {
   debugger
-    http.get(`branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+    http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
       setData(res.data.data.data);
       setpageCount(res.data.data.total/res.data.data.data.length);
      }).catch(function (error) {
@@ -73,7 +72,7 @@ const loadData = async () => {
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
   setData(res.data.data.data);
    setCurrentPage(selected);
 }).catch(function (error) {
@@ -100,7 +99,7 @@ http.get(`branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=${select
 
 const Update = async (editedItem) => {
   debugger
-  http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
+  http.post(`general_admin/branch/update/${editedItem.id}`,editedItem).catch(function (error) {
   console.log(error);
 });
 }

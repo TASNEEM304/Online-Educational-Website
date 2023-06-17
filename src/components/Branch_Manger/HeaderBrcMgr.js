@@ -102,6 +102,9 @@ const HeaderBrcMgr = () => {
           <NavLink href="/Codes/ClassRoom">القاعات</NavLink>
         </NavItem>
         <NavItem>
+          <NavLink href="/Course/Add">اضافة كورسات</NavLink>
+        </NavItem>
+        <NavItem>
           <NavLink href="/ViewQuestionnaire/questionnaire">استطلاع الاستبيانات</NavLink>
         </NavItem>
         <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>

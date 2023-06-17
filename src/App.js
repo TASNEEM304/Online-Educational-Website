@@ -24,7 +24,7 @@ import QRScanner from "./components/Receptionist/Cards/Scan";
 import DashboardBrMgr from "./components/Branch_Manger/DashboardBrMgr";
 //import GetClassRoom from "./components/Branch_Manger/Codes/ClassRooms/index";
 import RecoredTranier from "./components/Branch_Manger/Trainer_Management/RecoredTranier";
-
+import Course from "./components/Branch_Manger/Course/index";
 import {GetClassRoom} from "./components/Branch_Manger/Codes/ClassRooms/index";
 import GetRecordRecptions from "./components/Branch_Manger/ManagementRecptiones/RecoredRecpitions";
 import GetRecordRecptionsdetails from "./components/Branch_Manger/ManagementRecptiones/RecoredRecpitions/details";
@@ -77,6 +77,7 @@ function App() {
        <Route path='/Trainer_Management/details' element={<GetTrainerdetails/>} />
        <Route path='/ManagementRecptiones/RecoredRecpitions/details' element={<GetRecordRecptionsdetails/>} />
        <Route path='/ViewQuestionnaire/questionnaire' element={<GetQuestionner/>} />
+       <Route path='/Course/Add' element={<Course/>} />
        
        {/*Dashboard*/}
        <Route path="/dashboardScientAff" element={<DashboardScientAff />} />

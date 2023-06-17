@@ -39,7 +39,7 @@ export default function RecoredTranier() {
                    }, []);
    const loadData = async () => {
       debugger
-      http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+      http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=4&page=1`).then((res)=>{
        setData(res.data.data.data);
        setpageCount(res.data.data.total/res.data.data.data.length);
       }).catch(function (error) {
@@ -406,17 +406,7 @@ flexDirection: 'column',
                                        id="rating" />
                                 </div>
                         </div>
-                        <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>setBranchId:</label>
-                                        <select  onChange={(e)=>setBranchId(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Branches.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>
-                                </div>
-                        </div>
+                        
                     
                     </div>
            
