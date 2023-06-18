@@ -1,23 +1,24 @@
-import React ,{Fragment,useEffect,useState} from "react";
-import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
-import { useNavigate } from 'react-router-dom';
-import AuthUser from  '../../../Auth/AuthUser';
-import Header from "../../HeaderBrcMgr";
+import React,{ useState,useEffect,Fragment } from "react";
+import {useNavigate,Link,useHistory}  from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
+import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
+import Header from "./../../HeaderBrcMgr";
+import AuthUser from  '../../../Auth/AuthUser';
+
+
 export default function GetRecordRecptions() {
-    const navigate = useNavigate();
+    
     const {http} = AuthUser();
     const [first_name,setFirstName] = useState();
     const [last_name,setLastName] = useState();
-    const [roll_number,setRoll] =useState(4);
+    const [roll_number,setRoll] =useState(5);
     const [birth_day,setBirthDay] =useState();
     const [branch_id,setBranchId] =useState();
     const [phone_number,setPhone] =useState();
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
-    const [rating,setRating] = useState(0);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [Branches,setbranches] = useState([]);
     const [editing, setEditing] = useState(false);
@@ -26,64 +27,119 @@ export default function GetRecordRecptions() {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setpageCount] = useState(0);  
+    const history = useNavigate();
+    
+    
+///============================
+/// Modal
+///=============================
 
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => setModalIsOpen(false);
 
+///============================
+/// Getbranches
+///=============================
+      // useEffect(()=>{
+      //   const Getbranches = async ()=>{
+      //     http.get('branch/index').then((res)=>{
+      //      setbranches(res.data.data.data);
+      //   });
+      // }
+      //   Getbranches();
+      // },[])
 
 ///============================
 /// loadData
 ///=============================
-    useEffect(() => {
-            loadData();
-                   }, []);
-   const loadData = async () => {
-      debugger
-      http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
-       setData(res.data.data.data);
-       setpageCount(res.data.data.total/res.data.data.data.length);
-      }).catch(function (error) {
-      
-      });
-    };    
-//=============================
-// store
-//=============================
-    const store = () =>{
-      http.post('add_trainer',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password,rating:rating}).then((res)=>{
-         
-      }).catch(function (error) {
+      // useEffect(() => {
+      //   const loadData = async () => {
+      //     http.get(`user/search/samar?page=1`).then((res)=>{
+      //       setData(res.data.data.data);
+      //       setCurrentPage(1);
+      //      }).catch(function (error) {
     
-        });
-     
+      //      }); 
+      //   };
+      
+      //   loadData();
+      // }, []);
+
+///============================
+/// handlePageClick
+///=============================
+    
+// const handlePageClick = async ({ selected }) => {
+//   http.get(`user/search/samar?page=${selected}`).then((res)=>{
+//     setData(res.data.data);
+//     setCurrentPage(selected);
+//    }).catch(function (error) {
+
+//    });
+// };
+
+///============================
+/// store
+///=============================
+    const store = () =>{
+      
+        http.post('register',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
+          const data=res.data;
+          
+        }).catch(function (error) {
+          console.log(error);
+          });
+       
     }
+///============================
+/// Delete
+///=============================
+
+    const Delete= async (id) =>{
+  
+    http.post(`branch/destroy/${id}`).then((res)=>{
+       alert(res.data.message);
+    })
+ }
+
+
+    
+///============================
+/// loadData
+///=============================
+useEffect(() => {
+  loadData();
+         }, []);
+const loadData = async () => {
+debugger
+http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=3&page=1`).then((res)=>{
+setData(res.data.data.data);
+setpageCount(res.data.data.total/res.data.data.data.length);
+}).catch(function (error) {
+
+});
+};    
 
 ///============================
 /// Delete
 ///=============================
 
-const Delete= async (id) =>{
-    
-  http.post(`branch/destroy/${id}`).then((res)=>{
-   alert(res.data.message);
-   loadData();
-   
-})
 
-}
-    
+
+
+
 //=============================
 // Getbranches
 //=============================
-      useEffect(()=>{
-        Getbranches()
-      },[])
+useEffect(()=>{
+Getbranches()
+},[])
 
-      const Getbranches = async ()=>{
-          http.get('branch/index').then((res)=>{
-           setbranches(res.data.data.data);
-        });
-      }
+const Getbranches = async ()=>{
+http.get('branch/index').then((res)=>{
+ setbranches(res.data.data.data);
+});
+}
 
 
 ///============================
@@ -91,7 +147,7 @@ const Delete= async (id) =>{
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=3&page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -143,147 +199,152 @@ setEditing(false);
 const handleInputChange = (event) => {
 const { name, value } = event.target;
 setEditedItem((prevState) => ({ ...prevState, [name]: value }));
-}
+};
 
 
 
-    
-    
+
+  
     return(
+
 
 <Fragment>
 <Header />
-
-{/* <div className="container-fluid"></div> */}
- 
-<Container>
+<div className="container-fluid">
     
-   <Row>
-    
-     <Col lg="12" lang="ar">
+<Col md="12" lang="ar" style={{padding:'10px'}} >
 
        
-     <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
-               <div className="card-header">
-                <div className="row">
-                
-                <div className="col-md-4">
+<div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
+          <div className="card-header">
+           <div className="row">
+           
+           <div className="col-md-4">
 
 <div className="input-group mb-2">
-  <input
-    type="text"
-    className="form-control"
-    placeholder="إبحث عن اسم أو رقم"
-    value={searchTerm}
-    onChange={handleSearchChange}
-    
-  />
-  <div className="input-group-append">
-    <span className="input-group-text">
-    <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
+<input
+type="text"
+className="form-control"
+placeholder=" بحث...   "
+value={searchTerm}
+onChange={handleSearchChange}
 
-    </span>
-  </div>
-  
-                
+/>
+<div className="input-group-append">
+<span className="input-group-text">
+<AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
+
+</span>
+</div>
+
+           
 </div>
 </div>
 <div className="col-md-2">
-                </div>
+           </div>
 <div className="col-md-6">
 <Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف موظف جديد
 
 </Button>
 </div>
 
-                </div>
+           </div>
+        
+
+         </div>
+         <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
+                    width: "100%",
+                    height : "100%",
+                    padding: "0"
+                    }}>
+              
+              
+         <Table style={{fontSize: "16px", 
+                    width: "100%"
+                    }}>
+   <thead style={{background: "#2980b9" , 
+   }}>
+     <tr >
+       <th style={{ width: "10%" }}></th>
+       <th style={{ width: "10%" }}>الفرع</th>
+       <th style={{ width: "10%" }}>رقم الهاتف</th>
+       <th style={{ width: "20%" }}>البريد الإلكتروني</th>
+       <th style={{ width: "20%" }}>تاريخ الميلاد</th>
+       <th style={{ width: "10%" }}>النسبة</th>
+       <th style={{ width: "10%" }}>الاسم</th>
+       <th style={{ width: "10%" }}>الرقم</th>
+     </tr>
+   </thead>
+   <tbody>
+     {data.length === 0 ? (
+       <tr>
+         <td colSpan={3} className="text-center">
+           
+         </td>
+       </tr>
+     ) : (
+       data.map((data) => (
+         <tr key={data.id}>
+
+                     
+           <td>
+
+           {!editing || editedItem.id !== data.id ? (
+           <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+           
+           ) : (
+             <>
+               <button onClick={handleSaveClick}>Save</button>
+               <button onClick={handleCancelClick}>Cancel</button>
+             </>
+           )}
+           <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+           <Link to="/ManagementRecptiones/RecoredRecpitions/details">
+           
+           
+        <button>Show</button>
+                </Link>
+         </td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.phone_number}</td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.email}</td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.birth_day}</td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.last_name}</td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name}</td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.No}</td>
+
+         </tr>
+       ))
+     )}
+   </tbody>
+         </Table>
+         </div>
+         <div className="card-footer text-muted">
              
+         <ReactPaginate
+   pageCount={pageCount} // Total number of pages
+   onPageChange={handlePageClick}
+   containerClassName={'pagination'}
+   pageClassName={'page-item'}
+   activeClassName={'active'}
+   previousClassName={'page-item'}
+   nextClassName={'page-item'}
+   breakClassName={'page-item'}
+   pageLinkClassName={'page-link #550505'}
+   previousLinkClassName={'page-link'}
+   nextLinkClassName={'page-link'}
+   breakLinkClassName={'page-link'}
+   disableInitialCallback={true}
+   previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+   nextLabel={<AiIcons.AiOutlineDoubleRight />}
+ />
+                           </div>
+       </div>
+ 
 
-              </div>
-              <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
-                         width: "100%",
-                         height : "100%",
-                         padding: "0"
-                         }}>
-                   
-                   
-              <Table style={{fontSize: "16px", 
-                         width: "100%"
-                         }}>
-        <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
-        }}>
-          <tr >
-            <th style={{ width: "20%" }}></th>
-            <th style={{ width: "50%" }}>الاسم</th>
-            <th style={{ width: "30%" }}>الرقم</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.length === 0 ? (
-            <tr>
-              <td colSpan={3} className="text-center">
-                
-              </td>
-            </tr>
-          ) : (
-            data.map((data) => (
-              <tr key={data.id}>
-  
-                          
-                <td>
-
-                {!editing || editedItem.id !== data.id ? (
-                <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-                
-                ) : (
-                  <>
-                    <button onClick={handleSaveClick}>Save</button>
-                    <button onClick={handleCancelClick}>Cancel</button>
-                  </>
-                )}
-                <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-                   
-              </td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.No}</td>
-    
-              </tr>
-            ))
-          )}
-        </tbody>
-              </Table>
-              </div>
-              <div className="card-footer text-muted">
-                  
-              <ReactPaginate
-        pageCount={pageCount} // Total number of pages
-        onPageChange={handlePageClick}
-        containerClassName={'pagination'}
-        pageClassName={'page-item'}
-        activeClassName={'active'}
-        previousClassName={'page-item'}
-        nextClassName={'page-item'}
-        breakClassName={'page-item'}
-        pageLinkClassName={'page-link #550505'}
-        previousLinkClassName={'page-link'}
-        nextLinkClassName={'page-link'}
-        breakLinkClassName={'page-link'}
-        disableInitialCallback={true}
-        previousLabel={<AiIcons.AiOutlineDoubleLeft />}
-        nextLabel={<AiIcons.AiOutlineDoubleRight />}
-      />
-                                </div>
-            </div>
-      
-
-      
-     </Col>
-
-     
-   </Row>
-
-    
-</Container>
+ 
+</Col>
+</div>
 
       <div>
 
@@ -326,7 +387,7 @@ flexDirection: 'column',
       <div class="card-header">
 
            <div className="row">
-               <div className="col-md-6">اضافة موظف</div>
+               <div className="col-md-6">سجل جديد </div>
                <div className="col-md-6">
                <AiIcons.AiOutlineClose onClick={closeModal} /></div>
 
@@ -337,16 +398,16 @@ flexDirection: 'column',
      <div className="row">
                         <div className="col-md-6">
                               <div className="form-group mt-2">
-                                       <label>first_name:</label>
-                                       <input type="text" className="form-control" placeholder="Enter first_name"
+                                       <label>الأسم الأول</label>
+                                       <input type="text" className="form-control" placeholder="ادخل الأسم الأول"
                                            onChange={e=>setFirstName(e.target.value)}
                                        id="first_name" />
                               </div>   
                         </div>
                         <div className="col-md-6">
                                <div className="form-group mt-2">
-                                       <label>last_name:</label>
-                                       <input type="text" className="form-control" placeholder="Enter last_name"
+                                       <label>الأسم الأخير</label>
+                                       <input type="text" className="form-control" placeholder="ادخل الأسم الأخير"
                                            onChange={e=>setLastName(e.target.value)}
                                        id="last_name" />
                                </div>
@@ -356,8 +417,8 @@ flexDirection: 'column',
                     <div className="row">
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>birth_day:</label>
-                                       <input type="date" className="form-control" placeholder="Enter birth_day"
+                                       <label>تاريخ الميلاد</label>
+                                       <input type="date" className="form-control" placeholder="ادخل تاريخ الميلاد"
                                            onChange={e=>setBirthDay(e.target.value)}
                                        id="birth_day" />
                                 </div>  
@@ -365,8 +426,8 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 
                                 <div className="form-group mt-2">
-                                       <label>Number:</label>
-                                       <input type="number" className="form-control" placeholder="Enter phone_number"
+                                       <label>رقم الهاتف</label>
+                                       <input type="number" className="form-control" placeholder="ادخل رقم الهاتف"
                                            onChange={e=>setPhone(e.target.value)}
                                        id="phone_number" />
                                 </div>
@@ -380,16 +441,16 @@ flexDirection: 'column',
                        
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>Email address:</label>
-                                       <input type="email" className="form-control" placeholder="Enter email"
+                                       <label>البريد الالكتروني</label>
+                                       <input type="email" className="form-control" placeholder="ادخل البريد الالكتروني"
                                            onChange={e=>setEmail(e.target.value)}
                                        id="email" />
                                 </div>
                         </div>
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>Password:</label>
-                                       <input type="password" className="form-control" placeholder="Enter password"
+                                       <label>كلمة السر</label>
+                                       <input type="password" className="form-control" placeholder="ادخل كلمة السر"
                                            onChange={e => setPassword(e.target.value)}
                                        id="pwd" />
                                 </div>
@@ -399,18 +460,18 @@ flexDirection: 'column',
                     <div className="row">
 
                     <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>rating:</label>
-                                        <input type="number" className="form-control" placeholder="Enter rating"
-                                            onChange={e=>setRating(e.target.value)}
-                                       id="rating" />
-                                </div>
+                                {/* <div className="form-group mt-2">
+                                        <label>roll_number:</label>
+                                        <input type="number" className="form-control" placeholder="Enter roll_number"
+                                            onChange={e=>setRoll(e.target.value)}
+                                       id="roll_number" />
+                                </div> */}
                         </div>
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                        <label>setBranchId:</label>
+                                        <label></label>
                                         <select  onChange={(e)=>setBranchId(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
+                                                   <option value="">الرجاء اختيار الفرع</option>
                                                    {Branches.map(option => (
                                                      <option key={option.id} value={option.id} >{option.name}</option>
                                                    ))}
@@ -436,7 +497,15 @@ flexDirection: 'column',
 
 </div>  
 </Fragment>
+    )
+}
+
+
+
     
 
-   )
-}
+
+
+
+
+

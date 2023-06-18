@@ -15,20 +15,7 @@ const navLinks = [
     
   },
 
-  {
-    display: "Courses",
-    url: "#",
-    //path: "/Courses",
-  },
-  {
-    display: "Pages",
-    url: "#",
-   // path: "",
-  },
-  {
-    display: "Blog",
-    url: "#",
-  },
+
   {
     display: "Dashboard",
     url: "/Dashboard",

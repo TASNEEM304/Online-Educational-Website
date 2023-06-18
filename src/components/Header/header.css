@@ -17,7 +17,7 @@
 .nav__item a {
     font-weight: 500;
     font-size: 1.1rem;
-    color: #0a2b1e;
+    color:white;
     text-decoration: none;
     transition: 0.3s;
 }
@@ -28,7 +28,7 @@
 
 .nav__right p {
     font-weight: 500;
-    color: #0a2b1e;
+    color: white;
     font-size: 1.1rem;
 }
 

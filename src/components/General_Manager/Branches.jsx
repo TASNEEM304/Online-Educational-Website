@@ -6,6 +6,8 @@ import axios from 'axios'
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../Auth/AuthUser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 

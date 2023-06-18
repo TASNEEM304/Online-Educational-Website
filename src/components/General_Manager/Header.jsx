@@ -95,7 +95,7 @@ const Header = () => {
       <NavLink href="/" style={{color: 'white', fontSize: '14px'}}>الصفحة الرئيسية</NavLink>
     </NavItem>
     <NavItem>
-      <NavLink href="/RecoredBranchesManagers" style={{color: 'white', fontSize: '14px'}}>إضافة موظفين</NavLink>
+      <NavLink href="/RecoredBranchesManagers" style={{color: 'white', fontSize: '14px'}}>تسجيل مدراء الفروع</NavLink>
     </NavItem>
     <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
       <DropdownToggle nav caret  style={{color: 'white', fontSize: '14px'}}>
@@ -105,9 +105,7 @@ const Header = () => {
         <DropdownItem href="/Codes/Branch">
           الفروع
         </DropdownItem>
-        <DropdownItem href="/services/service2">
-          Service 2
-        </DropdownItem>
+       
       </DropdownMenu>
     </Dropdown>
   </Nav>
