@@ -1,4 +1,5 @@
-import { Fragment, useState } from "react"
+import { Fragment,useRef, useState } from "react"
+import { BrowserRouter as Router, Routes, Route ,Link,useNavigate} from "react-router-dom";
 import AuthUser from './AuthUser';
 import { Container, Row, Col } from "reactstrap";
 import Header from "../Header/Header";
@@ -20,13 +21,43 @@ export default function Login() {
        
         
     }
+    const menuRef = useRef();
 
+    const menuToggle = () => menuRef.current.classList.toggle("active__menu");
+  
     return(
         
-        <section>
+        <Fragment>
+        <header className="header">
+          <Container>
+            <div className="navigation d-flex align-items-center justify-content-between">
+              <div className="logo">
+                <h2 className=" d-flex align-items-center gap-1">
+                  <i class="ri-pantone-line"></i> سوريين ايجابيين بالمطلق
+                </h2>
+              </div>
+    
+              <div className="nav d-flex align-items-center gap-5">
+                <div className="nav__menu" ref={menuRef} onClick={menuToggle}>
+                  <ul className="nav__list">
+                  
+                      <li className="nav__item">
+                        
+                              <Link to= '/' > الصفحة الرئيسية </Link>
+                       
+                      </li>
+                      
+    
+                      
+                  </ul>
+                </div>
+    
+              </div>
+            </div>
+          </Container>
+        </header>
         <Container>
           
-         <Header />
         <div className="row justify-content-center pt-5">
             <div className="col-sm-6">
                 <div className="card p-4">
@@ -48,7 +79,7 @@ export default function Login() {
             </div>
         </div>
         </Container>
-        </section>
+         </Fragment>
         
 
     )
