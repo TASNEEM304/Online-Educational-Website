@@ -1,103 +1,106 @@
-.header {
-    width: 100%;
-    height: 80px;
-    background: rgba(14, 20, 114);
-    /* background: linear-gradient(to right, #2980b9, #550505); */
-    line-height: 80px;
-}
-
-.nav__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    column-gap: 1.3rem;
-}
-
-.nav__item a {
-    font-weight: 500;
-    font-size: 1.1rem;
-    color: #0a2b1e;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.nav__item a:hover {
-    color: #17bf9e;
-}
-
-.nav__right p {
-    font-weight: 500;
-    color: #0a2b1e;
-    font-size: 1.1rem;
-}
-
-.nav__right p i {
-    font-size: 1.3rem;
-}
-
-.mobile__menu span i {
-    font-size: 1.4rem;
-    color: #0a2b1e;
-    cursor: pointer;
-}
-
-.mobile__menu {
-    display: none;
-}
-
-@media only screen and (max-width: 991px) {
-    .nav__menu {
-        position: fixed;
-        top: 0;
-        left: 0;
+    .header {
         width: 100%;
-        height: 100%;
-        background: #0a2b1ec2;
-        z-index: 99;
-        display: none;
+        height: 80px;
+        background-color: rgba(14, 20, 114);
+        /* background: rgba(14, 20, 114);  rgba(162, 14, 2);*/
+        /* background: linear-gradient(to right, #2980b9, #550505); */
+        line-height: 80px;
+        color: white;
     }
+    
     .nav__list {
-        position: absolute;
-        background: #fff;
-        top: 0;
-        right: 0;
-        width: 250px;
-        height: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        z-index: 999;
-        padding-top: 80px;
+        column-gap: 1.3rem;
     }
+    
+    .nav__item a {
+        font-weight: 500;
+        font-size: 1.1rem;
+        color: #0a2b1e;
+        text-decoration: none;
+        transition: 0.3s;
+        color: white;
+    }
+    
+    .nav__item a:hover {
+        color: #17bf9e;
+    }
+    
+    .nav__right p {
+        font-weight: 500;
+        color: #0a2b1e;
+        font-size: 1.1rem;
+    }
+    
+    .nav__right p i {
+        font-size: 1.3rem;
+    }
+    
+    .mobile__menu span i {
+        font-size: 1.4rem;
+        color: #0a2b1e;
+        cursor: pointer;
+    }
+    
     .mobile__menu {
-        display: block;
-    }
-    .nav__right {
         display: none;
     }
-    .active__menu {
-        display: block;
+    
+    @media only screen and (max-width: 991px) {
+        .nav__menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0a2b1ec2;
+            z-index: 99;
+            display: none;
+        }
+        .nav__list {
+            position: absolute;
+            background: #fff;
+            top: 0;
+            right: 0;
+            width: 250px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 999;
+            padding-top: 80px;
+        }
+        .mobile__menu {
+            display: block;
+        }
+        .nav__right {
+            display: none;
+        }
+        .active__menu {
+            display: block;
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 9999;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 0 0 4px 4px;
+        }
+        .show {
+            display: block;
+        }
+        .dropdown li {
+            display: block;
+            padding: 10px;
+        }
+        .dropdown li:hover {
+            background-color: #f2f2f2;
+        }
     }
-    .dropdown {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        z-index: 9999;
-        background-color: #fff;
-        min-width: 160px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        border-radius: 0 0 4px 4px;
-    }
-    .show {
-        display: block;
-    }
-    .dropdown li {
-        display: block;
-        padding: 10px;
-    }
-    .dropdown li:hover {
-        background-color: #f2f2f2;
-    }
-}

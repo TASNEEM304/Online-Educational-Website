@@ -208,7 +208,7 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف فرع جديد
+<Button variant="success"  onClick={openModal} style={{  background :  "rgb(19,130,64)"}}>أضف فرع جديد
 
 </Button>
 </div>
@@ -314,6 +314,8 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 
     
 </Container>
+
+
 
       <div>
 
