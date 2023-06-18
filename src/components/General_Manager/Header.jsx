@@ -105,9 +105,7 @@ const Header = () => {
         <DropdownItem href="/Codes/Branch">
           الفروع
         </DropdownItem>
-        <DropdownItem href="/services/service2">
-          Service 2
-        </DropdownItem>
+       
       </DropdownMenu>
     </Dropdown>
   </Nav>
