@@ -13,7 +13,7 @@ export default function GetRecordRecptions() {
     const {http} = AuthUser();
     const [first_name,setFirstName] = useState();
     const [last_name,setLastName] = useState();
-    const [roll_number,setRoll] =useState(5);
+    const [roll_number,setRoll] =useState(3);
     const [birth_day,setBirthDay] =useState();
     const [branch_id,setBranchId] =useState();
     const [phone_number,setPhone] =useState();
@@ -83,7 +83,7 @@ export default function GetRecordRecptions() {
 ///=============================
     const store = () =>{
       
-        http.post('register',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
+        http.post('branch_admin/add_employee',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
           
         }).catch(function (error) {

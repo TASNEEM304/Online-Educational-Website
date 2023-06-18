@@ -83,7 +83,7 @@ export default function RecoredTranier() {
 ///=============================
     const store = () =>{
       
-        http.post('register',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
+        http.post('branch_admin/add_trainer',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
           
         }).catch(function (error) {

@@ -30,7 +30,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
   const store = async (e) => {
     debugger
     e.preventDefault()
-    http.post('class/store',{No:No,name:name,size:size,branch_id:branch_id}).catch(function (error) {
+    http.post('branch_admin/class/store',{No:No,name:name,size:size,branch_id:branch_id}).catch(function (error) {
 
   });
   setNo('');
@@ -63,7 +63,7 @@ useEffect(() => {
 }, []);
 const loadData = async () => {
   debugger
-    http.get(`class/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+    http.get(`branch_admin/class/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
       setData(res.data.data.data);
       setpageCount(res.data.data.total/res.data.data.data.length);
      }).catch(function (error) {
