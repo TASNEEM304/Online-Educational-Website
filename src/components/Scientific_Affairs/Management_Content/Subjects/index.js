@@ -6,6 +6,8 @@ import axios from 'axios'
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function GetSubjects() {
 
@@ -42,7 +44,7 @@ const store = async (event) => {
 
   try {
     const response = await axios.post("http://localhost:8000/api/subject/store", formData, {
-      
+  
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -51,9 +53,10 @@ const store = async (event) => {
     
     );
 
-    alert("تمت العملة بنجاح");
+    toast.success("تمت العملية بنجاح");
   } catch (error) {
     console.error("Error adding service", error);
+    toast.error("فشل العملية");
   }
   loadData();
   closeModal();
@@ -439,7 +442,7 @@ flexDirection: 'column',
 
 </ReactModal> 
 
-
+<ToastContainer/>
 
 
 
