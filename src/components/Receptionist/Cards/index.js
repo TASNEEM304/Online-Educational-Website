@@ -37,15 +37,12 @@ const Index = (props) => {
           phone="555-1234"
           barcodeValue="1234567890"
           barcodeColor="red"
-          ref={componentRef}
         />
-        <ReactToPrint
-          trigger={() => <button>Print</button>}
-          content={() => componentRef.current}
-        />
+        
       </Content>
     </Wrapper>
   );
 };
+
 
 export default Index;
