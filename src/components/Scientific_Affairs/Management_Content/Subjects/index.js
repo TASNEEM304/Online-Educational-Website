@@ -7,12 +7,12 @@ import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
 
-export const GetSubjects = () => {
+export default function GetSubjects() {
 
   const {http} = AuthUser();
   
   const [searchTerm, setSearchTerm] = useState("");
-  const [name ,setName] = useState("");
+  const [subjectName ,setsubjectName] = useState("");
 const [content ,setcontent] = useState(null);
 
 const [price ,setprice] = useState("");
@@ -30,19 +30,34 @@ const [number_of_lessons ,setnumber_of_lessons] = useState("");
 ///============================
 /// store
 ///=============================
-  const store = async () => {
-    debugger
-    http.post('subject/store',{name:name,content:content,price:price,houers:houers,number_of_lessons:number_of_lessons}).catch(function (error) {
+const store = async (event) => {
+  event.preventDefault();
 
-  });
-  setName('');
-  //setcontent('');
-  setprice('');
-  sethouers('');
-  setnumber_of_lessons('');
-  closeModal();
-  loadData();
+  const formData = new FormData();
+  formData.append("subjectName", subjectName);
+  formData.append("content", content);
+  formData.append("price", price);
+  formData.append("houers", houers);
+  formData.append("number_of_lessons", number_of_lessons);
+
+  try {
+    const response = await axios.post("http://localhost:8000/api/subject/store", formData, {
+      
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      
+    }
+    
+    );
+
+    alert("تمت العملة بنجاح");
+  } catch (error) {
+    console.error("Error adding service", error);
   }
+  loadData();
+  closeModal();
+};
 
 ///============================
 /// Delete
@@ -75,6 +90,15 @@ const loadData = async () => {
   
    
 };
+
+
+
+
+
+
+
+
+
 ///============================
 /// handlePageClick
 ///=============================
@@ -243,7 +267,7 @@ const Update = async (editedItem) => {
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="houers" value={editedItem.houers} onChange={handleInputChange} /> : data.houers}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="number" value={editedItem.price} onChange={handleInputChange} /> : data.price}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="file" name="content" value={editedItem.content} onChange={handleInputChange} /> : data.content}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="subjectName" value={editedItem.subjectName} onChange={handleInputChange} /> : data.subjectName}</td>
 
               </tr>
             ))
@@ -345,8 +369,8 @@ flexDirection: 'column',
                         <input type='text' 
                                               className='form-control' 
                                               placeholder='ادخل اسم المادة '
-                                              Value={name} 
-                                              onChange={(e)=>setName(e.target.value)}
+                                              Value={subjectName} 
+                                              onChange={(e)=>setsubjectName(e.target.value)}
                                               />
               
                </div>   

@@ -7,7 +7,8 @@ import * as AiIcons from "react-icons/ai";
 import Header from "./../HeaderBrcMgr";
 import AuthUser from  '../../Auth/AuthUser';
 
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function RecoredTranier() {
     
     const {http} = AuthUser();
@@ -16,11 +17,12 @@ export default function RecoredTranier() {
     const [roll_number,setRoll] =useState(4);
     const [birth_day,setBirthDay] =useState();
     const [branch_id,setBranchId] =useState();
+    const [Branches,setbranches] = useState([]);
     const [phone_number,setPhone] =useState();
     const [email,setEmail] = useState();
     const [password,setPassword] = useState();
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [Branches,setbranches] = useState([]);
+    
     const [editing, setEditing] = useState(false);
     const [editedItem, setEditedItem] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
@@ -83,11 +85,13 @@ export default function RecoredTranier() {
 ///=============================
     const store = () =>{
       
-        http.post('branch_admin/add_trainer',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
+        http.post('branch_admin/add_employee',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
+          toast.success("تمت العملية بنجاح");
           
         }).catch(function (error) {
           console.log(error);
+          toast.error(error);
           });
        
     }
@@ -299,8 +303,8 @@ onChange={handleSearchChange}
              </>
            )}
            <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-           <Link to="/Trainer_Management/details">
-            <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+           <Link to="/ManagementRecptiones/RecoredRecpitions/details">
+           
            
         <button>Show</button>
                 </Link>
@@ -399,7 +403,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                               <div className="form-group mt-2">
                                        <label>الأسم الأول</label>
-                                       <input type="text" className="form-control" placeholder="ادخل الأسم الأول"
+                                       <input type="text" className="form-control" 
                                            onChange={e=>setFirstName(e.target.value)}
                                        id="first_name" />
                               </div>   
@@ -407,7 +411,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                <div className="form-group mt-2">
                                        <label>الأسم الأخير</label>
-                                       <input type="text" className="form-control" placeholder="ادخل الأسم الأخير"
+                                       <input type="text" className="form-control" 
                                            onChange={e=>setLastName(e.target.value)}
                                        id="last_name" />
                                </div>
@@ -418,7 +422,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
                                        <label>تاريخ الميلاد</label>
-                                       <input type="date" className="form-control" placeholder="ادخل تاريخ الميلاد"
+                                       <input type="date" className="form-control" 
                                            onChange={e=>setBirthDay(e.target.value)}
                                        id="birth_day" />
                                 </div>  
@@ -427,7 +431,7 @@ flexDirection: 'column',
                                 
                                 <div className="form-group mt-2">
                                        <label>رقم الهاتف</label>
-                                       <input type="number" className="form-control" placeholder="ادخل رقم الهاتف"
+                                       <input type="number" className="form-control"
                                            onChange={e=>setPhone(e.target.value)}
                                        id="phone_number" />
                                 </div>
@@ -442,7 +446,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
                                        <label>البريد الالكتروني</label>
-                                       <input type="email" className="form-control" placeholder="ادخل البريد الالكتروني"
+                                       <input type="email" className="form-control" 
                                            onChange={e=>setEmail(e.target.value)}
                                        id="email" />
                                 </div>
@@ -450,7 +454,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
                                        <label>كلمة السر</label>
-                                       <input type="password" className="form-control" placeholder="ادخل كلمة السر"
+                                       <input type="password" className="form-control" 
                                            onChange={e => setPassword(e.target.value)}
                                        id="pwd" />
                                 </div>
@@ -490,7 +494,7 @@ flexDirection: 'column',
 
 </ReactModal> 
 
-
+<ToastContainer/>
 
 
 

@@ -5,6 +5,8 @@ import { Container, Row, Col } from "reactstrap";
 import Header from "../Header/Header";
 import axios from 'axios'
 
+
+
 export default function Login() {
    const {http,setToken} = AuthUser();
     const [email,setEmail] = useState();
@@ -14,7 +16,9 @@ export default function Login() {
        
         http.post('/login',{email:email,password:password}).then((res)=>{
             setToken(res.data.user,res.data.authorisation.token);
+           
             console.log(res);
+            
         }).catch(function (error) {
             console.log(error);
           });
@@ -63,18 +67,24 @@ export default function Login() {
                 <div className="card p-4">
                     <h1 className="text-center mb-3">Login </h1>
                     <div className="form-group  mt-3">
-                        <label>Email address:</label>
-                        <input type="email" className="form-control" placeholder="Enter email"
+                        <label> البريد الالكتروني</label>
+                        <input type="email" className="form-control" 
                             onChange={e=>setEmail(e.target.value)}
                         id="email" />
                     </div>
                     <div className="form-group mt-3">
-                        <label>Password:</label>
-                        <input type="password" className="form-control" placeholder="Enter password"
+                        <label>كلمة السر</label>
+                        <input type="password" className="form-control" 
                             onChange={e => setPassword(e.target.value)}
                         id="pwd" />
                     </div>
-                    <button type="button" onClick={submitForm} className="btn btn-primary mt-4"><h3>Login</h3></button>
+                   
+                    <button type="button" onClick={submitForm} className="btn btn-primary mt-4">
+                      
+                   
+                      <h3>تسجيل الدخول</h3>
+                     </button>
+                   
                 </div>
             </div>
         </div>

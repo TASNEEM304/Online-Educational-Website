@@ -34,10 +34,11 @@ const store = () =>{
       
   http.post('branch/store',{No:No,name:name}).then((res)=>{
     const data=res.data;
-    alert("تمت العملية بنجاح ")
+    toast.success("تمت العملية بنجاح")
+  //alert("تمت العملية بنجاح ")
    
   }).catch(function (error) {
-    console.log(error);
+    toast.error("error")
     });
  
     setNo('');
@@ -320,7 +321,7 @@ flexDirection: 'column',
                <div className="col-md-6">اضافة طالب</div>
                <div className="col-md-6">
                <AiIcons.AiOutlineClose onClick={closeModal} /></div>
-
+            
            </div>
 
      </div>
@@ -355,14 +356,17 @@ flexDirection: 'column',
            
      </div>
      <div class="card-footer text-muted">
+
           <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
+       
      </div>
    </div>
 
 
+
 </ReactModal> 
 
-
+<ToastContainer/>
 
 
 
