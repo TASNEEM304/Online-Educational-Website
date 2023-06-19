@@ -30,7 +30,7 @@ const [modalIsOpen, setModalIsOpen] = useState(false);
   const store = async (e) => {
     debugger
     e.preventDefault()
-    http.post('branch_admin/class/store',{No:No,name:name,size:size,branch_id:branch_id}).catch(function (error) {
+    http.post('branch_admin/class/store',{Number:No,className:name,size:size,branch_id:branch_id}).catch(function (error) {
 
   });
   setNo('');

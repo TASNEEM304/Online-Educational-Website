@@ -93,10 +93,10 @@ const Header = () => {
                     <Link to={'/logOut'} onClick={logout()}>تسجيل الخروج</Link>
                   
                   </li> */}
-{/* <li className="nav__item">
+<li className="nav__item">
                     <Link to={'/Register'}>تسجيل </Link>
                   
-                  </li> */}
+                  </li>
                   
 
                   

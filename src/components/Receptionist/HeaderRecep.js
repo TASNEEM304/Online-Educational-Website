@@ -46,6 +46,9 @@ const HeaderRecep = () => {
             <DropdownItem href="/ManagementStudent/RecordStudent">
             تسجيل الطلاب
             </DropdownItem>
+            <DropdownItem href="/RecordStudent/Subscribe">
+             الاشتراكات
+            </DropdownItem>
            
           </DropdownMenu>
         </Dropdown>

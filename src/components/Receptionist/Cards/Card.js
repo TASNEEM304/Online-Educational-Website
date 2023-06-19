@@ -62,29 +62,57 @@
 //   )
 // };
 
-import React ,{Fragment,useEffect,useState} from "react";
+import React ,{Fragment,useRef} from "react";
 import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import HeaderRecep from "../HeaderRecep";
 import Barcode from 'react-barcode';
+import QRCode from 'qrcode.react';
 import { useLocation } from 'react-router-dom';
 
+import styled from 'styled-components';
+import Card from './Card';
+//import ReactToPrint from 'react-to-print';
 function BarcodeCard () {
 
         const location = useLocation();
     const data = location.state.data;
-
+    const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f1f2f6;
+  `;
+  
+  const Content = styled.div`
+    max-width: 400px;
+  `;
     return (
     <Fragment>
 <HeaderRecep />
 <section>
       <Container>
 
-   
+      <Wrapper>
+      <Content>
+        <Card
+          name={data.user.first_name}
+          email={data.user.email}
+          phone={data.user.phone_number}
+          barcodeValue={data.card.original.data.barcode}
+          barcodeColor="red"
+        />
+        <QRCode value="http://example.com" />
+        {/* <ReactToPrint
+          trigger={() => <button>Print</button>}
+        /> */}
+      </Content>
+    </Wrapper>
       
    <Row>
      <Col lg="12" md="6" lang="ar" style={{marginTop:"10px" ,   textAlign: 'right'}}>
      
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <div style={{ width: '10cm', height: '7cm', border: '1px solid black', borderRadius: '10px',backgroundColor:'rgba(226, 248, 248, 0.664)', padding: '1cm', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
           <p> {data.user.first_name} : الاسم </p>
@@ -92,10 +120,10 @@ function BarcodeCard () {
           <p> {data.user.phone_number}  : رقم الهاتف</p>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Barcode value={data.card.original.data.barcode} width={1} height={30}/>
+          <QRCode value={data.card.original.data.barcode} width={1} height={30}/>
         </div>
       </div>
-    </div>
+    </div> */}
 
      </Col>
 

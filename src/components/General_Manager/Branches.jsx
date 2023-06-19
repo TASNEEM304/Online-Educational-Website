@@ -10,7 +10,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
-
 const Getbranches = () => {
 
   const {http} = AuthUser();
@@ -143,10 +142,9 @@ const Update = async (editedItem) => {
 <Fragment>
 <Header />
 
-{/* <div className="container-fluid"></div> */}
- 
 <Container>
-    
+
+
    <Row>
     
      <Col lg="12" lang="ar">

@@ -18,7 +18,7 @@ import GetRecordStudent from "./components/Receptionist/ManagementStudent/Record
 import GetRecordStudentdetails from "./components/Receptionist/ManagementStudent/RecordStudent/details"
 import Scanner from "./components/Receptionist/Scanner";
 import QRScanner from "./components/Receptionist/Cards/Scan";
-
+import GetSubscribe from "./components/Receptionist/ManagementStudent/RecordStudent/Subscribe";
 
 //Branch_Manger
 import DashboardBrMgr from "./components/Branch_Manger/DashboardBrMgr";
@@ -66,6 +66,7 @@ function App() {
         <Route path='/ManagementStudent/RecordStudent/details' element={<GetRecordStudentdetails/>} />
         <Route path ='/Scanner' element={<Scanner/>} /> 
         <Route path ='/QRScanner' element={<QRScanner/>} /> 
+        <Route path ='/RecordStudent/Subscribe' element={<GetSubscribe/>} /> 
 
       
 
