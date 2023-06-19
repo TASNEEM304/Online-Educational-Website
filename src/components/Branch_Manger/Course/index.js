@@ -92,7 +92,7 @@ const Delete= async (id) =>{
       },[])
 
       const GetTrainerId = async ()=>{
-          http.get('trainerProfile/view').then((res)=>{
+          http.get('trainerProfile/view?roll_number=4').then((res)=>{
             setTrainer(res.data.data);
         });
       }
@@ -269,14 +269,14 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
                    
               </td>
-                <td>{data.approved == 0 ? 'ليس معتمد' : ''}</td>
+                <td>{data.approved === 1 ? 'ليس معتمد' : 'معتمد'}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.end}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.start}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.number_of_lessons}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.houers}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.price}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name+' '+data.last_name}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.No} onChange={handleInputChange} /> : data.name}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.No} onChange={handleInputChange} /> : data.subjectName}</td>
     
               </tr>
             ))
@@ -373,7 +373,7 @@ flexDirection: 'column',
                                        <label>:المادة</label>
                                        <select  onChange={(e)=>setSubjectId(e.target.value)}>
                                                   {subjects!=null?subjects.map(option => (
-                                                    <option key={option.id} value={option.id} >{option.id}</option>
+                                                    <option key={option.id} value={option.id} >{option.first_name}</option>
                                                   )):null}
                                           </select>
                                </div>
@@ -384,7 +384,7 @@ flexDirection: 'column',
                                       
                                         <select  onChange={(e) => setTrainerId(e.target.value)}>
                                                    {trainers.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.id}</option>
+                                                     <option key={option.id} value={option.id} >{option.first_name}</option>
                                                    ))}
                                            </select>
                                 </div> 
