@@ -40,11 +40,11 @@ export default function Course() {
       debugger
       http.get(`receptionist/course/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
        setData(res.data.data.data);
-       toast.success('تم الحفظ بنجاح!');
+      
 
        setpageCount(res.data.data.total/res.data.data.data.length);
       }).catch(function (error) {
-      
+   
       });
     };    
 //=============================
@@ -53,9 +53,10 @@ export default function Course() {
     const store = () =>{
       debugger
       http.post('receptionist/course/store',{subject_id:subject_id,trainer_id:trainer_id,start:start,end:end}).then((res)=>{
-        toast.success('تم الحفظ بنجاح!');
+        toast.success('تمت العملية بنجاح');
 
       }).catch(function (error) {
+        toast.error("error");
     
         });
 
@@ -208,7 +209,7 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "rgb(19,130,64)"}}>أضف فرع جديد
+<Button variant="success"  onClick={openModal} style={{  background :  "rgb(19,130,64)"}}>أضف كورس جديد
 
 </Button>
 </div>
@@ -234,7 +235,7 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
             <th style={{ width: "10%" }}></th>
             <th style={{ width: "10%" }}>الاعتماد</th>
             <th style={{ width: "15%" }}>تاريخ الإنتهاء</th>
-            <th style={{ width: "15%" }}>تاريخ البدأ</th>
+            <th style={{ width: "15%" }}>تاريخ البدء</th>
             <th style={{ width: "10%" }}>عدد الجلسات</th>
             <th style={{ width: "10%" }}>عدد الساعات</th>
             <th style={{ width: "10%" }}>التسعير</th>
@@ -393,7 +394,7 @@ flexDirection: 'column',
                     <div className="row">
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>:تاريخ البدأ</label>
+                                       <label>:تاريخ البدء</label>
                                        <input type="date" className="form-control"
                                            onChange={e=>setStart(e.target.value)}
                                        id="birth_day" />

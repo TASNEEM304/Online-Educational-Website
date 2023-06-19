@@ -34,7 +34,7 @@ import GetQuestionner from "./components/Branch_Manger/ViewQuestionnaire/questio
 
 //Scientific_Affairs
 import DashboardScientAff from "./components/Scientific_Affairs/DashboardScientAff" 
-import {GetSubjects} from "./components/Scientific_Affairs/Management_Content/Subjects/index";
+import GetSubjects from "./components/Scientific_Affairs/Management_Content/Subjects/index";
 import {GetQuestionBank} from "./components/Scientific_Affairs/Management_Content/QuestionBank/index";
 
 

@@ -23,7 +23,7 @@ export default function Register() {
          debugger  
          http.post('register',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
             setToken(res.data.user,res.data.authorisation.token);
-            console.log(res);
+            console.log(res.data.authorisation.token);
         }).catch(function (error) {
             console.log(error);
           });

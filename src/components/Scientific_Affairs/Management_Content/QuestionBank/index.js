@@ -13,13 +13,15 @@ export const GetQuestionBank = () => {
   
   const [searchTerm, setSearchTerm] = useState("");
   const [course_id ,setcourseid] = useState("");
-const [model ,setmodel] = useState("");
-const [file ,setfile] = useState(null);
-const [branch_id ,setbranchid] = useState("");
+  const [model ,setmodel] = useState("");
+  const [file ,setfile] = useState(null);
+  const [branch_id ,setbranchid] = useState("");
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [pageCount, setpageCount] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [Branches,setbranches] = useState([]);
+  const [Courses,setcourses] = useState([]);
   
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
@@ -28,19 +30,31 @@ const [branch_id ,setbranchid] = useState("");
 ///============================
 /// store
 ///=============================
-  const store = async (e) => {
-    debugger
-    e.preventDefault()
-    http.post('qbank/store',{course_id:course_id,model:model,file:file,branch_id:branch_id}).catch(function (error) {
+const store = async (event) => {
+  event.preventDefault();
 
-  });
-  setcourseid('');
-  setmodel('');
-  setfile('');
-  setbranchid('');
-  closeModal();
-  loadData();
+  const formData = new FormData();
+ 
+  formData.append("course_id", course_id);
+  formData.append("model", model);
+  formData.append("file", file);
+  formData.append("branch_id", branch_id);
+
+  try {
+    const response = await axios.post("http://localhost:8000/api/qbank/store", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    console.log("Service added successfully", response.data);
+  } catch (error) {
+    console.error("Error adding service", error);
   }
+ // GetQuestionBank();
+  closeModal();
+};
+
 
 ///============================
 /// Delete
@@ -73,6 +87,15 @@ const loadData = async () => {
   
    
 };
+
+
+
+
+
+
+
+
+
 ///============================
 /// handlePageClick
 ///=============================
@@ -136,31 +159,27 @@ const Update = async (editedItem) => {
     setEditedItem((prevState) => ({ ...prevState, [name]: value }));
   }
 
-  
-  const [Branches,setBranches] = useState([])
   useEffect(()=>{
     Getbranches()
     },[])
-  const Getbranches = async ()=>{
-    http.get(`branch/index?page=1`).then((res)=>{
-       setBranches(res.data.data);
-      
-      
+    
+    const Getbranches = async ()=>{
+    http.get('branch/index').then((res)=>{
+     setbranches(res.data.data.data);
     });
-  }
-  const [Courses,setCourses] = useState([])
-useEffect(()=>{
-    GetCourses()
-  },[])
-const GetCourses = async ()=>{
-  http.get(`course/index?page=1`).then((res)=>{
-     setCourses(res.data.data);
-    
-    
-  });
-}
+    }
 
 
+    useEffect(()=>{
+      GetCourses()
+      },[])
+      
+      const GetCourses = async ()=>{
+      http.get('course/index').then((res)=>{
+       setcourses(res.data.data.data);
+      });
+      }
+  
   return (
 <Fragment>
 <Header />
@@ -201,7 +220,7 @@ const GetCourses = async ()=>{
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف  نموذج امتحاني
+<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف  نموذج اسئلة 
 
 </Button>
 </div>
@@ -224,10 +243,15 @@ const GetCourses = async ()=>{
         }}>
           <tr >
             <th style={{ width: "20%" }}></th>
-            <th style={{ width: "30%" }}>الدورة</th>
-            <th style={{ width: "30%" }}>النموذج</th>
-            <th style={{ width: "30%" }}> الأسئلة</th>
-            <th style={{ width: "30%" }}>الفرع</th>
+            <th style={{ width: "30%" }}> الفرع</th>
+            <th style={{ width: "30%" }}>ملف الاسئلة  </th>
+            <th style={{ width: "30%" }}> النموذج</th>
+            <th style={{ width: "30%" }}> الدورة</th>
+        
+           
+            <th></th>
+                   
+                              
           </tr>
         </thead>
         <tbody>
@@ -256,11 +280,10 @@ const GetCourses = async ()=>{
                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
                    
               </td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="course_id" value={editedItem.course_id} onChange={handleInputChange} /> : data.course_id}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="model" value={editedItem.model} onChange={handleInputChange} /> : data.model}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.number_of_lessons}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="file" name="file" value={editedItem.file} onChange={handleInputChange} /> : data.file}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.branch_id}</td>
-
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="model" value={editedItem.model} onChange={handleInputChange} /> : data.model}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="course_id" value={editedItem.course_id} onChange={handleInputChange} /> : data.course_id}</td>
               </tr>
             ))
           )}
@@ -357,49 +380,51 @@ flexDirection: 'column',
          
          <div className="col-md-6">
                <div className="form-group mt-2">
-                        <label>الدورة</label>
-                        <select className='form-control'   onChange={(e)=>setcourseid(e.target.value)}>
-         <option value="">الرجاء اختيار الدورة</option>
-         {Courses.map(option => (
-             <option key={option.id} value={option.id} >{option.name}</option>
-                        ))}
-            </select>
+               <label>الفرع </label>
+             
+                                        <select  onChange={(e)=>setbranches(e.target.value)}>
+                                                   <option value="">--Please select an option--</option>
+                                                   {Branches.map(option => (
+                                                     <option key={option.id} value={option.id} >{option.name}</option>
+                                                   ))}
+                                           </select>                
               
                </div>   
          </div>
          <div className="col-md-6">
                 <div className="form-group mt-2">
-                        <label>النموذج</label>
-                        
-                       <input type='text' 
-                        className='form-control' 
-                        placeholder='ادخل رمز النموذج '
-                        Value={model} 
-                        onChange={(e)=>setmodel(e.target.value)}
-                        />
-                </div>
-         </div>
-
-         <div className="col-md-6">
-                <div className="form-group mt-2">
-                        <label>ملف الأسئلة</label>
-                        
-                        <input className='form-control'  type="file" onChange={(event) => setfile(event.target.files[0])} />
+                <label>ملف الأسئلة </label>
+                           <input className='form-control'  type="file" onChange={(event) => setfile(event.target.files[0])} />
 
                 </div>
          </div>
+
+        
 
          <div className="col-md-6">
                <div className="form-group mt-2">
-                        <label>الفرع</label>
-                        <select className='form-control'  onChange={(e)=>setbranchid(e.target.value)}>
-                                                    <option value="">الرجاء اختيار الفرع</option>
-                                                   {Branches.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                    ))}
-                                            </select>                
+               <label>النموذج </label>
+                <input
+           value={model} className='form-control'
+           onChange = {(e)=> setmodel(e.target.value)}
+          
+            />              
                </div>   
          </div>
+
+
+         <div className="col-md-6">
+                <div className="form-group mt-2">
+                <label>الدورة </label>
+                <select  onChange={(e)=>setcourses(e.target.value)}>
+                                                   <option value="">--Please select an option--</option>
+                                                   {Courses.map(option => (
+                                                     <option key={option.id} value={option.id} >{option.name}</option>
+                                                   ))}
+                                           </select>  
+                </div>
+         </div>
+         
 
 
 
