@@ -2,6 +2,8 @@ import React,{ useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import AuthUser from  './AuthUser';
 import axios from 'axios'
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 export default function Register() {
     const navigate = useNavigate();
     const {http,setToken} = AuthUser();
@@ -20,6 +22,14 @@ export default function Register() {
         // api call
        // axios.defaults.withCredentials = true;
         // axios.get('http://localhost:8080/sanctum/csrf-cookie').then( response=> {
+            const validationSchema = Yup.object().shape({
+                password: Yup.string()
+                  .min(8, 'Password must be at least 8 characters')
+                  .required('Password is required'),
+              });
+            
+              // تحقق من صحة البيانات
+              validationSchema.validateSync({ password });
          debugger  
          http.post('register',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
             setToken(res.data.user,res.data.authorisation.token);

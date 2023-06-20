@@ -7,6 +7,8 @@ import * as AiIcons from "react-icons/ai";
 import HeaderRecep from "../../HeaderRecep" ;
 import AuthUser from  '../../../Auth/AuthUser';
 import "./Style.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function GetRecordStudent() {
     
@@ -85,9 +87,10 @@ export default function GetRecordStudent() {
       
         http.post('register',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
+          toast.success("تمت العملية بنجاح");
           history('/Cards/index' , { state : { data } });
         }).catch(function (error) {
-          console.log(error);
+         toast.error("فشل العملية");
           });
        
     }
@@ -243,7 +246,7 @@ onChange={handleSearchChange}
 <div className="col-md-2">
            </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف فرع جديد
+<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضافة طالب جديد
 
 </Button>
 </div>
@@ -398,16 +401,16 @@ flexDirection: 'column',
      <div className="row">
                         <div className="col-md-6">
                               <div className="form-group mt-2">
-                                       <label>first_name:</label>
-                                       <input type="text" className="form-control" placeholder="Enter first_name"
+                                       <label>الأسم الأول</label>
+                                       <input type="text" className="form-control" 
                                            onChange={e=>setFirstName(e.target.value)}
                                        id="first_name" />
                               </div>   
                         </div>
                         <div className="col-md-6">
                                <div className="form-group mt-2">
-                                       <label>last_name:</label>
-                                       <input type="text" className="form-control" placeholder="Enter last_name"
+                                       <label>الأسم الأخير</label>
+                                       <input type="text" className="form-control" 
                                            onChange={e=>setLastName(e.target.value)}
                                        id="last_name" />
                                </div>
@@ -417,8 +420,8 @@ flexDirection: 'column',
                     <div className="row">
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>birth_day:</label>
-                                       <input type="date" className="form-control" placeholder="Enter birth_day"
+                                       <label>تاريخ الميلاد</label>
+                                       <input type="date" className="form-control" 
                                            onChange={e=>setBirthDay(e.target.value)}
                                        id="birth_day" />
                                 </div>  
@@ -426,8 +429,8 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 
                                 <div className="form-group mt-2">
-                                       <label>Number:</label>
-                                       <input type="number" className="form-control" placeholder="Enter phone_number"
+                                       <label>رقم الهاتف</label>
+                                       <input type="number" className="form-control" 
                                            onChange={e=>setPhone(e.target.value)}
                                        id="phone_number" />
                                 </div>
@@ -441,16 +444,16 @@ flexDirection: 'column',
                        
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>Email address:</label>
-                                       <input type="email" className="form-control" placeholder="Enter email"
+                                       <label> البريد الالكتروني</label>
+                                       <input type="email" className="form-control" 
                                            onChange={e=>setEmail(e.target.value)}
                                        id="email" />
                                 </div>
                         </div>
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                       <label>Password:</label>
-                                       <input type="password" className="form-control" placeholder="Enter password"
+                                       <label>كلمة السر</label>
+                                       <input type="password" className="form-control" 
                                            onChange={e => setPassword(e.target.value)}
                                        id="pwd" />
                                 </div>
@@ -469,7 +472,7 @@ flexDirection: 'column',
                         </div>
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                        <label>setBranchId:</label>
+                                        <label>الفرع:</label>
                                         <select  onChange={(e)=>setBranchId(e.target.value)}>
                                                    <option value="">--Please select an option--</option>
                                                    {Branches.map(option => (

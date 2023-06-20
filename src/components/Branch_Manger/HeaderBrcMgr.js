@@ -107,6 +107,9 @@ const HeaderBrcMgr = () => {
         <NavItem>
           <NavLink href="/ViewQuestionnaire/questionnaire">استطلاع الاستبيانات</NavLink>
         </NavItem>
+        <NavItem>
+          <NavLink href="/ViewQusationBank/all">استطلاع بنك الأسئلة</NavLink>
+        </NavItem>
         <Dropdown nav isOpen={dropdownOpen} toggle={toggleDropdown}>
           <DropdownToggle nav caret>
              تسجيل

@@ -68,13 +68,13 @@ export default function Login() {
                     <h1 className="text-center mb-3">Login </h1>
                     <div className="form-group  mt-3">
                         <label> البريد الالكتروني</label>
-                        <input type="email" className="form-control" 
+                        <input required type="email" className="form-control" 
                             onChange={e=>setEmail(e.target.value)}
                         id="email" />
                     </div>
                     <div className="form-group mt-3">
                         <label>كلمة السر</label>
-                        <input type="password" className="form-control" 
+                        <input required  type="password" className="form-control" 
                             onChange={e => setPassword(e.target.value)}
                         id="pwd" />
                     </div>

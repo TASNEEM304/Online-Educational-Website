@@ -6,13 +6,15 @@ import axios from 'axios'
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const GetQuestionBank = () => {
 
   const {http} = AuthUser();
   
   const [searchTerm, setSearchTerm] = useState("");
-  const [course_id ,setcourseid] = useState("");
+  const [course_id ,setCourse_Id] = useState("");
   const [model ,setmodel] = useState("");
   const [file ,setfile] = useState(null);
   const [branch_id ,setbranchid] = useState("");
@@ -21,7 +23,7 @@ export const GetQuestionBank = () => {
   const [pageCount, setpageCount] = useState(0);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [Branches,setbranches] = useState([]);
-  const [Courses,setcourses] = useState([]);
+  const [Courses,setCourse] = useState([]);
   
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
@@ -45,11 +47,14 @@ const store = async (event) => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    });
-
+    }
+    
+    );
+    toast.success("تمت العملية بنجاح");
     console.log("Service added successfully", response.data);
   } catch (error) {
     console.error("Error adding service", error);
+    toast.error("فشل العملية");
   }
  // GetQuestionBank();
   closeModal();
@@ -171,14 +176,14 @@ const Update = async (editedItem) => {
 
 
     useEffect(()=>{
-      GetCourses()
-      },[])
-      
-      const GetCourses = async ()=>{
-      http.get('course/index').then((res)=>{
-       setcourses(res.data.data.data);
-      });
-      }
+      Getcourse()
+  },[])
+  
+  const Getcourse = async ()=>{
+  http.get('course/indexa').then((res)=>{
+      setCourse(res.data.data);
+  });
+  }
   
   return (
 <Fragment>
@@ -280,10 +285,10 @@ const Update = async (editedItem) => {
                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
                    
               </td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.number_of_lessons}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.name}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="file" name="file" value={editedItem.file} onChange={handleInputChange} /> : data.file}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="model" value={editedItem.model} onChange={handleInputChange} /> : data.model}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="course_id" value={editedItem.course_id} onChange={handleInputChange} /> : data.course_id}</td>
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="course_id" value={editedItem.course_id} onChange={handleInputChange} /> : data.subjectName}</td>
               </tr>
             ))
           )}
@@ -382,7 +387,7 @@ flexDirection: 'column',
                <div className="form-group mt-2">
                <label>الفرع </label>
              
-                                        <select  onChange={(e)=>setbranches(e.target.value)}>
+                                        <select  onChange={(e)=>setbranchid(e.target.value)}>
                                                    <option value="">--Please select an option--</option>
                                                    {Branches.map(option => (
                                                      <option key={option.id} value={option.id} >{option.name}</option>
@@ -414,16 +419,18 @@ flexDirection: 'column',
 
 
          <div className="col-md-6">
-                <div className="form-group mt-2">
-                <label>الدورة </label>
-                <select  onChange={(e)=>setcourses(e.target.value)}>
+                                <div className="form-group mt-2">
+                                        <label>:الكورس</label>
+                                        <select  onChange={(e)=>setCourse_Id(e.target.value)}>
                                                    <option value="">--Please select an option--</option>
                                                    {Courses.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
+                                                     <option key={option.id} value={option.id} >{option.subjectName}</option>
                                                    ))}
-                                           </select>  
-                </div>
-         </div>
+                                           </select>
+                                </div>
+                        </div>
+                    
+                    
          
 
 
@@ -440,7 +447,7 @@ flexDirection: 'column',
 
 </ReactModal> 
 
-
+<ToastContainer />
 
 
 

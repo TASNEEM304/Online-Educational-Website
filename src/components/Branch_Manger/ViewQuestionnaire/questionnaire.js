@@ -69,8 +69,9 @@ useEffect(() => {
 }, []);
 const loadData = async () => {
   debugger
-    http.get(`poll/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+    http.get(`poll/search_by_branch/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
       setData(res.data.data.data);
+      console.log(res);
       setpageCount(res.data.data.total/res.data.data.data.length);
      }).catch(function (error) {
   
@@ -81,7 +82,7 @@ const loadData = async () => {
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`poll/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`poll/search_by_branch/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
   setData(res.data.data.data);
    setCurrentPage(selected);
 }).catch(function (error) {
@@ -213,7 +214,7 @@ const Update = async (editedItem) => {
             <th style={{ width: "10%" }}>وقت الدورة 1 </th>
             <th style={{ width: "10%" }}>اسم الأم </th>
             <th style={{ width: "10%" }}>الاسم  عربي</th>
-            <th >الاسم انكليزي </th>
+            <th style={{ width: "10%" }}>الاسم انكليزي </th>
         
          
        
@@ -240,36 +241,39 @@ const Update = async (editedItem) => {
                           
                 <td>
 
-                {!editing || editedItem.id !== data.id ? (
-                <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-                
-                ) : (
-                  <>
-                    <button onClick={handleSaveClick}>Save</button>
-                    <button onClick={handleCancelClick}>Cancel</button>
-                  </>
-                )}
-                <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+             
                    
               </td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="full_name_en" value={editedItem.full_name_en} onChange={handleInputChange} /> : data.full_name_en}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="full_name_ar" value={editedItem.full_name_ar} onChange={handleInputChange} /> : data.full_name_ar}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="mother_name" value={editedItem.mother_name} onChange={handleInputChange} /> : data.mother_name}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="first_time" value={editedItem.first_time} onChange={handleInputChange} /> : data.first_time}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="first_subj" value={editedItem.first_subj} onChange={handleInputChange} /> : data.first_subj}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="secound_time" value={editedItem.secound_time} onChange={handleInputChange} /> : data.secound_time}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="secound_subj" value={editedItem.secound_subj} onChange={handleInputChange} /> : data.secound_subj}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="third_time" value={editedItem.third_time} onChange={handleInputChange} /> : data.third_time}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="third_subj" value={editedItem.third_subj} onChange={handleInputChange} /> : data.third_subj}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="address" value={editedItem.address} onChange={handleInputChange} /> : data.address}</td>
+             
                
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="whatsapp_numb" value={editedItem.whatsapp_numb} onChange={handleInputChange} /> : data.whatsapp_numb}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="phone_numb" value={editedItem.phone_numb} onChange={handleInputChange} /> : data.phone_numb}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="date" name="poll_date" value={editedItem.poll_date} onChange={handleInputChange} /> : data.poll_date}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="notice" value={editedItem.notice} onChange={handleInputChange} /> : data.notice}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.branch_id}</td>
-               
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="notice" value={editedItem.notice} onChange={handleInputChange} /> : data.notice}</td>
 
+                <td>{editing && editedItem.id === data.id ? <input type="date" name="poll_date" value={editedItem.poll_date} onChange={handleInputChange} /> : data.poll_date}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="phone_numb" value={editedItem.phone_numb} onChange={handleInputChange} /> : data.phone_numb}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="number" name="whatsapp_numb" value={editedItem.whatsapp_numb} onChange={handleInputChange} /> : data.whatsapp_numb}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="address" value={editedItem.address} onChange={handleInputChange} /> : data.address}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="third_subj" value={editedItem.third_subj} onChange={handleInputChange} /> : data.subjectName}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="third_time" value={editedItem.third_time} onChange={handleInputChange} /> : data.third_time}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="secound_subj" value={editedItem.secound_subj} onChange={handleInputChange} /> : data.subjectName}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="secound_time" value={editedItem.secound_time} onChange={handleInputChange} /> : data.secound_time}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="first_subj" value={editedItem.first_subj} onChange={handleInputChange} /> : data.subjectName}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="first_time" value={editedItem.first_time} onChange={handleInputChange} /> : data.first_time}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="mother_name" value={editedItem.mother_name} onChange={handleInputChange} /> : data.mother_name}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="full_name_ar" value={editedItem.full_name_ar} onChange={handleInputChange} /> : data.full_name_ar}</td>
+
+                <td>{editing && editedItem.id === data.id ? <input type="text" name="full_name_en" value={editedItem.full_name_en} onChange={handleInputChange} /> : data.full_name_en}</td>
               </tr>
             ))
           )}
