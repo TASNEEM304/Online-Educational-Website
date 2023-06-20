@@ -32,6 +32,7 @@ import GetRecordRecptions from "./components/Branch_Manger/ManagementRecptiones/
 import GetRecordRecptionsdetails from "./components/Branch_Manger/ManagementRecptiones/RecoredRecpitions/details";
 import GetTrainerdetails from "./components/Branch_Manger/Trainer_Management/details";
 import GetQuestionner from "./components/Branch_Manger/ViewQuestionnaire/questionnaire";
+import GetQuestionBankview from "./components/Branch_Manger/ViewQusationBank/all";
 
 
 //Scientific_Affairs
@@ -82,6 +83,8 @@ function App() {
        <Route path='/ManagementRecptiones/RecoredRecpitions/details' element={<GetRecordRecptionsdetails/>} />
        <Route path='/ViewQuestionnaire/questionnaire' element={<GetQuestionner/>} />
        <Route path='/Course/Add' element={<Course/>} />
+
+       <Route path='/ViewQusationBank/all' element={<GetQuestionBankview/>} />
        
        {/*Dashboard*/}
        <Route path="/dashboardScientAff" element={<DashboardScientAff />} />
