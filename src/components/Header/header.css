@@ -1,11 +1,9 @@
     .header {
         width: 100%;
         height: 80px;
-        background-color: rgb(248, 218, 218);
-        /* background: rgba(14, 20, 114);  rgba(162, 14, 2);*/
-        /* background: linear-gradient(to right, #2980b9, #550505); */
+        background-color: white;
         line-height: 80px;
-        color: white;
+        color: rgb(117, 47, 47);
     }
     
     .nav__list {
@@ -22,11 +20,11 @@
         color: #0a2b1e;
         text-decoration: none;
         transition: 0.3s;
-        color: white;
+        color: rgb(71, 29, 29);
     }
     
     .nav__item a:hover {
-        color: #17bf9e;
+        color: rgb(71, 29, 29);
     }
     
     .nav__right p {
@@ -101,14 +99,14 @@
             padding: 10px;
         }
         .dropdown li:hover {
-            background-color: #f2f2f2;
+            background-color: #4b0b0b;
         }
     }
     
     .header {
         width: 100%;
         height: 80px;
-        background: rgb(220, 220, 221);
+        background: rgb(243, 243, 245);
         /* background: linear-gradient(to right, #2980b9, #550505); */
         line-height: 80px;
     }
@@ -124,7 +122,7 @@
     .nav__item a {
         font-weight: 500;
         font-size: 1.1rem;
-        color: white;
+        color: rgb(66, 10, 10);
         text-decoration: none;
         transition: 0.3s;
     }

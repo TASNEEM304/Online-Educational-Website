@@ -8,7 +8,7 @@ import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
 import "./Style.css";
 
-function GetSubscribe () {
+function GetPayment () {
 
 
     const {http} = AuthUser();
@@ -66,7 +66,7 @@ loadData();
      }, []);
 const loadData = async () => {
 debugger
-http.get(`subscribe/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+http.get(`receptionist/payment/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -86,38 +86,15 @@ http.post(`receptionist/payment/store/${data}`).then((res)=>{
 });
 }
 
-///============================
-/// Delete
-///=============================
-
-
-
-
 
 //=============================
 // GetCards
 //=============================
-useEffect(()=>{
-    GetCards()
-},[])
 
-const GetCards = async ()=>{
-http.get('receptionist/card/index').then((res)=>{
-    setCards(res.data.data);
-});
-}
-//=============================
-// GetCards
-//=============================
-useEffect(()=>{
-    Getcourse()
-},[])
-
-const Getcourse = async ()=>{
-http.get('receptionist/course/index').then((res)=>{
-    setCourse(res.data.data);
-});
-}
+const Receipt = async (data)=>{
+        // console.log(data);
+          history('/RecordStudent/Receipt' , { state : { data } });
+  }
 
 ///============================
 /// handlePageClick
@@ -238,12 +215,10 @@ onChange={handleSearchChange}
    <thead style={{background: "#2980b9" , 
    }}>
      <tr >
-       <th style={{ width: "10%" }}></th>
-       <th style={{ width: "20%" }}>حالة الاشتراك</th>
+       <th style={{ width: "20%" }}></th>
        <th style={{ width: "20%" }}>سعرالمادة</th>
-       <th style={{ width: "10%" }}>المادة</th>
-       <th style={{ width: "10%" }}>الاسم</th>
-       <th style={{ width: "10%" }}>الرقم</th>
+       <th style={{ width: "20%" }}>المادة</th>
+       <th style={{ width: "40%" }}>الاسم</th>
      </tr>
    </thead>
    <tbody>
@@ -259,24 +234,17 @@ onChange={handleSearchChange}
 
                      
            <td>
+{/* 
+           <Link to="/RecordStudent/Receipt">
+        <button>Show</button>
+                </Link> */}
+                
+               <button onClick={() => Receipt(data)}>Cancel</button>
 
-           {!editing || editedItem.id !== data.id ? (
-           <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-           
-           ) : (
-             <>
-               <button onClick={handleSaveClick}>Save</button>
-               <button onClick={handleCancelClick}>Cancel</button>
-             </>
-           )}
-        <button onClick={() => payment(data.id)} disabled={!data.state}>Show</button>
-            
          </td>
-           <td>{data.state}</td>
            <td>{data.price}</td>
            <td>{data.subjectName}</td>
            <td>{data.first_name+" "+data.last_name}</td>
-           <td>{data.no}</td>
          </tr>
        ))
      )}
@@ -410,4 +378,4 @@ flexDirection: 'column',
  );
 };
 
-export default GetSubscribe;
+export default GetPayment;

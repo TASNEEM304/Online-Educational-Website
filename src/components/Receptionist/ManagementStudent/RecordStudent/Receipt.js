@@ -1,14 +1,14 @@
 import React ,{Fragment,useEffect,useState} from "react";
 import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import HeaderRecep from "../../HeaderRecep";
-import {useNavigate,Link,useHistory}  from 'react-router-dom';
+import {useNavigate,useLocation,Link,useHistory}  from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
 import "./Style.css";
 
-function GetSubscribe () {
+function GetReceipt () {
 
 
     const {http} = AuthUser();
@@ -16,7 +16,6 @@ function GetSubscribe () {
     const [Cards,setCards] = useState([]);
     const [Course,setCourse] = useState([]);
     const [card_id,setCards_Id] = useState();
-    const [course_id,setCourse_Id] = useState();
     const [editing, setEditing] = useState(false);
     const [editedItem, setEditedItem] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
@@ -25,7 +24,12 @@ function GetSubscribe () {
     const [pageCount, setpageCount] = useState(0);  
     const history = useNavigate();
     
+
+    const [Debit,setDebit] = useState();
     
+    const location = useLocation();
+    const dataRow = location.state.data;
+    console.log(dataRow);
 ///============================
 /// Modal
 ///=============================
@@ -38,22 +42,12 @@ function GetSubscribe () {
 ///=============================
 const store = () =>{
       
-    http.post('subscribe/store',{course_id:course_id,card_id:card_id}).then((res)=>{
+    http.post('receptionist/receipt/store',{Debit:Debit,user_id:dataRow.userId,payment_id:dataRow.id,description:'dsadda'}).then((res)=>{
       const data=res.data;
     }).catch(function (error) {
       console.log(error);
       });
    
-}
-///============================
-/// Delete
-///=============================
-
-const Delete= async (id) =>{
-
-http.post(`branch/destroy/${id}`).then((res)=>{
-   alert(res.data.message);
-})
 }
 
 
@@ -66,7 +60,7 @@ loadData();
      }, []);
 const loadData = async () => {
 debugger
-http.get(`subscribe/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+http.get(`receptionist/receipt/indexing/${dataRow.id}`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -74,50 +68,6 @@ setpageCount(res.data.data.total/res.data.data.data.length);
 });
 };    
 
-
-//=============================
-// GetCards
-//=============================
-
-const payment = async (data)=>{
-  debugger
-http.post(`receptionist/payment/store/${data}`).then((res)=>{
-  //setCards(res.data.data);
-});
-}
-
-///============================
-/// Delete
-///=============================
-
-
-
-
-
-//=============================
-// GetCards
-//=============================
-useEffect(()=>{
-    GetCards()
-},[])
-
-const GetCards = async ()=>{
-http.get('receptionist/card/index').then((res)=>{
-    setCards(res.data.data);
-});
-}
-//=============================
-// GetCards
-//=============================
-useEffect(()=>{
-    Getcourse()
-},[])
-
-const Getcourse = async ()=>{
-http.get('receptionist/course/index').then((res)=>{
-    setCourse(res.data.data);
-});
-}
 
 ///============================
 /// handlePageClick
@@ -269,8 +219,6 @@ onChange={handleSearchChange}
                <button onClick={handleCancelClick}>Cancel</button>
              </>
            )}
-        <button onClick={() => payment(data.id)} disabled={!data.state}>Show</button>
-            
          </td>
            <td>{data.state}</td>
            <td>{data.price}</td>
@@ -377,14 +325,11 @@ flexDirection: 'column',
 
                         
                     <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>:الكورس</label>
-                                        <select  onChange={(e)=>setCourse_Id(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Course.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>
+                    <div className="form-group mt-2">
+                                       <label>Email address:</label>
+                                       <input type="integer" className="form-control" placeholder="Enter Debit"
+                                           onChange={e=>setDebit(e.target.value)}
+                                       id="Debit" />
                                 </div>
                         </div>
                     
@@ -410,4 +355,4 @@ flexDirection: 'column',
  );
 };
 
-export default GetSubscribe;
+export default GetReceipt;

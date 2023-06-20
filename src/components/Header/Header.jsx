@@ -30,12 +30,14 @@ const navLinks = [
 ];
 //const navigate = useNavigate();
 
-const logout = () => {
-  localStorage.clear();
-  //navigate('/Login');
-}
 const Header = () => {
- 
+
+
+  const Logout = () => {
+    localStorage.clear();
+    //navigate('/Login');
+  }
+   
   const {getToken,getUser} = AuthUser();
   
 
@@ -89,16 +91,17 @@ const Header = () => {
                                     :'/'} >{ getToken() == null ? 'تسجيل الدخول ': 'لوحة التحكم' } </Link>
                    
                   </li>
-                    {/* <li className="nav__item">
-                    <Link to={'/logOut'} onClick={logout()}>تسجيل الخروج</Link>
-                  
-                  </li> */}
-<li className="nav__item">
-                    <Link to={'/Register'}>تسجيل </Link>
+                    <li className="nav__item" if>
+                    <Link onClick={Logout}>تسجيل خروج </Link>
                   
                   </li>
+{/* <li className="nav__item">
+                    <Link to={'/Register'}>تسجيل </Link>
+                  
+                  </li> */}
                   
 
+                  {/* <button onClick={Logout}>تسجيل الخروج</button> */}
                   
               </ul>
               {/* <button onClick={logout()}> تسجيل الخروج</button> */}
