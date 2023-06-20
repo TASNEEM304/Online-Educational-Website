@@ -66,8 +66,8 @@ export default function Login() {
             <div className="col-sm-6">
                 <div className="card p-4">
                     <h1 className="text-center mb-3">Login </h1>
-                    <div className="form-group  mt-3">
-                        <label> البريد الالكتروني</label>
+                    <div className="form-group  mt-3 " style={{textAlign:'right'}}>
+                        <label style={{textAlign:'right'}}> البريد الالكتروني</label>
                         <input type="email" className="form-control" 
                             onChange={e=>setEmail(e.target.value)}
                         id="email" />
