@@ -62,7 +62,7 @@
 //   )
 // };
 
-import React ,{Fragment,useRef} from "react";
+import React ,{Fragment,useRef,useEffect} from "react";
 import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import HeaderRecep from "../HeaderRecep";
 import Barcode from 'react-barcode';
@@ -71,6 +71,7 @@ import { useLocation } from 'react-router-dom';
 
 import styled from 'styled-components';
 import Card from './Card';
+import JsBarcode from 'jsbarcode';
 //import ReactToPrint from 'react-to-print';
 function BarcodeCard () {
 
@@ -87,32 +88,23 @@ function BarcodeCard () {
   const Content = styled.div`
     max-width: 400px;
   `;
+
+  //  const barcodeRef = useRef(null);
+  //  useEffect(() => {
+  //   JsBarcode(barcodeRef.current, data.card.original.data.barcode.toString());
+  // }, [data.card.original.data.barcode]);
+
     return (
     <Fragment>
 <HeaderRecep />
 <section>
       <Container>
 
-      <Wrapper>
-      <Content>
-        <Card
-          name={data.user.first_name}
-          email={data.user.email}
-          phone={data.user.phone_number}
-          barcodeValue={data.card.original.data.barcode}
-          barcodeColor="red"
-        />
-        <QRCode value="http://example.com" />
-        {/* <ReactToPrint
-          trigger={() => <button>Print</button>}
-        /> */}
-      </Content>
-    </Wrapper>
       
    <Row>
      <Col lg="12" md="6" lang="ar" style={{marginTop:"10px" ,   textAlign: 'right'}}>
      
-    {/* <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
       <div style={{ width: '10cm', height: '7cm', border: '1px solid black', borderRadius: '10px',backgroundColor:'rgba(226, 248, 248, 0.664)', padding: '1cm', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <div>
           <p> {data.user.first_name} : الاسم </p>
@@ -120,10 +112,13 @@ function BarcodeCard () {
           <p> {data.user.phone_number}  : رقم الهاتف</p>
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <QRCode value={data.card.original.data.barcode} width={1} height={30}/>
+           {/* <svg ref={barcodeRef} /> */}
+          <QRCode value={data.card.original.data.barcode.toString()}/>
+          
+          {/* <QRCode value="123123"/> */}
         </div>
       </div>
-    </div> */}
+    </div>
 
      </Col>
 
@@ -137,3 +132,26 @@ function BarcodeCard () {
 };
 
 export default BarcodeCard;
+
+
+
+
+
+
+
+
+
+
+// <Wrapper>
+// <Content>
+//   <Card
+//     name={data.user.first_name}
+//     email={data.user.email}
+//     phone={data.user.phone_number}
+//     barcodeValue={data.card.original.data.barcode}
+//     barcodeColor="red"
+//   />
+//   <QRCode value="http://example.com" />
+ 
+// </Content>
+// </Wrapper>

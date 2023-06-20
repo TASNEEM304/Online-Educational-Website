@@ -87,7 +87,6 @@ export default function GetRecordStudent() {
       
         http.post('register',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
-          toast.success("تمت العملية بنجاح");
           history('/Cards/index' , { state : { data } });
         }).catch(function (error) {
          toast.error("فشل العملية");
@@ -492,12 +491,6 @@ flexDirection: 'column',
 
 
 </ReactModal> 
-
-
-
-
-
-
 </div>  
 </Fragment>
     )
