@@ -29,7 +29,7 @@ function GetReceipt () {
     
     const location = useLocation();
     const dataRow = location.state.data;
-    console.log(dataRow);
+    //console.log(dataRow);
 ///============================
 /// Modal
 ///=============================

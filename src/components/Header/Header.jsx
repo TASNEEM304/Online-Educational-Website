@@ -95,16 +95,13 @@ const Header = () => {
                     <Link onClick={Logout}>تسجيل خروج </Link>
                   
                   </li>
-{/* <li className="nav__item">
-                    <Link to={'/Register'}>تسجيل </Link>
+<li className="nav__item">
+                    {/* <Link to={'/Register'}>تسجيل </Link> */}
                   
-                  </li> */}
+                  </li>
                   
-
-                  {/* <button onClick={Logout}>تسجيل الخروج</button> */}
                   
               </ul>
-              {/* <button onClick={logout()}> تسجيل الخروج</button> */}
             </div>
 
           </div>
