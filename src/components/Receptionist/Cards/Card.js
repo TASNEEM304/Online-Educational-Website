@@ -5,6 +5,7 @@ import HeaderRecep from "../HeaderRecep";
 import Barcode from 'react-barcode';
 import QRCode from 'qrcode.react';
 import { useLocation } from 'react-router-dom';
+import logo from"../../../assests/images/logo.jpg"
 
 import styled from 'styled-components';
 import Card from './Card';
@@ -31,7 +32,7 @@ const CardContainer = styled.div`
   height: 70.98mm;
   border: 1px solid black;
   border-radius: 10px;
-  background-color: rgba(226, 248, 248, 0.664);
+  background-color: linear-gradient(to right, #2980b9, #550505);
   padding: 1cm;
   display: flex;
   flex-direction: row-reverse;
@@ -42,7 +43,6 @@ const CardContainer = styled.div`
 const CardDetailsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 `;
 
 const QRCodeContainer = styled.div`
@@ -86,9 +86,11 @@ const QRCodeImage = styled(QRCode)`
       <Content>
         <CardContainer>
           <CardDetailsContainer>
-            <p>{data.user.phone_number}: رقم الهاتف</p>
-            <p>{data.user.email}: الايميل</p>
-            <p>{data.user.first_name}: الاسم</p>
+          <img src={logo} className="logo" alt="Logo" style={{maxWidth:'100px',height:'auto',borderRadius:'50%'}} />
+  
+            <p> الاسم:  {data.user.first_name}</p>
+            <p>{data.user.phone_number} : رقم الهاتف</p>
+            <p>{data.user.email} : الايميل</p>
           </CardDetailsContainer>
           <QRCodeContainer>
             <QRCodeImage value={data.card.original.data.barcode.toString()} />

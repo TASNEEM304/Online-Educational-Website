@@ -55,8 +55,9 @@ const store = () =>{
 
   const Delete= async (id) =>{
     
-       http.post(`general_admin/branch/destroy/${id}`).then((res)=>{
-        alert(res.data.message);
+       http.post(`branch/destroy/${id}`).then((res)=>{
+     
+        toast.success("تمت العملية بنجاح")
         loadData();
         
      })
@@ -71,7 +72,7 @@ useEffect(() => {
 }, []);
 const loadData = async () => {
   debugger
-    http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+    http.get(`branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
       setData(res.data.data.data);
       setpageCount(res.data.data.total/res.data.data.data.length);
      }).catch(function (error) {
@@ -83,7 +84,7 @@ const loadData = async () => {
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
   setData(res.data.data.data);
    setCurrentPage(selected);
 }).catch(function (error) {
@@ -110,7 +111,7 @@ http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}
 
 const Update = async (editedItem) => {
   debugger
-  http.post(`general_admin/branch/update/${editedItem.id}`,editedItem).catch(function (error) {
+  http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
   console.log(error);
 });
 }
@@ -179,9 +180,8 @@ const Update = async (editedItem) => {
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف فرع جديد
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
                 </div>
@@ -279,33 +279,80 @@ const Update = async (editedItem) => {
 
 <ReactModal isOpen={modalIsOpen}
 style={{
- overlay: {
-   backgroundColor: 'rgba(0, 0, 0, 0.5)',
-   zIndex: 9999,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- },
- content: {
-   width: '800px',
-   height: 'auto',
-   position: 'absolute',
-   top: '50%',
-   left: '50%',
-   transform: 'translate(-50%, -50%)',
-   borderRadius: '10px',
-   background: '#fff',
-   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-   padding: 0,
-   paddingTop :0,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- }
-}}>
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 9999,
+    display: 'flex',
+  },
+  content: {
+    width: '800px',
+    height: '500px',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '10px',
+    background: '#fff',
+    boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+    padding: '0px',
+    paddingTop :'0px',
+    display: 'flex',
+  }
+ }}>
 
 
 <div class="card" style={{ 
+textAlign: 'right',
+width: '800px',
+height: 'auto',
+padding: 0,
+background: '#fff',
+boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+display: 'flex',
+flexDirection: 'column',
+}}>
+      <div class="card-header">
+
+           <div className="row">
+               <div className="col-md-6">سجل جديد </div>
+               <div className="col-md-6">
+               <AiIcons.AiOutlineClose onClick={closeModal} /></div>
+
+           </div>
+
+     </div>
+     <div class="card-body" dir="rtl">
+     <div className="row">
+     <div className="col-md-6">
+               <div className="form-group mt-2">
+                        <label>الرقم:</label>
+                        <input type='number' 
+                               className='form-control' 
+                               Value={No} 
+                               onChange={(e)=>setNo(e.target.value)}
+                               />
+               </div>   
+         </div>
+         <div className="col-md-6">
+                <div className="form-group mt-2">
+                        <label>الأسم:</label>
+                        
+                       <input type='text' 
+                        className='form-control' 
+                        Value={name} 
+                        onChange={(e)=>setName(e.target.value)}
+                        />
+                </div>
+         </div>
+                    </div>
+           
+     </div>
+     <div class="card-footer text-muted">
+          <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
+     </div>
+   </div>
+
+{/* <div class="card" style={{ 
 textAlign: 'right',
 width: '800px',
 height: 'auto',
@@ -360,7 +407,7 @@ flexDirection: 'column',
           <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
        
      </div>
-   </div>
+   </div> */}
 
 
 

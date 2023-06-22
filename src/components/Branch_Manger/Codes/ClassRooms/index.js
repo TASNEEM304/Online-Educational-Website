@@ -36,7 +36,7 @@ export  const GetClassRoom = () => {
 ///=============================
 const store = () =>{
       
-  http.post('branch_admin/class/store',{Number:Number,className:className,size:size,branch_id:branch_id}).then((res)=>{
+  http.post('branch_admin/class/store',{Number:Number,className:className,size:size}).then((res)=>{
     const data=res.data;
     toast.success("تمت العملية بنجاح")
   //alert("تمت العملية بنجاح ")
@@ -195,16 +195,15 @@ const Update = async (editedItem) => {
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف قاعة جديدة
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
                 </div>
              
 
               </div>
-              <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
+              <div className="card-body" dir="" style={{ textAlign: 'center' ,fontSize: "16px", 
                          width: "100%",
                          height : "100%",
                          padding: "0"
@@ -217,18 +216,16 @@ const Update = async (editedItem) => {
         <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
         }}>
           <tr >
-            <th style={{ width: "20%" }}></th>
             <th style={{ width: "50%" }}>الاسم</th>
             <th style={{ width: "30%" }}>الرقم</th>
             <th style={{ width: "30%" }}>سعة القاعة</th>
-            <th style={{ width: "30%" }}>الفرع</th>
           </tr>
         </thead>
         <tbody>
           {data.length === 0 ? (
             <tr>
               <td colSpan={3} className="text-center">
-                
+                لا يوجد بيانات
               </td>
             </tr>
           ) : (
@@ -299,30 +296,26 @@ const Update = async (editedItem) => {
 
 <ReactModal isOpen={modalIsOpen}
 style={{
- overlay: {
-   backgroundColor: 'rgba(0, 0, 0, 0.5)',
-   zIndex: 9999,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- },
- content: {
-   width: '800px',
-   height: 'auto',
-   position: 'absolute',
-   top: '50%',
-   left: '50%',
-   transform: 'translate(-50%, -50%)',
-   borderRadius: '10px',
-   background: '#fff',
-   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-   padding: 0,
-   paddingTop :0,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- }
-}}>
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 9999,
+    display: 'flex',
+  },
+  content: {
+    width: '800px',
+    height: '500px',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '10px',
+    background: '#fff',
+    boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+    padding: '0px',
+    paddingTop :'0px',
+    display: 'flex',
+  }
+ }}>
 
 
 <div class="card" style={{ 
@@ -345,7 +338,7 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body">
+     <div class="card-body" dir="rtl">
 
      <div lang="ar" className="row">
          
@@ -385,19 +378,7 @@ flexDirection: 'column',
                </div>   
          </div>
             
-         <div className="col-md-6">
-               <div className="form-group mt-2">
-               <label>الفرع </label>
-             
-                                        <select  onChange={(e)=>setbranch_id(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Branches.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>                
-              
-               </div>   
-         </div>
+        
  </div>
            
      </div>

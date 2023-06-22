@@ -66,7 +66,7 @@ loadData();
      }, []);
 const loadData = async () => {
 debugger
-http.get(`receptionist/payment/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+http.get(`payment/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -81,7 +81,7 @@ setpageCount(res.data.data.total/res.data.data.data.length);
 
 const payment = async (data)=>{
   debugger
-http.post(`receptionist/payment/store/${data}`).then((res)=>{
+http.post(`payment/store/${data}`).then((res)=>{
   //setCards(res.data.data);
 });
 }
@@ -101,7 +101,7 @@ const Receipt = async (data)=>{
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=5&page=${selected+1}`).then((res)=>{
+http.get(`payment/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -193,9 +193,9 @@ onChange={handleSearchChange}
 <div className="col-md-2">
            </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف فرع جديد
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+
 </div>
 
            </div>
@@ -239,7 +239,7 @@ onChange={handleSearchChange}
         <button>Show</button>
                 </Link> */}
                 
-               <button onClick={() => Receipt(data)}>Cancel</button>
+               <button className="btn btn primary" onClick={() => Receipt(data)}>التفاصيل</button>
 
          </td>
            <td>{data.price}</td>

@@ -7,6 +7,8 @@ import * as AiIcons from "react-icons/ai";
 import Header from "./../Header";
 import AuthUser from  '../../Auth/AuthUser';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function GetRecordStudent() {
     
@@ -83,9 +85,11 @@ export default function GetRecordStudent() {
 ///=============================
     const store = () =>{
       
-        http.post('general_admin/add_admin',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
+        http.post('add_admin',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
     closeModal();
+    toast.success("تمت العملية بنجاح")
+     
     loadData();
         }).catch(function (error) {
           console.log(error);
@@ -113,7 +117,7 @@ useEffect(() => {
          }, []);
 const loadData = async () => {
 debugger
-http.get(`general_admin/user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=1`).then((res)=>{
+http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=1`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -148,7 +152,7 @@ http.get('branch/index').then((res)=>{
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`general_admin/user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=${selected+1}`).then((res)=>{
+http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -244,9 +248,8 @@ onChange={handleSearchChange}
 <div className="col-md-2">
            </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف مدير جديد
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
            </div>
@@ -266,21 +269,19 @@ onChange={handleSearchChange}
    <thead style={{background: "#2980b9" , 
    }}>
      <tr >
-       <th style={{ width: "10%" }}></th>
        <th style={{ width: "10%" }}>الفرع</th>
        <th style={{ width: "10%" }}>رقم الهاتف</th>
        <th style={{ width: "20%" }}>البريد الإلكتروني</th>
        <th style={{ width: "20%" }}>تاريخ الميلاد</th>
        <th style={{ width: "10%" }}>النسبة</th>
        <th style={{ width: "10%" }}>الاسم</th>
-       <th style={{ width: "10%" }}>الرقم</th>
      </tr>
    </thead>
    <tbody>
      {data.length === 0 ? (
        <tr>
-         <td colSpan={3} className="text-center">
-           
+         <td colSpan={8} className="text-center">
+           لا يوجد بيانات
          </td>
        </tr>
      ) : (
@@ -288,7 +289,7 @@ onChange={handleSearchChange}
          <tr key={data.id}>
 
                      
-           <td>
+           {/* <td>
 
            {!editing || editedItem.id !== data.id ? (
            <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
@@ -305,15 +306,14 @@ onChange={handleSearchChange}
            
         <button>Show</button>
                 </Link>
-         </td>
+         </td> */}
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.phone_number}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.email}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.birth_day}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.last_name}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name}</td>
-           <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.No}</td>
-
+          
          </tr>
        ))
      )}
@@ -395,12 +395,12 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body">
+     <div class="card-body" dir="rtl">
      <div className="row">
                         <div className="col-md-6">
                               <div className="form-group mt-2">
                                        <label>الأسم الأول</label>
-                                       <input type="text" className="form-control" placeholder="ادخل الأسم الأول"
+                                       <input type="text" className="form-control"
                                            onChange={e=>setFirstName(e.target.value)}
                                        id="first_name" />
                               </div>   
@@ -408,7 +408,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                <div className="form-group mt-2">
                                        <label>الأسم الأخير</label>
-                                       <input type="text" className="form-control" placeholder="ادخل الأسم الأخير"
+                                       <input type="text" className="form-control" 
                                            onChange={e=>setLastName(e.target.value)}
                                        id="last_name" />
                                </div>
@@ -419,7 +419,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
                                        <label>تاريخ الميلاد</label>
-                                       <input type="date" className="form-control" placeholder="ادخل تاريخ الميلاد"
+                                       <input type="date" className="form-control"
                                            onChange={e=>setBirthDay(e.target.value)}
                                        id="birth_day" />
                                 </div>  
@@ -428,7 +428,7 @@ flexDirection: 'column',
                                 
                                 <div className="form-group mt-2">
                                        <label>رقم الهاتف</label>
-                                       <input type="number" className="form-control" placeholder="ادخل رقم الهاتف"
+                                       <input type="number" className="form-control" 
                                            onChange={e=>setPhone(e.target.value)}
                                        id="phone_number" />
                                 </div>
@@ -443,7 +443,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
                                        <label>البريد الالكتروني</label>
-                                       <input type="email" className="form-control" placeholder="ادخل البريد الالكتروني"
+                                       <input type="email" className="form-control" 
                                            onChange={e=>setEmail(e.target.value)}
                                        id="email" />
                                 </div>
@@ -451,7 +451,7 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
                                        <label>كلمة السر</label>
-                                       <input type="password" className="form-control" placeholder="ادخل كلمة السر"
+                                       <input type="password" className="form-control"
                                            onChange={e => setPassword(e.target.value)}
                                        id="pwd" />
                                 </div>
@@ -491,6 +491,7 @@ flexDirection: 'column',
 
 </ReactModal> 
 
+<ToastContainer/>
 
 
 

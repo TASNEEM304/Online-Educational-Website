@@ -38,54 +38,9 @@ export default function GetRecordRecptions() {
 
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => setModalIsOpen(false);
-
-///============================
-/// Getbranches
-///=============================
-      // useEffect(()=>{
-      //   const Getbranches = async ()=>{
-      //     http.get('branch/index').then((res)=>{
-      //      setbranches(res.data.data.data);
-      //   });
-      // }
-      //   Getbranches();
-      // },[])
-
-///============================
-/// loadData
-///=============================
-      // useEffect(() => {
-      //   const loadData = async () => {
-      //     http.get(`user/search/samar?page=1`).then((res)=>{
-      //       setData(res.data.data.data);
-      //       setCurrentPage(1);
-      //      }).catch(function (error) {
-    
-      //      }); 
-      //   };
-      
-      //   loadData();
-      // }, []);
-
-///============================
-/// handlePageClick
-///=============================
-    
-// const handlePageClick = async ({ selected }) => {
-//   http.get(`user/search/samar?page=${selected}`).then((res)=>{
-//     setData(res.data.data);
-//     setCurrentPage(selected);
-//    }).catch(function (error) {
-
-//    });
-// };
-
-///============================
-/// store
-///=============================
     const store = () =>{
       
-        http.post('branch_admin/add_employee',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
+        http.post('branch_admin/add_employee',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
           toast.success("تمت العملية بنجاح");
           
@@ -93,7 +48,9 @@ export default function GetRecordRecptions() {
           console.log(error);
           toast.error(error);
           });
-       
+
+          closeModal();
+          loadData();       
     }
 ///============================
 /// Delete
@@ -207,6 +164,15 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 
 
 
+//=============================
+// GetCards
+//=============================
+
+const details = async (data)=>{
+  
+  history('/ManagementRecptiones/RecoredRecpitions/details' , { state : { data } });
+}
+
 
   
     return(
@@ -247,9 +213,8 @@ onChange={handleSearchChange}
 <div className="col-md-2">
            </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف موظف جديد
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
            </div>
@@ -266,24 +231,20 @@ onChange={handleSearchChange}
          <Table style={{fontSize: "16px", 
                     width: "100%"
                     }}>
-   <thead style={{background: "#2980b9" , 
-   }}>
+   <thead >
      <tr >
-       <th style={{ width: "10%" }}></th>
-       <th style={{ width: "10%" }}>الفرع</th>
-       <th style={{ width: "10%" }}>رقم الهاتف</th>
+       <th style={{ width: "20%" }}></th>
+       <th style={{ width: "20%" }}>رقم الهاتف</th>
        <th style={{ width: "20%" }}>البريد الإلكتروني</th>
        <th style={{ width: "20%" }}>تاريخ الميلاد</th>
-       <th style={{ width: "10%" }}>النسبة</th>
-       <th style={{ width: "10%" }}>الاسم</th>
-       <th style={{ width: "10%" }}>الرقم</th>
+       <th style={{ width: "20%" }}>الاسم</th>
      </tr>
    </thead>
    <tbody>
      {data.length === 0 ? (
        <tr>
-         <td colSpan={3} className="text-center">
-           
+         <td colSpan={5} className="text-center">
+           لا يوجد بيانات
          </td>
        </tr>
      ) : (
@@ -292,7 +253,7 @@ onChange={handleSearchChange}
 
                      
            <td>
-
+{/* 
            {!editing || editedItem.id !== data.id ? (
            <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
            
@@ -307,15 +268,15 @@ onChange={handleSearchChange}
            
            
         <button>Show</button>
-                </Link>
+                </Link> */}
+
+<button className="btn btn primary" onClick={()=>details(data)}>التفاصيل</button>
+
          </td>
-           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
-           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.phone_number}</td>
+         <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.phone_number}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.email}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.birth_day}</td>
-           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.last_name}</td>
-           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name}</td>
-           <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.No}</td>
+           <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name+" "+data.last_name}</td>
 
          </tr>
        ))
@@ -398,7 +359,7 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body">
+     <div class="card-body" dir="rtl">
      <div className="row">
                         <div className="col-md-6">
                               <div className="form-group mt-2">
@@ -461,29 +422,6 @@ flexDirection: 'column',
                         </div>
                     </div>
 
-                    <div className="row">
-
-                    <div className="col-md-6">
-                                {/* <div className="form-group mt-2">
-                                        <label>roll_number:</label>
-                                        <input type="number" className="form-control" placeholder="Enter roll_number"
-                                            onChange={e=>setRoll(e.target.value)}
-                                       id="roll_number" />
-                                </div> */}
-                        </div>
-                        <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label></label>
-                                        <select  onChange={(e)=>setBranchId(e.target.value)}>
-                                                   <option value="">الرجاء اختيار الفرع</option>
-                                                   {Branches.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>
-                                </div>
-                        </div>
-                    
-                    </div>
            
      </div>
      <div class="card-footer text-muted">

@@ -7,6 +7,8 @@ import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
 import "./Style.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function GetSubscribe () {
 
@@ -38,11 +40,16 @@ function GetSubscribe () {
 ///=============================
 const store = () =>{
       
-    http.post('subscribe/store',{course_id:course_id,card_id:card_id}).then((res)=>{
+    http.post('subscribe/store',{course_id:course_id, card_id:card_id}).then((res)=>{
       const data=res.data;
+      loadData();
+      toast.success("تمت العملية بنجاح")
     }).catch(function (error) {
       console.log(error);
       });
+      
+    closeModal();
+    loadData();
    
 }
 ///============================
@@ -81,7 +88,9 @@ setpageCount(res.data.data.total/res.data.data.data.length);
 
 const payment = async (data)=>{
   debugger
-http.post(`receptionist/payment/store/${data}`).then((res)=>{
+http.post(`payment/store/${data}`).then((res)=>{
+  
+  toast.success("تمت العملية بنجاح")
   //setCards(res.data.data);
 });
 }
@@ -124,7 +133,7 @@ http.get('receptionist/course/index').then((res)=>{
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=5&page=${selected+1}`).then((res)=>{
+http.get(`subscribe/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -216,9 +225,8 @@ onChange={handleSearchChange}
 <div className="col-md-2">
            </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف فرع جديد
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
            </div>
@@ -236,21 +244,19 @@ onChange={handleSearchChange}
          <Table style={{fontSize: "16px", 
                     width: "100%"
                     }}>
-   <thead style={{background: "#2980b9" , 
-   }}>
+   <thead>
      <tr >
        <th style={{ width: "10%" }}></th>
        <th style={{ width: "20%" }}>حالة الاشتراك</th>
        <th style={{ width: "20%" }}>سعرالمادة</th>
        <th style={{ width: "10%" }}>المادة</th>
        <th style={{ width: "10%" }}>الاسم</th>
-       <th style={{ width: "10%" }}>الرقم</th>
      </tr>
    </thead>
    <tbody>
      {data.length === 0 ? (
        <tr>
-         <td colSpan={3} className="text-center">
+         <td colSpan={6} className="text-center">
            
          </td>
        </tr>
@@ -261,7 +267,7 @@ onChange={handleSearchChange}
                      
            <td>
 
-           {!editing || editedItem.id !== data.id ? (
+           {/* {!editing || editedItem.id !== data.id ? (
            <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
            
            ) : (
@@ -269,15 +275,15 @@ onChange={handleSearchChange}
                <button onClick={handleSaveClick}>Save</button>
                <button onClick={handleCancelClick}>Cancel</button>
              </>
-           )}
-        <button onClick={() => payment(data.id)} disabled={!data.state}>Show</button>
+           )} */}
+        <button className="btn btn primary"  onClick={() => payment(data.id)} disabled={!data.state}>انشاء فاتورة</button>
             
          </td>
            <td>{data.state}</td>
            <td>{data.price}</td>
            <td>{data.subjectName}</td>
            <td>{data.first_name+" "+data.last_name}</td>
-           <td>{data.no}</td>
+
          </tr>
        ))
      )}
@@ -359,18 +365,18 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body">
+     <div class="card-body" dir="rtl">
 
                     <div className="row">
 
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                        <label>:الطالب</label>
+                                        <label>الطالب:</label>
 
                                         <select  onChange={(e)=>setCards_Id(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
+                                                   <option value=""> اختر طالب  </option>
                                                    {Cards.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.first_name+" "+option.last_name}</option>
+                                                     <option key={option.CardId} value={option.CardId} >{option.first_name+" "+option.last_name}</option>
                                                    ))}
                                            </select>
                                 </div>
@@ -379,11 +385,11 @@ flexDirection: 'column',
                         
                     <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                        <label>:الكورس</label>
+                                        <label>الكورس:</label>
                                         <select  onChange={(e)=>setCourse_Id(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
+                                                   <option value="">اختر الكورس</option>
                                                    {Course.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
+                                                     <option key={option.id} value={option.id} >{option.subjectName}</option>
                                                    ))}
                                            </select>
                                 </div>
@@ -402,6 +408,9 @@ flexDirection: 'column',
 
 
 
+
+
+<ToastContainer/>
 
 
 
