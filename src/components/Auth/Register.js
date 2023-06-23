@@ -47,7 +47,7 @@ export default function Register() {
                 <div className="card p-4">
                     <h1 className="text-center mb-3">Register </h1>
                     <div className="form-group mt-3">
-                        <label>roll_number:</label>
+                        <label style={{textAlign:'right'}}>roll_number:</label>
                         <input type="number" className="form-control" placeholder="Enter roll_number"
                             onChange={e=>setRoll(e.target.value)}
                         id="roll_number" />

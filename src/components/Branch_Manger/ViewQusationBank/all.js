@@ -197,7 +197,6 @@ http.get('course/indexa').then((res)=>{
         }}>
           <tr >
           <th style={{ width: "20%" }}></th>
-            <th style={{ width: "30%" }}> الفرع</th>
             <th style={{ width: "30%" }}>ملف الاسئلة  </th>
             <th style={{ width: "30%" }}> النموذج</th>
             <th style={{ width: "30%" }}> الدورة</th>
@@ -230,7 +229,6 @@ http.get('course/indexa').then((res)=>{
         
                    
               </td>
-              <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.branch_id}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="file" name="file" value={editedItem.file} onChange={handleInputChange} /> : data.file}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="model" value={editedItem.model} onChange={handleInputChange} /> : data.model}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="course_id" value={editedItem.course_id} onChange={handleInputChange} /> : data.subjectName}</td>

@@ -63,10 +63,10 @@ export default function Login() {
         <Container>
           
         <div className="row justify-content-center pt-5">
-            <div className="col-sm-6">
+            <div className="col-sm-6" dir="rtl">
                 <div className="card p-4">
                     <h1 className="text-center mb-3">Login </h1>
-                    <div className="form-group  mt-3">
+                    <div className="form-group mt-3">
                         <label> البريد الالكتروني</label>
                         <input required type="email" className="form-control" 
                             onChange={e=>setEmail(e.target.value)}
@@ -82,7 +82,7 @@ export default function Login() {
                     <button type="button" onClick={submitForm} className="btn btn-primary mt-4">
                       
                    
-                      <h3>تسجيل الدخول</h3>
+                      <h4>تسجيل الدخول</h4>
                      </button>
                    
                 </div>

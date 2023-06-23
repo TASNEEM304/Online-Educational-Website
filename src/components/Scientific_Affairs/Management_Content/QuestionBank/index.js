@@ -175,12 +175,13 @@ const Update = async (editedItem) => {
     }
 
 
-    useEffect(()=>{
-      Getcourse()
-  },[])
+  //   useEffect(()=>{
+  //     Getcourse()
+  // },[])
   
-  const Getcourse = async ()=>{
-  http.get('course/indexa').then((res)=>{
+  const Getcourse = async (branch_id)=>{
+    setbranchid(branch_id) ; 
+    http.get(`course1/indexa/${branch_id}`).then((res)=>{
       setCourse(res.data.data);
   });
   }
@@ -225,9 +226,8 @@ const Update = async (editedItem) => {
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف  نموذج اسئلة 
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
                 </div>
@@ -247,11 +247,10 @@ const Update = async (editedItem) => {
         <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
         }}>
           <tr >
-            <th style={{ width: "20%" }}></th>
-            <th style={{ width: "30%" }}> الفرع</th>
+            <th style={{ width: "20%" }}> </th>
             <th style={{ width: "30%" }}>ملف الاسئلة  </th>
             <th style={{ width: "30%" }}> النموذج</th>
-            <th style={{ width: "30%" }}> الدورة</th>
+            <th style={{ width: "20%" }}> الدورة</th>
         
            
             <th></th>
@@ -262,8 +261,8 @@ const Update = async (editedItem) => {
         <tbody>
           {data.length === 0 ? (
             <tr>
-              <td colSpan={3} className="text-center">
-                No Data
+              <td colSpan={4} className="text-center">
+                لا يوجد بيانات
               </td>
             </tr>
           ) : (
@@ -285,7 +284,6 @@ const Update = async (editedItem) => {
                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
                    
               </td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.name}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="file" name="file" value={editedItem.file} onChange={handleInputChange} /> : data.file}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="model" value={editedItem.model} onChange={handleInputChange} /> : data.model}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="course_id" value={editedItem.course_id} onChange={handleInputChange} /> : data.subjectName}</td>
@@ -333,30 +331,26 @@ const Update = async (editedItem) => {
 
 <ReactModal isOpen={modalIsOpen}
 style={{
- overlay: {
-   backgroundColor: 'rgba(0, 0, 0, 0.5)',
-   zIndex: 9999,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- },
- content: {
-   width: '800px',
-   height: 'auto',
-   position: 'absolute',
-   top: '50%',
-   left: '50%',
-   transform: 'translate(-50%, -50%)',
-   borderRadius: '10px',
-   background: '#fff',
-   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-   padding: 0,
-   paddingTop :0,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- }
-}}>
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 9999,
+    display: 'flex',
+  },
+  content: {
+    width: '800px',
+    height: '500px',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '10px',
+    background: '#fff',
+    boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+    padding: '0px',
+    paddingTop :'0px',
+    display: 'flex',
+  }
+ }}>
 
 
 <div class="card" style={{ 
@@ -379,32 +373,12 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body">
+     <div class="card-body" dir="rtl">
 
      <div lang="ar" className="row">
-         
-         <div className="col-md-6">
-               <div className="form-group mt-2">
-               <label>الفرع </label>
+         <div className="row">
              
-                                        <select  onChange={(e)=>setbranchid(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Branches.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>                
-              
-               </div>   
-         </div>
-         <div className="col-md-6">
-                <div className="form-group mt-2">
-                <label>ملف الأسئلة </label>
-                           <input className='form-control'  type="file" onChange={(event) => setfile(event.target.files[0])} />
-
-                </div>
-         </div>
-
-        
+         
 
          <div className="col-md-6">
                <div className="form-group mt-2">
@@ -416,7 +390,35 @@ flexDirection: 'column',
             />              
                </div>   
          </div>
+         <div className="col-md-6">
+                <div className="form-group mt-2">
+                <label>ملف الأسئلة </label>
+                           <input className='form-control'  type="file" onChange={(event) => setfile(event.target.files[0])} />
 
+                </div>
+         </div>
+         </div>
+         
+
+        <br />
+        <br />
+        <br />
+        <br />
+<div className="row">
+
+<div className="col-md-6">
+               <div className="form-group mt-2">
+               <label>الفرع </label>
+             
+                                        <select  onChange={(e)=>Getcourse(e.target.value)}>
+                                                   <option value="">--Please select an option--</option>
+                                                   {Branches.map(option => (
+                                                     <option key={option.id} value={option.id} >{option.name}</option>
+                                                   ))}
+                                           </select>                
+              
+               </div>   
+         </div>
 
          <div className="col-md-6">
                                 <div className="form-group mt-2">
@@ -429,6 +431,8 @@ flexDirection: 'column',
                                            </select>
                                 </div>
                         </div>
+  
+</div>
                     
                     
          
@@ -436,7 +440,7 @@ flexDirection: 'column',
 
 
 
- </div>
+     </div>
            
      </div>
      <div class="card-footer text-muted">

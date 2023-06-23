@@ -50,9 +50,12 @@ const store = async (event) => {
       },
       
     }
-    
     );
-
+    setsubjectName('');
+    setcontent(null);
+    setprice('');
+    sethouers('');
+    setnumber_of_lessons('');
     toast.success("تمت العملية بنجاح");
   } catch (error) {
     console.error("Error adding service", error);
@@ -207,9 +210,8 @@ const Update = async (editedItem) => {
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف  مادة علمية 
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
                 </div>
@@ -229,12 +231,11 @@ const Update = async (editedItem) => {
         <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
         }}>
           <tr >
-            <th style={{ width: "20%" }}></th>
-            <th style={{ width: "30%" }}>عدد الدروس</th>
-            <th style={{ width: "30%" }}>عدد الساعات </th>
-            <th style={{ width: "30%" }}> السعر</th>
-            <th style={{ width: "30%" }}>المحتوى</th>
-            <th style={{ width: "30%" }}>اسم المادة</th>
+            <th style={{ width: "15%" }}>عدد الدروس</th>
+            <th style={{ width: "15%" }}>عدد الساعات </th>
+            <th style={{ width: "20%" }}> السعر</th>
+            <th style={{ width: "20%" }}>المحتوى</th>
+            <th style={{ width: "20%" }}>اسم المادة</th>
            
                                  
                               
@@ -243,8 +244,8 @@ const Update = async (editedItem) => {
         <tbody>
           {data.length === 0 ? (
             <tr>
-              <td colSpan={3} className="text-center">
-                No Data
+              <td colSpan={6} className="text-center">
+                لا يوجد بيانات
               </td>
             </tr>
           ) : (
@@ -252,7 +253,7 @@ const Update = async (editedItem) => {
               <tr key={data.id}>
   
                           
-                <td>
+                {/* <td>
 
                 {!editing || editedItem.id !== data.id ? (
                 <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
@@ -265,7 +266,7 @@ const Update = async (editedItem) => {
                 )}
                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
                    
-              </td>
+              </td> */}
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="number_of_lessons" value={editedItem.number_of_lessons} onChange={handleInputChange} /> : data.number_of_lessons}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="houers" value={editedItem.houers} onChange={handleInputChange} /> : data.houers}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="number" name="number" value={editedItem.price} onChange={handleInputChange} /> : data.price}</td>
@@ -313,33 +314,28 @@ const Update = async (editedItem) => {
       <div>
 
 
-
-<ReactModal isOpen={modalIsOpen}
+      <ReactModal isOpen={modalIsOpen}
 style={{
- overlay: {
-   backgroundColor: 'rgba(0, 0, 0, 0.5)',
-   zIndex: 9999,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- },
- content: {
-   width: '800px',
-   height: 'auto',
-   position: 'absolute',
-   top: '50%',
-   left: '50%',
-   transform: 'translate(-50%, -50%)',
-   borderRadius: '10px',
-   background: '#fff',
-   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-   padding: 0,
-   paddingTop :0,
-   display: 'flex',
-   justifyContent: 'center',
-   alignItems: 'center'
- }
-}}>
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    zIndex: 9999,
+    display: 'flex',
+  },
+  content: {
+    width: '800px',
+    height: '500px',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    borderRadius: '10px',
+    background: '#fff',
+    boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+    padding: '0px',
+    paddingTop :'0px',
+    display: 'flex',
+  }
+ }}>
 
 
 <div class="card" style={{ 
@@ -362,90 +358,87 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body">
+     <div class="card-body" dir="rtl">
 
-     <div lang="ar" className="row">
+<div lang="ar" className="row">
+    
+    <div className="col-md-6">
+          <div className="form-group mt-2">
+                   <label>المادة</label>
+                   <input type='text' 
+                                         className='form-control'
+                                         Value={subjectName} 
+                                         onChange={(e)=>setsubjectName(e.target.value)}
+                                         />
          
-         <div className="col-md-6">
-               <div className="form-group mt-2">
-                        <label>المادة</label>
-                        <input type='text' 
-                                              className='form-control' 
-                                              placeholder='ادخل اسم المادة '
-                                              Value={subjectName} 
-                                              onChange={(e)=>setsubjectName(e.target.value)}
-                                              />
-              
-               </div>   
-         </div>
-         <div className="col-md-6">
-                <div className="form-group mt-2">
-                <label>المحتوى العلمي </label>
-                                       <input type='file' 
-                                              className='form-control' 
-                                              placeholder='ادخل المحتوى العلمي  '
-                                          
-                                              onChange={(event) => setcontent(event.target.files[0])}
-                                              />
-                </div>
-         </div>
+          </div>   
+    </div>
+    <div className="col-md-6">
+           <div className="form-group mt-2">
+           <label>المحتوى العلمي </label>
+                                  <input type='file' 
+                                         className='form-control'
+                                     
+                                         onChange={(event) => setcontent(event.target.files[0])}
+                                         />
+           </div>
+    </div>
 
-         <div className="col-md-6">
-                <div className="form-group mt-2">
-                <label>السعر </label>
-                                       <input type='number' 
-                                              className='form-control' 
-                                              placeholder='ادخل السعر  '
-                                              Value={price} 
-                                              onChange={(e)=>setprice(e.target.value)}
-                                              />
-                </div>
-         </div>
+    <div className="col-md-6">
+           <div className="form-group mt-2">
+           <label>السعر </label>
+                                  <input type='number' 
+                                         className='form-control'
+                                         Value={price} 
+                                         onChange={(e)=>setprice(e.target.value)}
+                                         />
+           </div>
+    </div>
 
-         <div className="col-md-6">
-               <div className="form-group mt-2">
-               <label>عدد الساعات </label>
-                                       <input type='number' 
-                                              className='form-control' 
-                                              placeholder='ادخل عدد الساعات  '
-                                              Value={houers} 
-                                              onChange={(e)=>sethouers(e.target.value)}
-                                              />            
-               </div>   
-         </div>
+    <div className="col-md-6">
+          <div className="form-group mt-2">
+          <label>عدد الساعات </label>
+                                  <input type='number' 
+                                         className='form-control'
+                                         Value={houers} 
+                                         onChange={(e)=>sethouers(e.target.value)}
+                                         />            
+          </div>   
+    </div>
 
 
-         <div className="col-md-6">
-               <div className="form-group mt-2">
-               <label>عدد الدروس </label>
-                                       <input type='number' 
-                                              className='form-control' 
-                                              placeholder='ادخل عدد الدروس  '
-                                              Value={number_of_lessons} 
-                                              onChange={(e)=>setnumber_of_lessons(e.target.value)}
-                                              />    
-               </div>   
-         </div>
-         
+    <div className="col-md-6">
+          <div className="form-group mt-2">
+          <label>عدد الدروس </label>
+                                  <input type='number' 
+                                         className='form-control'
+                                         Value={number_of_lessons} 
+                                         onChange={(e)=>setnumber_of_lessons(e.target.value)}
+                                         />    
+          </div>   
+    </div>
+    
 
 
 
 
- </div>
-           
-     </div>
+</div>
+      
+</div>
      <div class="card-footer text-muted">
           <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
      </div>
    </div>
 
 
-</ReactModal> 
-
 <ToastContainer/>
 
 
 
+
+</ReactModal>
+
+<ToastContainer/>
 
 </div>  
 </Fragment>

@@ -1,16 +1,14 @@
 import React ,{Fragment,useEffect,useState} from "react";
 import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
 import HeaderRecep from "../../HeaderRecep";
-import {useNavigate,Link,useHistory}  from 'react-router-dom';
+import {useNavigate,useLocation,Link,useHistory}  from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
 import "./Style.css";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-function GetSubscribe () {
+function GetReceipt () {
 
 
     const {http} = AuthUser();
@@ -18,7 +16,6 @@ function GetSubscribe () {
     const [Cards,setCards] = useState([]);
     const [Course,setCourse] = useState([]);
     const [card_id,setCards_Id] = useState();
-    const [course_id,setCourse_Id] = useState();
     const [editing, setEditing] = useState(false);
     const [editedItem, setEditedItem] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
@@ -27,7 +24,12 @@ function GetSubscribe () {
     const [pageCount, setpageCount] = useState(0);  
     const history = useNavigate();
     
+
+    const [Debit,setDebit] = useState();
     
+    const location = useLocation();
+    const dataRow = location.state.data;
+    //console.log(dataRow);
 ///============================
 /// Modal
 ///=============================
@@ -40,27 +42,12 @@ function GetSubscribe () {
 ///=============================
 const store = () =>{
       
-    http.post('subscribe/store',{course_id:course_id, card_id:card_id}).then((res)=>{
+    http.post('receptionist/receipt/store',{Debit:Debit,user_id:dataRow.userId,payment_id:dataRow.id,description:'dsadda'}).then((res)=>{
       const data=res.data;
-      loadData();
-      toast.success("تمت العملية بنجاح")
     }).catch(function (error) {
       console.log(error);
       });
-      
-    closeModal();
-    loadData();
    
-}
-///============================
-/// Delete
-///=============================
-
-const Delete= async (id) =>{
-
-http.post(`branch/destroy/${id}`).then((res)=>{
-   alert(res.data.message);
-})
 }
 
 
@@ -73,7 +60,7 @@ loadData();
      }, []);
 const loadData = async () => {
 debugger
-http.get(`subscribe/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+http.get(`receptionist/receipt/indexing/${dataRow.id}`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -82,58 +69,12 @@ setpageCount(res.data.data.total/res.data.data.data.length);
 };    
 
 
-//=============================
-// GetCards
-//=============================
-
-const payment = async (data)=>{
-  debugger
-http.post(`payment/store/${data}`).then((res)=>{
-  
-  toast.success("تمت العملية بنجاح")
-  //setCards(res.data.data);
-});
-}
-
-///============================
-/// Delete
-///=============================
-
-
-
-
-
-//=============================
-// GetCards
-//=============================
-useEffect(()=>{
-    GetCards()
-},[])
-
-const GetCards = async ()=>{
-http.get('receptionist/card/index').then((res)=>{
-    setCards(res.data.data);
-});
-}
-//=============================
-// GetCards
-//=============================
-useEffect(()=>{
-    Getcourse()
-},[])
-
-const Getcourse = async ()=>{
-http.get('receptionist/course/index').then((res)=>{
-    setCourse(res.data.data);
-});
-}
-
 ///============================
 /// handlePageClick
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`subscribe/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=5&page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -225,8 +166,9 @@ onChange={handleSearchChange}
 <div className="col-md-2">
            </div>
 <div className="col-md-6">
+<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف فرع جديد
 
-<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+</Button>
 </div>
 
            </div>
@@ -239,24 +181,25 @@ onChange={handleSearchChange}
                     padding: "0"
                     }}>
               
-           
               
          <Table style={{fontSize: "16px", 
                     width: "100%"
                     }}>
-   <thead>
+   <thead style={{background: "#2980b9" , 
+   }}>
      <tr >
        <th style={{ width: "10%" }}></th>
        <th style={{ width: "20%" }}>حالة الاشتراك</th>
        <th style={{ width: "20%" }}>سعرالمادة</th>
        <th style={{ width: "10%" }}>المادة</th>
        <th style={{ width: "10%" }}>الاسم</th>
+       <th style={{ width: "10%" }}>الرقم</th>
      </tr>
    </thead>
    <tbody>
      {data.length === 0 ? (
        <tr>
-         <td colSpan={6} className="text-center">
+         <td colSpan={3} className="text-center">
            
          </td>
        </tr>
@@ -267,7 +210,7 @@ onChange={handleSearchChange}
                      
            <td>
 
-           {/* {!editing || editedItem.id !== data.id ? (
+           {!editing || editedItem.id !== data.id ? (
            <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
            
            ) : (
@@ -275,15 +218,13 @@ onChange={handleSearchChange}
                <button onClick={handleSaveClick}>Save</button>
                <button onClick={handleCancelClick}>Cancel</button>
              </>
-           )} */}
-        <button className="btn btn primary"  onClick={() => payment(data.id)} disabled={!data.state}>انشاء فاتورة</button>
-            
+           )}
          </td>
            <td>{data.state}</td>
            <td>{data.price}</td>
            <td>{data.subjectName}</td>
            <td>{data.first_name+" "+data.last_name}</td>
-
+           <td>{data.no}</td>
          </tr>
        ))
      )}
@@ -365,18 +306,18 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body" dir="rtl">
+     <div class="card-body">
 
                     <div className="row">
 
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
-                                        <label>الطالب:</label>
+                                        <label>:الطالب</label>
 
                                         <select  onChange={(e)=>setCards_Id(e.target.value)}>
-                                                   <option value=""> اختر طالب  </option>
+                                                   <option value="">--Please select an option--</option>
                                                    {Cards.map(option => (
-                                                     <option key={option.CardId} value={option.CardId} >{option.first_name+" "+option.last_name}</option>
+                                                     <option key={option.id} value={option.id} >{option.first_name+" "+option.last_name}</option>
                                                    ))}
                                            </select>
                                 </div>
@@ -384,14 +325,11 @@ flexDirection: 'column',
 
                         
                     <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>الكورس:</label>
-                                        <select  onChange={(e)=>setCourse_Id(e.target.value)}>
-                                                   <option value="">اختر الكورس</option>
-                                                   {Course.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.subjectName}</option>
-                                                   ))}
-                                           </select>
+                    <div className="form-group mt-2">
+                                       <label>Email address:</label>
+                                       <input type="integer" className="form-control" placeholder="Enter Debit"
+                                           onChange={e=>setDebit(e.target.value)}
+                                       id="Debit" />
                                 </div>
                         </div>
                     
@@ -410,9 +348,6 @@ flexDirection: 'column',
 
 
 
-<ToastContainer/>
-
-
 
 </div>  
 </Fragment>
@@ -420,4 +355,4 @@ flexDirection: 'column',
  );
 };
 
-export default GetSubscribe;
+export default GetReceipt;

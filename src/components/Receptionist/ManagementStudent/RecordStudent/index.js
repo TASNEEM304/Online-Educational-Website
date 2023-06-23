@@ -91,6 +91,8 @@ export default function GetRecordStudent() {
         }).catch(function (error) {
          toast.error("فشل العملية");
           });
+          
+   
        
     }
 ///============================
@@ -170,6 +172,17 @@ const handleSearchClick = () => {
 loadData();
 };
 
+
+//=============================
+// GetCards
+//=============================
+
+const details = async (data)=>{
+  
+    history('/ManagementStudent/RecordStudent/details' , { state : { data } });
+}
+
+
 //=============================
 // Update
 //=============================
@@ -180,6 +193,9 @@ http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
 console.log(error);
 });
 }
+
+
+
 
 const handleEditClick = (item) => {
 setEditedItem(item);
@@ -245,9 +261,10 @@ onChange={handleSearchChange}
 <div className="col-md-2">
            </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضافة طالب جديد
+{/* <Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضافة طالب جديد */}
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+{/* </Button> */}
 </div>
 
 
@@ -282,8 +299,8 @@ onChange={handleSearchChange}
    <tbody>
      {data.length === 0 ? (
        <tr>
-         <td colSpan={3} className="text-center">
-           
+         <td colSpan={8} className="text-center">
+           لايوجد بيانات
          </td>
        </tr>
      ) : (
@@ -293,7 +310,7 @@ onChange={handleSearchChange}
                      
            <td>
 
-           {!editing || editedItem.id !== data.id ? (
+           {/* {!editing || editedItem.id !== data.id ? (
            <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
            
            ) : (
@@ -301,13 +318,12 @@ onChange={handleSearchChange}
                <button onClick={handleSaveClick}>Save</button>
                <button onClick={handleCancelClick}>Cancel</button>
              </>
-           )}
-           <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-           <Link to="/ManagementStudent/RecordStudent/details">
-            <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+           )} */}
+           {/* <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} /> */}
+           {/* <Link to="/ManagementStudent/RecordStudent/details"> */}
            
-        <button>Show</button>
-                </Link>
+        <button className="btn btn primary" onClick={()=>details(data)}>التفاصيل</button>
+                {/* </Link> */}
          </td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.name}</td>
            <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.phone_number}</td>
@@ -398,7 +414,7 @@ flexDirection: 'column',
            </div>
 
      </div>
-     <div class="card-body">
+     <div class="card-body" dir="rtl">
      <div className="row">
                         <div className="col-md-6">
                               <div className="form-group mt-2">
@@ -420,7 +436,7 @@ flexDirection: 'column',
 
                     <div className="row">
                         <div className="col-md-6">
-                                <div className="form-group mt-2">
+                                <div className="form-group mt-2" dir="rtl">
                                        <label>تاريخ الميلاد</label>
                                        <input type="date" className="form-control" 
                                            onChange={e=>setBirthDay(e.target.value)}
@@ -429,7 +445,7 @@ flexDirection: 'column',
                         </div>
                         <div className="col-md-6">
                                 
-                                <div className="form-group mt-2">
+                                <div className="form-group mt-2" dir="rtl">
                                        <label>رقم الهاتف</label>
                                        <input type="number" className="form-control" 
                                            onChange={e=>setPhone(e.target.value)}
@@ -443,7 +459,7 @@ flexDirection: 'column',
 
                     <div className="row">
                        
-                        <div className="col-md-6">
+                        <div className="col-md-6" dir="rtl">
                                 <div className="form-group mt-2">
                                        <label> البريد الالكتروني</label>
                                        <input type="email" className="form-control" 
@@ -452,7 +468,7 @@ flexDirection: 'column',
                                 </div>
                         </div>
                         <div className="col-md-6">
-                                <div className="form-group mt-2">
+                                <div className="form-group mt-2" dir="rtl">
                                        <label>كلمة السر</label>
                                        <input type="password" className="form-control" 
                                            onChange={e => setPassword(e.target.value)}
@@ -461,33 +477,16 @@ flexDirection: 'column',
                         </div>
                     </div>
 
-                    <div className="row">
-
-                    <div className="col-md-6">
-                                {/* <div className="form-group mt-2">
-                                        <label>roll_number:</label>
-                                        <input type="number" className="form-control" placeholder="Enter roll_number"
-                                            onChange={e=>setRoll(e.target.value)}
-                                       id="roll_number" />
-                                </div> */}
-                        </div>
-                        <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>الفرع:</label>
-                                        <select  onChange={(e)=>setBranchId(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Branches.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>
-                                </div>
-                        </div>
-                    
-                    </div>
            
      </div>
      <div class="card-footer text-muted">
-          <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
+     <div class="row">
+ 								<div class="col-sm-3"></div>
+ 								<div class="col-sm-9 text-secondary">
+ 									<input type="button" onClick={store} class="btn btn-primary px-4" value="حفظ"/>
+ 								</div>
+ 							</div>
+          {/* <a href="#" onClick={store} class="btn btn-primary">حفظ</a>  */}
      </div>
    </div>
 

@@ -163,6 +163,22 @@ const { name, value } = event.target;
 setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 }
 
+//=============================
+// GetCards
+//=============================
+
+const approve = async (id)=>{
+  http.post(`course/approve/${id}`).then((res)=>{
+    const data=res.data;
+    toast.success("تمت الاعتماد بنجاح")
+    loadData();
+  //alert("تمت العملية بنجاح ")
+   
+  }).catch(function (error) {
+    toast.error("error")
+    });
+}
+
 
 
     
@@ -209,9 +225,8 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
-<Button variant="success"  onClick={openModal} style={{  background :  "rgb(19,130,64)"}}>أضف كورس جديد
 
-</Button>
+<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
                 </div>
@@ -234,20 +249,20 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
           <tr >
             <th style={{ width: "10%" }}></th>
             <th style={{ width: "10%" }}>الاعتماد</th>
-            <th style={{ width: "15%" }}>تاريخ الإنتهاء</th>
-            <th style={{ width: "15%" }}>تاريخ البدء</th>
+            <th style={{ width: "10%" }}>تاريخ الإنتهاء</th>
+            <th style={{ width: "10%" }}>تاريخ البدء</th>
             <th style={{ width: "10%" }}>عدد الجلسات</th>
             <th style={{ width: "10%" }}>عدد الساعات</th>
             <th style={{ width: "10%" }}>التسعير</th>
-            <th style={{ width: "15%" }}>اسم المدرب</th>
-            <th style={{ width: "15%" }}>اسم المادة</th>
+            <th style={{ width: "10%" }}>اسم المدرب</th>
+            <th style={{ width: "20%" }}>اسم المادة</th>
           </tr>
         </thead>
         <tbody>
           {data.length === 0 ? (
             <tr>
-              <td colSpan={3} className="text-center">
-                
+              <td colSpan={8} className="text-center">
+                لا يوجد بيانات
               </td>
             </tr>
           ) : (
@@ -255,7 +270,7 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
               <tr key={data.id}>
   
                           
-                <td>
+                {/* <td>
 
                 {!editing || editedItem.id !== data.id ? (
                 <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
@@ -268,8 +283,13 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
                 )}
                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
                    
+              </td> */}
+              <td >
+                
+        <button className="btn btn primary" onClick={()=>approve(data.id)}>اعتماد</button>
+            
               </td>
-                <td>{data.approved === 1 ? 'ليس معتمد' : 'معتمد'}</td>
+                <td>{data.approved === 0 ? 'ليس معتمد' : 'معتمد'}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.end}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.start}</td>
                 <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.number_of_lessons}</td>
@@ -373,7 +393,7 @@ flexDirection: 'column',
                                        <label>:المادة</label>
                                        <select  onChange={(e)=>setSubjectId(e.target.value)}>
                                                   {subjects!=null?subjects.map(option => (
-                                                    <option key={option.id} value={option.id} >{option.first_name}</option>
+                                                    <option key={option.id} value={option.id} >{option.subjectName}</option>
                                                   )):null}
                                           </select>
                                </div>
