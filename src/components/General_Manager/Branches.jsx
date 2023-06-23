@@ -30,6 +30,8 @@ const Getbranches = () => {
 ///============================
 /// store
 ///=============================
+
+
 const store = () =>{
       
   http.post('branch/store',{No:No,name:name}).then((res)=>{
