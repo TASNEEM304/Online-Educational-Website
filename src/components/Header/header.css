@@ -3,7 +3,8 @@
         height: 80px;
         background-color: white;
         line-height: 80px;
-        color: rgb(117, 47, 47);
+        color: #463BAC;
+        box-shadow: #4b0b0b;
     }
     
     .nav__list {
@@ -24,7 +25,7 @@
     }
     
     .nav__item a:hover {
-        color: rgb(71, 29, 29);
+        color: #463BAC;
     }
     
     .nav__right p {
@@ -99,16 +100,17 @@
             padding: 10px;
         }
         .dropdown li:hover {
-            background-color: #4b0b0b;
+            background-color: #463BAC;
         }
     }
     
     .header {
         width: 100%;
         height: 80px;
-        background: rgb(243, 243, 245);
-        /* background: linear-gradient(to right, #2980b9, #550505); */
+        background: white;
         line-height: 80px;
+        box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.15);
+        border-bottom: 1px solid #ccc;
     }
     
     .nav__list {
@@ -122,7 +124,7 @@
     .nav__item a {
         font-weight: 500;
         font-size: 1.1rem;
-        color: rgb(66, 10, 10);
+        color: #463BAC;
         text-decoration: none;
         transition: 0.3s;
     }

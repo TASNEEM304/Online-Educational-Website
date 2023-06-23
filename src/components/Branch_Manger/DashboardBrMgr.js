@@ -23,6 +23,10 @@ const DashboardBrMgr = () => {
     { name: 'Jun', value: 2390 },
     { name: 'Jul', value: 3490 },
   ];
+
+  const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  const hours = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM', '7 PM', '8 PM'];
+
   return (
     <Fragment>
 <HeaderBrcMgr />
@@ -76,6 +80,27 @@ const DashboardBrMgr = () => {
       <Tooltip />
       <Legend />
     </PieChart>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          {days.map(day => (
+            <th key={day}>{day}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {hours.map(hour => (
+          <tr key={hour}>
+            <td>{hour}</td>
+            {days.map(day => (
+              <td key={`${day}-${hour}`}></td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
 </Container>
      {/* <Container>
 
