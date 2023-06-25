@@ -48,6 +48,10 @@ const navLinks = [
     url: "/RecordStudent/Payment",
   },
   {
+    display: "الفاتورة",
+    url: "/PaymentCard",
+  },
+  {
     display: "الاشتراكات",
     url: "/RecordStudent/Subscribe",
     
