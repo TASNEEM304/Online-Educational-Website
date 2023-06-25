@@ -85,7 +85,7 @@ export default function GetRecordStudent() {
 ///=============================
     const store = () =>{
       
-        http.post('add_admin',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
+        http.post('general_admin/add_admin',{roll_number:roll_number,first_name:first_name,last_name:last_name,birth_day:birth_day,branch_id:branch_id,phone_number:phone_number,email:email,password:password}).then((res)=>{
           const data=res.data;
     closeModal();
     toast.success("تمت العملية بنجاح")
@@ -117,7 +117,7 @@ useEffect(() => {
          }, []);
 const loadData = async () => {
 debugger
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=1`).then((res)=>{
+http.get(`general_admin/user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=1`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -141,7 +141,7 @@ Getbranches()
 },[])
 
 const Getbranches = async ()=>{
-http.get('branch/index').then((res)=>{
+http.get('general_admin/branch/index').then((res)=>{
  setbranches(res.data.data.data);
 });
 }
@@ -152,7 +152,7 @@ http.get('branch/index').then((res)=>{
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=${selected+1}`).then((res)=>{
+http.get(`general_admin/user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=2&page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {

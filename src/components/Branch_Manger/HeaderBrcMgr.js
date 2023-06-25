@@ -72,10 +72,9 @@ const HeaderBrcMgr = () => {
 <header className="header">
       <Container>
         <div className="navigation d-flex align-items-center justify-content-between">
-          <div className="logo">
-            <h2 className=" d-flex align-items-center gap-1">
-              <i class="ri-pantone-line"></i> مدير الفرع  </h2>
-          </div>
+          
+        <h2 className=" d-flex align-items-center gap-1">
+         مدير الفرع  </h2>
 
           <div className="nav d-flex align-items-center gap-5">
             <div className="nav__menu" ref={menuRef} onClick={menuToggle}>
@@ -85,6 +84,7 @@ const HeaderBrcMgr = () => {
 
                   <li key={index} className="nav__item">
                     <Link to={item.url}>{item.display}</Link>
+                    <span className="nav__line"></span>
                   </li>
                 ))}
                   

@@ -34,7 +34,7 @@ const Getbranches = () => {
 
 const store = () =>{
       
-  http.post('branch/store',{No:No,name:name}).then((res)=>{
+  http.post('general_admin/branch/store',{No:No,name:name}).then((res)=>{
     const data=res.data;
     toast.success("تمت العملية بنجاح")
   //alert("تمت العملية بنجاح ")
@@ -57,7 +57,7 @@ const store = () =>{
 
   const Delete= async (id) =>{
     
-       http.post(`branch/destroy/${id}`).then((res)=>{
+       http.post(`general_admin/branch/destroy/${id}`).then((res)=>{
      
         toast.success("تمت العملية بنجاح")
         loadData();
@@ -74,7 +74,7 @@ useEffect(() => {
 }, []);
 const loadData = async () => {
   debugger
-    http.get(`branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+    http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
       setData(res.data.data.data);
       setpageCount(res.data.data.total/res.data.data.data.length);
      }).catch(function (error) {
@@ -86,7 +86,7 @@ const loadData = async () => {
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
   setData(res.data.data.data);
    setCurrentPage(selected);
 }).catch(function (error) {
