@@ -8,7 +8,6 @@ import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
 export default function Course() {
     const navigate = useNavigate();
     const {http} = AuthUser();
@@ -25,34 +24,69 @@ export default function Course() {
     const [data, setData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setpageCount] = useState(0);  
-
+   
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => setModalIsOpen(false);
-
-
+    const NewDate=new Date();
+    // const year_start = NewDate.getFullYear();
+    // const month_start = NewDate.getMonth()+1;
+    // const day_start = NewDate.getDate();
+    
+    // const year_end = NewDate.getFullYear();
+    // const month_end = NewDate.getMonth()+2;
+    // const day_end = NewDate.getDate();
+    const [start_date, setFirstdate] = useState(NewDate.toISOString().substr(0, 10));
+    const [end_date, setEnddate] = useState(new Date(NewDate.getFullYear(), NewDate.getMonth() + 1, NewDate.getDate()).toISOString().substr(0, 10));
+     
 ///============================
 /// loadData
 ///=============================
-    useEffect(() => {
-            loadData();
-                   }, []);
-   const loadData = async () => {
-      debugger
-      http.get(`receptionist/course/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
-       setData(res.data.data.data);
+useEffect(() => {
+  
+  loadData();
+         }, []);
+const loadData = async () => {
+debugger
+
+http.get(`branch_admin/course/search?page=1&start_date=${start_date}&end_date=${end_date}&approved=0`).then((res)=>{
+setData(res.data.data.data);
+
+
+setpageCount(res.data.data.total/res.data.data.data.length);
+}).catch(function (error) {
+
+});
+};    
+  //   useEffect(() => {
+  //           loadData();
+  //                  }, []);
+  //  const loadData = async () => {
+  //     debugger
+  //     http.get(`branch_admin/course/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+  //      setData(res.data.data.data);
       
 
-       setpageCount(res.data.data.total/res.data.data.data.length);
-      }).catch(function (error) {
+  //      setpageCount(res.data.data.total/res.data.data.data.length);
+  //     }).catch(function (error) {
    
-      });
-    };    
+  //     });
+  //   };    
 //=============================
 // store
 //=============================
+    // const store = () =>{
+    //   debugger
+    //   http.post('receptionist/course/store',{subject_id:subject_id,trainer_id:trainer_id,start:start,end:end}).then((res)=>{
+    //     toast.success('تمت العملية بنجاح');
+
+    //   }).catch(function (error) {
+    //     toast.error("error");
+    
+    //     });
+
     const store = () =>{
       debugger
-      http.post('receptionist/course/store',{subject_id:subject_id,trainer_id:trainer_id,start:start,end:end}).then((res)=>{
+      http.post('branch_admin/course/store',{subject_id:subject_id,trainer_id:trainer_id,start:start,end:end,approved:0,min_students:10,max_students:20}).then((res)=>{
         toast.success('تمت العملية بنجاح');
 
       }).catch(function (error) {
@@ -92,7 +126,7 @@ const Delete= async (id) =>{
       },[])
 
       const GetTrainerId = async ()=>{
-          http.get('trainerProfile/view?roll_number=4').then((res)=>{
+          http.get('trainer/trainerProfile/view').then((res)=>{
             setTrainer(res.data.data);
         });
       }
@@ -101,7 +135,7 @@ const Delete= async (id) =>{
       },[])
       
       const GetSubjectId = async ()=>{
-          http.get('subject/view').then((res)=>{
+          http.get('branch_admin/subject/view/').then((res)=>{
             setSubject(res.data.data);
         });
       }
@@ -109,15 +143,24 @@ const Delete= async (id) =>{
 /// handlePageClick
 ///=============================
 
+// const handlePageClick = async ({ selected }) => {
+// http.get(`receptionist/course/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+// setData(res.data.data.data);
+// setCurrentPage(selected);
+// }).catch(function (error) {
+
+// });
+// };
+
+
 const handlePageClick = async ({ selected }) => {
-http.get(`receptionist/course/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
-setData(res.data.data.data);
-setCurrentPage(selected);
-}).catch(function (error) {
-
-});
-};
-
+  http.get(`branch_admin/course/search?page=${selected+1}&start_date=${start_date}&end_date=${end_date}&approved=0`).then((res)=>{
+  setData(res.data.data.data);
+  setCurrentPage(selected);
+  }).catch(function (error) {
+  
+  });
+  };
 ///============================
 /// Search
 ///=============================
@@ -197,36 +240,62 @@ const approve = async (id)=>{
      <Col lg="12" lang="ar">
 
        
-     <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
-               <div className="card-header">
+     <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: 'white', marginTop:'15px', border: 'none',boxShadow: 'none'}}>
+               <div className="card-header" style={{background: 'white'}} dir="rtl">
+                
                 <div className="row">
                 
-                <div className="col-md-4">
+                <div className="col-lg-3">
 
-<div className="input-group mb-2">
+                <div className="input-group mb-4">
   <input
     type="text"
     className="form-control"
     placeholder="إبحث عن التاريخ"
     value={searchTerm}
     onChange={handleSearchChange}
-    
+    style={{ borderTop: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: '1px solid #ccc' }}
   />
   <div className="input-group-append">
     <span className="input-group-text">
-    <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
-
+      <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
     </span>
   </div>
-  
-                
 </div>
-</div>
-<div className="col-md-2">
-                </div>
-<div className="col-md-6">
 
-<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+
+</div>
+<div className="col-lg-4">
+  
+<div className="input-group mb-4" style={{ fontSize:'20px',alignItems:"center" }}>
+  
+  <label>تاريخ النهاية:</label>
+                          <input type="date" className="form-control" placeholder="Enter birth_day"
+                              onChange={e=>setEnddate(e.target.value)}
+                              
+  value={end_date}
+                          id="birth_day" />
+  
+                  </div>
+</div>
+<div className="col-lg-4">
+<div className="input-group mb-4" style={{ fontSize:'20px',alignItems:"center" }}>
+  
+  <label>تاريخ البداية:</label>
+                          <input type="date" className="form-control" placeholder="Enter birth_day"
+                              onChange={e=>setFirstdate(e.target.value)}
+                              
+  value={start_date}
+                          id="start_date" />
+  
+                  </div>
+</div>
+<div className="col-lg-1">
+  
+<AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'#5b5ac9' ,
+        border: 'none', alignItems:"center" }} />
+
+{/* <button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button> */}
 </div>
 
                 </div>
@@ -259,14 +328,14 @@ const approve = async (id)=>{
           </tr>
         </thead>
         <tbody>
-          {data.length === 0 ? (
+          {data  && data.length === 0 ? (
             <tr>
               <td colSpan={8} className="text-center">
                 لا يوجد بيانات
               </td>
             </tr>
           ) : (
-            data.map((data) => (
+            data && data.map((data) => (
               <tr key={data.id}>
   
                           
@@ -304,7 +373,7 @@ const approve = async (id)=>{
         </tbody>
               </Table>
               </div>
-              <div className="card-footer text-muted">
+              <div className="card-footer text-muted" style={{background: 'white'}}>
                   
               <ReactPaginate
         pageCount={pageCount} // Total number of pages

@@ -159,7 +159,7 @@ const handleGenerateFormSubmit = (event) => {
 };
 
 return (
-  <div>
+  <div dir="rtl">
     <HeaderSiectAff/>
     <Tabs value={selectedTab} onChange={handleTabChange}>
       <Tab label=" كل الأسئلة" />

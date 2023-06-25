@@ -159,136 +159,233 @@ const Update = async (editedItem) => {
 <Header />
 
 {/* <div className="container-fluid"></div> */}
- 
-<Container>
+ <section>
+
+ <Container>
     
-   <Row>
-    
-     <Col lg="12" lang="ar">
-
-       
-     <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
-               <div className="card-header">
-                <div className="row">
-                
-                <div className="col-md-4">
-
-<div className="input-group mb-2">
-  <input
-    type="text"
-    className="form-control"
-    placeholder="بحث..."
-    value={searchTerm}
-    onChange={handleSearchChange}
-    
-  />
-  <div className="input-group-append">
-    <span className="input-group-text">
-    <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
-
-    </span>
-  </div>
-  
-                
-</div>
-</div>
-<div className="col-md-2">
-                </div>
-<div className="col-md-6">
-
-<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
-</div>
-
-                </div>
-             
-
-              </div>
-              <div className="card-body" dir="" style={{ textAlign: 'center' ,fontSize: "16px", 
-                         width: "100%",
-                         height : "100%",
-                         padding: "0"
-                         }}>
-                   
-                   
-              <Table style={{fontSize: "16px", 
-                         width: "100%"
-                         }}>
-        <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
-        }}>
-          <tr >
-            <th style={{ width: "50%" }}>الاسم</th>
-            <th style={{ width: "30%" }}>الرقم</th>
-            <th style={{ width: "30%" }}>سعة القاعة</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.length === 0 ? (
-            <tr>
-              <td colSpan={3} className="text-center">
-                لا يوجد بيانات
-              </td>
-            </tr>
-          ) : (
-            data.map((data) => (
-              <tr key={data.id}>
-  
-                          
-                <td>
-
-                {!editing || editedItem.id !== data.id ? (
-                <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-                
-                ) : (
-                  <>
-                    <button onClick={handleSaveClick}>Save</button>
-                    <button onClick={handleCancelClick}>Cancel</button>
-                  </>
-                )}
-                <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-                   
-              </td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="className" value={editedItem.className} onChange={handleInputChange} /> : data.className}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="Number" value={editedItem.Number} onChange={handleInputChange} /> : data.Number}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="size" value={editedItem.size} onChange={handleInputChange} /> : data.size}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.branch_id}</td>
-
-              </tr>
-            ))
-          )}
-        </tbody>
-              </Table>
-              </div>
-              <div className="card-footer text-muted">
-                  
-              <ReactPaginate
-        pageCount={pageCount} // Total number of pages
-        onPageChange={handlePageClick}
-        containerClassName={'pagination'}
-        pageClassName={'page-item'}
-        activeClassName={'active'}
-        previousClassName={'page-item'}
-        nextClassName={'page-item'}
-        breakClassName={'page-item'}
-        pageLinkClassName={'page-link #550505'}
-        previousLinkClassName={'page-link'}
-        nextLinkClassName={'page-link'}
-        breakLinkClassName={'page-link'}
-        disableInitialCallback={true}
-        previousLabel={<AiIcons.AiOutlineDoubleLeft />}
-        nextLabel={<AiIcons.AiOutlineDoubleRight />}
-      />
-                                </div>
-            </div>
-      
-
-      
-     </Col>
-
+    <Row>
      
-   </Row>
-
-    
-      </Container>
+      <Col lg="12" lang="ar">
+      <div className="row">
+                 
+                 <div className="col-md-4">
+ 
+ <div className="input-group mb-2">
+   <input
+     type="text"
+     className="form-control"
+     placeholder="بحث..."
+     value={searchTerm}
+     onChange={handleSearchChange}
+     
+   />
+   <div className="input-group-append">
+     <span className="input-group-text">
+     <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
+ 
+     </span>
+   </div>
+   
+                 
+ </div>
+ </div>
+ <div className="col-md-2">
+                 </div>
+ <div className="col-md-6">
+ 
+ <button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+ </div>
+ 
+                 </div>
+        
+        
+                 <Table style={{fontSize: "16px", 
+                          width: "100%"
+                          }}>
+         <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
+         }}>
+           <tr >
+             <th style={{ width: "50%" }}>الاسم</th>
+             <th style={{ width: "30%" }}>الرقم</th>
+             <th style={{ width: "30%" }}>سعة القاعة</th>
+           </tr>
+         </thead>
+         <tbody>
+           {data.length === 0 ? (
+             <tr>
+               <td colSpan={3} className="text-center">
+                 لا يوجد بيانات
+               </td>
+             </tr>
+           ) : (
+             data.map((data) => (
+               <tr key={data.id}>
+   
+                           
+                 <td>
+ 
+                 {!editing || editedItem.id !== data.id ? (
+                 <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+                 
+                 ) : (
+                   <>
+                     <button onClick={handleSaveClick}>Save</button>
+                     <button onClick={handleCancelClick}>Cancel</button>
+                   </>
+                 )}
+                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+                    
+               </td>
+                 <td>{editing && editedItem.id === data.id ? <input type="text" name="className" value={editedItem.className} onChange={handleInputChange} /> : data.className}</td>
+                 <td>{editing && editedItem.id === data.id ? <input type="number" name="Number" value={editedItem.Number} onChange={handleInputChange} /> : data.Number}</td>
+                 <td>{editing && editedItem.id === data.id ? <input type="number" name="size" value={editedItem.size} onChange={handleInputChange} /> : data.size}</td>
+                 <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.branch_id}</td>
+ 
+               </tr>
+             ))
+           )}
+         </tbody>
+               </Table>
+               <ReactPaginate
+         pageCount={pageCount} // Total number of pages
+         onPageChange={handlePageClick}
+         containerClassName={'pagination'}
+         pageClassName={'page-item'}
+         activeClassName={'active'}
+         previousClassName={'page-item'}
+         nextClassName={'page-item'}
+         breakClassName={'page-item'}
+         pageLinkClassName={'page-link #550505'}
+         previousLinkClassName={'page-link'}
+         nextLinkClassName={'page-link'}
+         breakLinkClassName={'page-link'}
+         disableInitialCallback={true}
+         previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+         nextLabel={<AiIcons.AiOutlineDoubleRight />}
+       />
+      {/* <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
+                <div className="card-header">
+                 <div className="row">
+                 
+                 <div className="col-md-4">
+ 
+ <div className="input-group mb-2">
+   <input
+     type="text"
+     className="form-control"
+     placeholder="بحث..."
+     value={searchTerm}
+     onChange={handleSearchChange}
+     
+   />
+   <div className="input-group-append">
+     <span className="input-group-text">
+     <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
+ 
+     </span>
+   </div>
+   
+                 
+ </div>
+ </div>
+ <div className="col-md-2">
+                 </div>
+ <div className="col-md-6">
+ 
+ <button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+ </div>
+ 
+                 </div>
+              
+ 
+               </div>
+               <div className="card-body" dir="" style={{ textAlign: 'center' ,fontSize: "16px", 
+                          width: "100%",
+                          height : "100%",
+                          padding: "0"
+                          }}>
+                    
+                    
+               <Table style={{fontSize: "16px", 
+                          width: "100%"
+                          }}>
+         <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
+         }}>
+           <tr >
+             <th style={{ width: "50%" }}>الاسم</th>
+             <th style={{ width: "30%" }}>الرقم</th>
+             <th style={{ width: "30%" }}>سعة القاعة</th>
+           </tr>
+         </thead>
+         <tbody>
+           {data.length === 0 ? (
+             <tr>
+               <td colSpan={3} className="text-center">
+                 لا يوجد بيانات
+               </td>
+             </tr>
+           ) : (
+             data.map((data) => (
+               <tr key={data.id}>
+   
+                           
+                 <td>
+ 
+                 {!editing || editedItem.id !== data.id ? (
+                 <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+                 
+                 ) : (
+                   <>
+                     <button onClick={handleSaveClick}>Save</button>
+                     <button onClick={handleCancelClick}>Cancel</button>
+                   </>
+                 )}
+                 <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+                    
+               </td>
+                 <td>{editing && editedItem.id === data.id ? <input type="text" name="className" value={editedItem.className} onChange={handleInputChange} /> : data.className}</td>
+                 <td>{editing && editedItem.id === data.id ? <input type="number" name="Number" value={editedItem.Number} onChange={handleInputChange} /> : data.Number}</td>
+                 <td>{editing && editedItem.id === data.id ? <input type="number" name="size" value={editedItem.size} onChange={handleInputChange} /> : data.size}</td>
+                 <td>{editing && editedItem.id === data.id ? <input type="number" name="branch_id" value={editedItem.branch_id} onChange={handleInputChange} /> : data.branch_id}</td>
+ 
+               </tr>
+             ))
+           )}
+         </tbody>
+               </Table>
+               </div>
+               <div className="card-footer text-muted">
+                   
+               <ReactPaginate
+         pageCount={pageCount} // Total number of pages
+         onPageChange={handlePageClick}
+         containerClassName={'pagination'}
+         pageClassName={'page-item'}
+         activeClassName={'active'}
+         previousClassName={'page-item'}
+         nextClassName={'page-item'}
+         breakClassName={'page-item'}
+         pageLinkClassName={'page-link #550505'}
+         previousLinkClassName={'page-link'}
+         nextLinkClassName={'page-link'}
+         breakLinkClassName={'page-link'}
+         disableInitialCallback={true}
+         previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+         nextLabel={<AiIcons.AiOutlineDoubleRight />}
+       />
+                                 </div>
+             </div>
+        */}
+ 
+       
+      </Col>
+ 
+      
+    </Row>
+ 
+     
+       </Container>
+ </section>
 
       <div>
 

@@ -91,12 +91,12 @@ const Header = () => {
                                     :'/'} >{ getToken() == null ? 'تسجيل الدخول ': 'لوحة التحكم' } </Link>
                    
                   </li>
-                    {/* <li className="nav__item" if>
+                    <li className="nav__item" if>
                     <Link onClick={Logout}>تسجيل خروج </Link>
                   
-                  </li> */}
+                  </li>
 <li className="nav__item">
-                    {/* <Link to={'/Register'}>تسجيل </Link> */}
+                    <Link to={'/Register'}>تسجيل </Link>
                   
                   </li>
                   
