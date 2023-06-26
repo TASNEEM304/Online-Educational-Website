@@ -13,7 +13,7 @@ import AuthUser from  '../Auth/AuthUser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import dayjs from 'dayjs';
+
 
 
 const AboutUs = () => {

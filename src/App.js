@@ -14,6 +14,8 @@ import RecoredBranchesManagers from "./components/General_Manager/RecoredBranche
 //Receptionist
 import DashboardRecep from "./components/Receptionist/DashboardRecep";
 import Cards from "./components/Receptionist/Cards/Card";
+import Cardexample from "./components/Receptionist/Cards/Cardexample";
+
 import GetRecordStudent from "./components/Receptionist/ManagementStudent/RecordStudent";
 import GetRecordStudentdetails from "./components/Receptionist/ManagementStudent/RecordStudent/details"
 import Scanner from "./components/Receptionist/Scanner";
@@ -75,6 +77,7 @@ function App() {
         <Route path ='/RecordStudent/Payment' element={<GetPayment/>} /> 
         <Route path ='/RecordStudent/Receipt' element={<GetReceipt/>} /> 
         <Route path ='/PaymentCard' element={<GetPaymentCard/>} /> 
+        <Route path ='/Cards/Cardexample' element={<Cardexample/>} /> 
         
 
        {/* Branch_Manger */}

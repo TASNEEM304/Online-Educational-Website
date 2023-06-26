@@ -52,6 +52,10 @@ const navLinks = [
     url: "/PaymentCard",
   },
   {
+    display: "بطاقة الطالب",
+    url: "/Cards/Cardexample",
+  },
+  {
     display: "الاشتراكات",
     url: "/RecordStudent/Subscribe",
     
