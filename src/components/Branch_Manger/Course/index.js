@@ -28,13 +28,6 @@ export default function Course() {
     const openModal = () => setModalIsOpen(true);
     const closeModal = () => setModalIsOpen(false);
     const NewDate=new Date();
-    // const year_start = NewDate.getFullYear();
-    // const month_start = NewDate.getMonth()+1;
-    // const day_start = NewDate.getDate();
-    
-    // const year_end = NewDate.getFullYear();
-    // const month_end = NewDate.getMonth()+2;
-    // const day_end = NewDate.getDate();
     const [start_date, setFirstdate] = useState(NewDate.toISOString().substr(0, 10));
     const [end_date, setEnddate] = useState(new Date(NewDate.getFullYear(), NewDate.getMonth() + 1, NewDate.getDate()).toISOString().substr(0, 10));
      
@@ -291,18 +284,13 @@ const approve = async (id)=>{
                   </div>
 </div>
 <div className="col-lg-1">
-  
-<AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'#5b5ac9' ,
-        border: 'none', alignItems:"center" }} />
-
-{/* <button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button> */}
-</div>
+ </div>
 
                 </div>
              
 
               </div>
-              <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
+              <div className="card-body" style={{ textAlign: 'center' ,fontSize: "16px", 
                          width: "100%",
                          height : "100%",
                          padding: "0"
@@ -374,24 +362,51 @@ const approve = async (id)=>{
               </Table>
               </div>
               <div className="card-footer text-muted" style={{background: 'white'}}>
+                <div className="row">
+                   
+                    
+                  <div className="col-lg-3"> 
+                      
+                      <div className="input-group mb-4">
+                           
+                      <AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'#5b5ac9' ,
+                              border: 'none', alignItems:"center" }} />
+                        
+                      </div>
+                 </div>
+                 <div className="col-lg-6">
+                         
+                         <div className="input-group mb-4">
+                         </div>
+                 </div>
                   
-              <ReactPaginate
-        pageCount={pageCount} // Total number of pages
-        onPageChange={handlePageClick}
-        containerClassName={'pagination'}
-        pageClassName={'page-item'}
-        activeClassName={'active'}
-        previousClassName={'page-item'}
-        nextClassName={'page-item'}
-        breakClassName={'page-item'}
-        pageLinkClassName={'page-link #550505'}
-        previousLinkClassName={'page-link'}
-        nextLinkClassName={'page-link'}
-        breakLinkClassName={'page-link'}
-        disableInitialCallback={true}
-        previousLabel={<AiIcons.AiOutlineDoubleLeft />}
-        nextLabel={<AiIcons.AiOutlineDoubleRight />}
-      />
+
+                 <div className="col-lg-3">
+                         
+                      <div className="input-group mb-4">
+                          
+                          
+                      <ReactPaginate
+                                      pageCount={pageCount} // Total number of pages
+                                      onPageChange={handlePageClick}
+                                      containerClassName={'pagination'}
+                                      pageClassName={'page-item'}
+                                      activeClassName={'active'}
+                                      previousClassName={'page-item'}
+                                      nextClassName={'page-item'}
+                                      breakClassName={'page-item'}
+                                      pageLinkClassName={'page-link #550505'}
+                                      previousLinkClassName={'page-link'}
+                                      nextLinkClassName={'page-link'}
+                                      breakLinkClassName={'page-link'}
+                                      disableInitialCallback={true}
+                                      previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+                                      nextLabel={<AiIcons.AiOutlineDoubleRight />}/>
+
+                      </div>
+
+                 </div>
+                 </div>
                                 </div>
             </div>
       
