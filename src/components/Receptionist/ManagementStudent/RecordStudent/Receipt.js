@@ -42,7 +42,7 @@ function GetReceipt () {
 ///=============================
 const store = () =>{
       
-    http.post('receptionist/receipt/store',{Debit:Debit,user_id:dataRow.userId,payment_id:dataRow.id,description:'dsadda'}).then((res)=>{
+    http.post('receptionist/receipt/store',{Debit:Debit,user_id:dataRow.user_id,subscription_id:dataRow.id,description:'dsadda'}).then((res)=>{
       const data=res.data;
     }).catch(function (error) {
       console.log(error);

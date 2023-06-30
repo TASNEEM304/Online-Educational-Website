@@ -27,6 +27,9 @@ function GetSubscribe () {
     const [pageCount, setpageCount] = useState(0);  
     const history = useNavigate();
     
+    const NewDate=new Date();
+    const [start_date, setFirstdate] =useState(new Date(NewDate.getFullYear(), NewDate.getMonth() - 1, NewDate.getDate()).toISOString().substr(0, 10));// useState(NewDate.toISOString().substr(0, 10));
+    const [end_date, setEnddate] = useState(new Date(NewDate.getFullYear(), NewDate.getMonth() + 1, NewDate.getDate()).toISOString().substr(0, 10));
     
 ///============================
 /// Modal
@@ -40,7 +43,7 @@ function GetSubscribe () {
 ///=============================
 const store = () =>{
       
-    http.post('subscribe/store',{course_id:course_id, card_id:card_id}).then((res)=>{
+    http.post('receptionist/store',{course_id:course_id, card_id:card_id}).then((res)=>{
       const data=res.data;
       loadData();
       toast.success("تمت العملية بنجاح")
@@ -73,7 +76,8 @@ loadData();
      }, []);
 const loadData = async () => {
 debugger
-http.get(`subscribe/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
+http.get(`receptionist/searchDate/${searchTerm}?page=1&start_date=${start_date}&end_date=${end_date}`).then((res)=>{
+
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -88,9 +92,10 @@ setpageCount(res.data.data.total/res.data.data.data.length);
 
 const payment = async (data)=>{
   debugger
-http.post(`payment/store/${data}`).then((res)=>{
+http.post(`receptionist/payment/store/${data}`).then((res)=>{
   
   toast.success("تمت العملية بنجاح")
+  loadData();
   //setCards(res.data.data);
 });
 }
@@ -108,6 +113,7 @@ http.post(`payment/store/${data}`).then((res)=>{
 //=============================
 useEffect(()=>{
     GetCards()
+    
 },[])
 
 const GetCards = async ()=>{
@@ -123,7 +129,7 @@ useEffect(()=>{
 },[])
 
 const Getcourse = async ()=>{
-http.get('receptionist/course/index').then((res)=>{
+http.get('branch_admin/course/indexAvailable').then((res)=>{
     setCourse(res.data.data);
 });
 }
@@ -133,7 +139,7 @@ http.get('receptionist/course/index').then((res)=>{
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`subscribe/search/${searchTerm === "" ? 'null' : searchTerm}?page=${selected+1}`).then((res)=>{
+http.get(`receptionist/searchDate/${searchTerm}?page=${selected+1}&start_date=${start_date}&end_date=${end_date}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -188,6 +194,14 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 };
 
 
+//=============================
+// GetCards
+//=============================
+
+const Receipt = async (data)=>{
+  // console.log(data);
+    history('/RecordStudent/Receipt' , { state : { data } });
+}
     return (
     
 <Fragment>
@@ -198,41 +212,69 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 
        
 <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
-          <div className="card-header">
-           <div className="row">
-           
-           <div className="col-md-4">
+<div className="card-header" style={{background: 'white'}} dir="rtl">
+                
+                <div className="row">
+                
 
-<div className="input-group mb-2">
-<input
-type="text"
-className="form-control"
-placeholder="إبحث عن اسم أو رقم"
-value={searchTerm}
-onChange={handleSearchChange}
+<div className="col-lg-3">
+<div className="input-group mb-4" style={{ fontSize:'20px',alignItems:"center" }}>
+  
+  <label>من تاريخ:</label>
+                          <input type="date" className="form-control" placeholder="Enter birth_day"
+                              onChange={e=>setFirstdate(e.target.value)}
+                              
+  value={start_date}
+                          id="start_date" />
+  
+                  </div>
+</div>
+<div className="col-lg-3">
+  
+<div className="input-group mb-4" style={{ fontSize:'20px',alignItems:"center" }}>
+  
+  <label>الى تاريخ:</label>
+                          <input type="date" className="form-control" placeholder="Enter birth_day"
+                              onChange={e=>setEnddate(e.target.value)}
+                              
+  value={end_date}
+                          id="birth_day" />
+  
+                  </div>
+</div>
+<div className="col-lg-4">
 
-/>
-<div className="input-group-append">
-<span className="input-group-text">
-<AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
-
-</span>
+                <div className="input-group mb-4">
+  <input
+    type="text"
+    className="form-control"
+    placeholder="إبحث عن التاريخ"
+    value={searchTerm}
+    onChange={handleSearchChange}
+    style={{ borderTop: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: '1px solid #ccc' }}
+  />
+  {/* <div className="input-group-append">
+    <span className="input-group-text">
+      <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
+    </span> 
+  </div>*/}
 </div>
 
-           
-</div>
-</div>
-<div className="col-md-2">
-           </div>
-<div className="col-md-6">
 
-<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
-           </div>
-        
+<div className="col-lg-2">
+<div class="d-flex justify-content-between g-1">
+  <button class="btn btn-primary" onClick={handleSearchClick}>بحث</button>
+  <button class="btn btn-secondary" onClick={handleSearchClick}>تفريغ</button>
+</div>
+</div>
 
-         </div>
+                </div>
+             
+
+              </div>
+            
          <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
                     width: "100%",
                     height : "100%",
@@ -276,8 +318,14 @@ onChange={handleSearchChange}
                <button onClick={handleCancelClick}>Cancel</button>
              </>
            )} */}
-        <button className="btn btn primary"  onClick={() => payment(data.id)} disabled={!data.state}>انشاء فاتورة</button>
-            
+        {/* <button className="btn btn primary"  onClick={() => payment(data.id)} disabled={data.state != 1}>انشاء فاتورة</button>
+        <button className="btn btn primary" onClick={() => Receipt(data)} disabled={data.state == 1}>التفاصيل</button> */}
+        <div class="d-flex justify-content-between g-1">
+  <button class="btn btn-primary" onClick={() => payment(data.id)} disabled={data.state != 1} >إنشاء إيصال</button>
+  {/* <button class="btn btn-secondary" onClick={handleSearchClick}>تفريغ</button> */}
+</div>
+        {/* <a href="#" onClick={() => payment(data.id)} disabled={data.state != 1} className="btn btn-primary">انشاء فاتورة</a>
+        <a href="#" onClick={() => Receipt(data)} className="btn btn-primary">الدفع</a> */}
          </td>
            <td>{data.state}</td>
            <td>{data.price}</td>
@@ -290,26 +338,53 @@ onChange={handleSearchChange}
    </tbody>
          </Table>
          </div>
-         <div className="card-footer text-muted">
-             
-         <ReactPaginate
-   pageCount={pageCount} // Total number of pages
-   onPageChange={handlePageClick}
-   containerClassName={'pagination'}
-   pageClassName={'page-item'}
-   activeClassName={'active'}
-   previousClassName={'page-item'}
-   nextClassName={'page-item'}
-   breakClassName={'page-item'}
-   pageLinkClassName={'page-link #550505'}
-   previousLinkClassName={'page-link'}
-   nextLinkClassName={'page-link'}
-   breakLinkClassName={'page-link'}
-   disableInitialCallback={true}
-   previousLabel={<AiIcons.AiOutlineDoubleLeft />}
-   nextLabel={<AiIcons.AiOutlineDoubleRight />}
- />
-                           </div>
+         <div className="card-footer text-muted" style={{background: 'white'}}>
+                <div className="row">
+                   
+                    
+                  <div className="col-lg-3"> 
+                      
+                      <div className="input-group mb-4">
+                           
+                      <AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'#5b5ac9' ,
+                              border: 'none', alignItems:"center" }} />
+                        
+                      </div>
+                 </div>
+                 <div className="col-lg-6">
+                         
+                         <div className="input-group mb-4">
+                         </div>
+                 </div>
+                  
+
+                 <div className="col-lg-3">
+                         
+                      <div className="input-group mb-4">
+                          
+                          
+                      <ReactPaginate
+                                      pageCount={pageCount} // Total number of pages
+                                      onPageChange={handlePageClick}
+                                      containerClassName={'pagination'}
+                                      pageClassName={'page-item'}
+                                      activeClassName={'active'}
+                                      previousClassName={'page-item'}
+                                      nextClassName={'page-item'}
+                                      breakClassName={'page-item'}
+                                      pageLinkClassName={'page-link #550505'}
+                                      previousLinkClassName={'page-link'}
+                                      nextLinkClassName={'page-link'}
+                                      breakLinkClassName={'page-link'}
+                                      disableInitialCallback={true}
+                                      previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+                                      nextLabel={<AiIcons.AiOutlineDoubleRight />}/>
+
+                      </div>
+
+                 </div>
+                 </div>
+                                </div>
        </div>
  
 
@@ -375,9 +450,10 @@ flexDirection: 'column',
 
                                         <select  onChange={(e)=>setCards_Id(e.target.value)}>
                                                    <option value=""> اختر طالب  </option>
-                                                   {Cards.map(option => (
+                                                   
+                                                   {Cards != null ? Cards.map(option => (
                                                      <option key={option.CardId} value={option.CardId} >{option.first_name+" "+option.last_name}</option>
-                                                   ))}
+                                                   )) : null}
                                            </select>
                                 </div>
                         </div>
@@ -388,9 +464,9 @@ flexDirection: 'column',
                                         <label>الكورس:</label>
                                         <select  onChange={(e)=>setCourse_Id(e.target.value)}>
                                                    <option value="">اختر الكورس</option>
-                                                   {Course.map(option => (
+                                                   { Course !=null ? Course.map(option => (
                                                      <option key={option.id} value={option.id} >{option.subjectName}</option>
-                                                   ))}
+                                                   )):null}
                                            </select>
                                 </div>
                         </div>
@@ -399,7 +475,7 @@ flexDirection: 'column',
            
      </div>
      <div class="card-footer text-muted">
-          <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
+          <a href="#" onClick={store} className="btn btn-primary">حفظ</a> 
      </div>
    </div>
 

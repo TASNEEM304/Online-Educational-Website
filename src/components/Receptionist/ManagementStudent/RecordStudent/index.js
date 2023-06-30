@@ -116,7 +116,7 @@ useEffect(() => {
          }, []);
 const loadData = async () => {
 debugger
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=5&page=1`).then((res)=>{
+http.get(`branch_admin/user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=5&page=1`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {

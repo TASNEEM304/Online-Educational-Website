@@ -36,12 +36,13 @@ p {
     font-weight: 400;
 }
 
-button.btn {
+
+/* button.btn {
     background: rgb(225, 225, 238);
     color: rgb(85, 3, 3);
     padding: 7px 25px;
     border-radius: 50px;
-}
+} */
 
 i {
     color: rgb(85, 3, 3);

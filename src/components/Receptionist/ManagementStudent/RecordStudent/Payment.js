@@ -1,5 +1,5 @@
 import React ,{Fragment,useEffect,useState} from "react";
-import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
+import { Container, Row, Col,Table ,Form} from "reactstrap";
 import HeaderRecep from "../../HeaderRecep";
 import {useNavigate,Link,useHistory}  from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
@@ -7,12 +7,18 @@ import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../../../Auth/AuthUser';
 import "./Style.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+
 
 function GetPayment () {
 
 
     const {http} = AuthUser();
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalIsOpenWithdraw, setModalIsOpenWithdraw] = useState(false);
     const [Cards,setCards] = useState([]);
     const [Course,setCourse] = useState([]);
     const [card_id,setCards_Id] = useState();
@@ -21,42 +27,48 @@ function GetPayment () {
     const [editedItem, setEditedItem] = useState({});
     const [searchTerm, setSearchTerm] = useState("");
     const [data, setData] = useState([]);
+    const [dataRow, setDataRow] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setpageCount] = useState(0);  
     const history = useNavigate();
-    
-    
+
+    const [Debit,setDebit] = useState();   
+    const [amount,setAmount] = useState();    
+
+    const [show, setShow] = useState(false);
+    const handleShow = () => {
+      setShow(true);
+      closeModalWithdraw();}
+    const handleClose = () => setShow(false);
 ///============================
 /// Modal
 ///=============================
 
-    const openModal = () => setModalIsOpen(true);
+    const openModal = (node) => {
+      debugger
+      setDataRow(node);
+      setModalIsOpen(true);
+    }
     const closeModal = () => setModalIsOpen(false);
+
 
 ///============================
 /// store
 ///=============================
-const store = () =>{
-      
-    http.post('subscribe/store',{course_id:course_id,card_id:card_id}).then((res)=>{
-      const data=res.data;
-    }).catch(function (error) {
-      console.log(error);
-      });
-   
+const storereceipt = () =>{
+      debugger
+  http.post('receptionist/receipt/store',{Debit:Debit,user_id:dataRow.users_id,payment_id:dataRow.payment_id,description:'dsadda'}).then((res)=>{
+    const data=res.data;
+    toast.success(data.success)
+    loadData(); 
+    
+    closeModal();
+
+  }).catch(function (error) {
+    console.log(error);
+    });
+ 
 }
-///============================
-/// Delete
-///=============================
-
-const Delete= async (id) =>{
-
-http.post(`branch/destroy/${id}`).then((res)=>{
-   alert(res.data.message);
-})
-}
-
-
 
 ///============================
 /// loadData
@@ -66,8 +78,8 @@ loadData();
      }, []);
 const loadData = async () => {
 debugger
-http.get(`payment/search/${searchTerm === "" ? 'null' : searchTerm}?page=1`).then((res)=>{
-setData(res.data.data.data);
+http.get(`receptionist/receipt/search/${searchTerm}?page=1`).then((res)=>{
+setData(res.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
 
@@ -75,26 +87,35 @@ setpageCount(res.data.data.total/res.data.data.data.length);
 };    
 
 
-//=============================
-// GetCards
-//=============================
+///============================
+/// Modal
+///=============================
 
-const payment = async (data)=>{
+const openModalWithdraw = (node) => {
   debugger
-http.post(`payment/store/${data}`).then((res)=>{
-  //setCards(res.data.data);
-});
+  setDataRow(node);
+  setModalIsOpenWithdraw(true);
 }
-
+const closeModalWithdraw = () => setModalIsOpenWithdraw(false);
 
 //=============================
-// GetCards
+// Withdraw
 //=============================
 
-const Receipt = async (data)=>{
-        // console.log(data);
-          history('/RecordStudent/Receipt' , { state : { data } });
-  }
+const storeWithdraw = async ()=>{
+  handleClose()
+  http.post('receptionist/withdraw/store',{amount:amount,user_id:dataRow.users_id,payment_id:dataRow.payment_id,description:'dsadda'}).then((res)=>{
+    const data=res.data;
+    
+    toast.success(data.success)
+    loadData(); 
+    
+
+  }).catch(function (error) {
+    console.log(error);
+    });
+ 
+}
 
 ///============================
 /// handlePageClick
@@ -122,39 +143,6 @@ const handleSearchClick = () => {
 loadData();
 };
 
-//=============================
-// Update
-//=============================
-
-const Update = async (editedItem) => {
-debugger
-http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
-console.log(error);
-});
-}
-
-const handleEditClick = (item) => {
-setEditedItem(item);
-setEditing(true);
-};
-
-const handleSaveClick = () => {
-debugger
-setData(data.map((item) => (item.id === editedItem.id ? editedItem : item)));
-setEditing(false);
-Update(editedItem);
-
-};
-
-const handleCancelClick = () => {
-setEditing(false);
-};
-
-const handleInputChange = (event) => {
-const { name, value } = event.target;
-setEditedItem((prevState) => ({ ...prevState, [name]: value }));
-};
-
 
     return (
     
@@ -165,8 +153,8 @@ setEditedItem((prevState) => ({ ...prevState, [name]: value }));
 <Col md="12" lang="ar" style={{padding:'10px'}} >
 
        
-<div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
-          <div className="card-header">
+<div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: 'white', marginTop:'15px', border: 'none',boxShadow: 'none'}}>
+          <div className="card-header" style={{background: 'white'}} dir="rtl">
            <div className="row">
            
            <div className="col-md-4">
@@ -192,21 +180,17 @@ onChange={handleSearchChange}
 </div>
 <div className="col-md-2">
            </div>
-<div className="col-md-6">
 
-<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
-
-</div>
 
            </div>
         
 
          </div>
-         <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
-                    width: "100%",
-                    height : "100%",
-                    padding: "0"
-                    }}>
+         <div className="card-body" style={{ textAlign: 'center' ,fontSize: "16px", 
+                         width: "100%",
+                         height : "100%",
+                         padding: "0"
+                         }}>
               
               
          <Table style={{fontSize: "16px", 
@@ -214,11 +198,14 @@ onChange={handleSearchChange}
                     }}>
    <thead style={{background: "#2980b9" , 
    }}>
-     <tr >
+     <tr>
        <th style={{ width: "20%" }}></th>
-       <th style={{ width: "20%" }}>سعرالمادة</th>
-       <th style={{ width: "20%" }}>المادة</th>
-       <th style={{ width: "40%" }}>الاسم</th>
+       <th style={{ width: "10%" }}>المتبقي</th>
+       <th style={{ width: "10%" }}>المدفوع</th>
+       <th style={{ width: "10%" }}>سعرالمادة</th>
+       <th style={{ width: "10%" }}>المادة</th>
+       <th style={{ width: "20%" }}>الاسم</th>
+       <th style={{ width: "20%" }}>تاريخ الدفع</th>
      </tr>
    </thead>
    <tbody>
@@ -239,13 +226,21 @@ onChange={handleSearchChange}
         <button>Show</button>
                 </Link> */}
                 
-               <button className="btn btn primary" onClick={() => Receipt(data)}>التفاصيل</button>
-
+               {/* <button className="btn btn primary" onClick={() => Receipt(data)}>الدفع</button> */}
+                        
+               <div class="d-flex justify-content-between g-0">
+                   <button class="btn btn-primary" onClick={() => openModal(data)} disabled={data.students[0].remaining_balance == 0}>الدفع</button>
+                   <button class="btn btn-secondary" onClick={() => openModalWithdraw(data)} disabled={data.students[0].subscribes_state == 4}> سحب المبلغ</button>
+               </div>
          </td>
-           <td>{data.price}</td>
-           <td>{data.subjectName}</td>
-           <td>{data.first_name+" "+data.last_name}</td>
+           <td>{data.students[0].remaining_balance}</td>
+           <td>{data.students[0].total_credit}</td>
+           <td>{data.students[0].payment_amount}</td>
+           <td>{data.students[0].subject_name}</td>
+           <td>{data.students[0].student_name}</td>
+           <td>{data.students[0].payment_date}</td>
          </tr>
+
        ))
      )}
    </tbody>
@@ -328,39 +323,23 @@ flexDirection: 'column',
      </div>
      <div class="card-body">
 
-                    <div className="row">
-
+     <div className="row">
                         <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>:الطالب</label>
-
-                                        <select  onChange={(e)=>setCards_Id(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Cards.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.first_name+" "+option.last_name}</option>
-                                                   ))}
-                                           </select>
-                                </div>
+                              <div className="form-group mt-2">
+                                       <label> المبلغ</label>
+                                       <input type="text" className="form-control" 
+                                           onChange={e=>setDebit(e.target.value)}
+                                       id="first_name" />
+                              </div>   
                         </div>
-
-                        
-                    <div className="col-md-6">
-                                <div className="form-group mt-2">
-                                        <label>:الكورس</label>
-                                        <select  onChange={(e)=>setCourse_Id(e.target.value)}>
-                                                   <option value="">--Please select an option--</option>
-                                                   {Course.map(option => (
-                                                     <option key={option.id} value={option.id} >{option.name}</option>
-                                                   ))}
-                                           </select>
-                                </div>
+                        <div className="col-md-6">
+                            
                         </div>
-                    
                     </div>
            
      </div>
      <div class="card-footer text-muted">
-          <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
+          <a href="#" onClick={storereceipt} class="btn btn-primary">حفظ</a> 
      </div>
    </div>
 
@@ -368,6 +347,92 @@ flexDirection: 'column',
 </ReactModal> 
 
 
+<ReactModal isOpen={modalIsOpenWithdraw}
+style={{
+ overlay: {
+   backgroundColor: 'rgba(0, 0, 0, 0.5)',
+   zIndex: 9999,
+   display: 'flex',
+ },
+ content: {
+   width: '800px',
+   height: '500px',
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   borderRadius: '10px',
+   background: '#fff',
+   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+   padding: '0px',
+   paddingTop :'0px',
+   display: 'flex',
+ }
+}}>
+
+
+<div class="card" style={{ 
+textAlign: 'right',
+width: '800px',
+height: 'auto',
+padding: 0,
+background: '#fff',
+boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+display: 'flex',
+flexDirection: 'column',
+}}>
+      <div class="card-header">
+
+           <div className="row">
+               <div className="col-md-6"> سحب المبلغ</div>
+               <div className="col-md-6">
+               <AiIcons.AiOutlineClose onClick={closeModalWithdraw} /></div>
+
+           </div>
+
+     </div>
+     <div class="card-body">
+
+     <div className="row">
+                        <div className="col-md-6">
+                              <div className="form-group mt-2">
+                                       <label> المبلغ</label>
+                                       <input type="text" className="form-control" 
+                                           onChange={e=>setAmount(e.target.value)}
+                                       id="first_name" />
+                              </div>   
+                        </div>
+                        <div className="col-md-6">
+                            
+                        </div>
+                    </div>
+           
+     </div>
+     <div class="card-footer text-muted">
+          <a href="#"onClick={handleShow} class="btn btn-primary">حفظ</a> 
+     </div>
+   </div>
+
+
+</ReactModal> 
+
+<Modal show={show} onHide={handleClose}>
+  <Modal.Header closeButton>
+    <Modal.Title>تأكيد السحب</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>هل أنت متأكد من رغبتك في اتمام العملية ؟</Modal.Body>
+  <Modal.Footer>
+    <Button variant="secondary" onClick={handleClose}>
+      إغلاق
+    </Button>
+    <Button variant="danger" onClick={storeWithdraw}>
+      تأكيد
+    </Button>
+  </Modal.Footer>
+</Modal>
+
+
+<ToastContainer/>
 
 
 
