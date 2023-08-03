@@ -1,11 +1,11 @@
 import React ,{Fragment,useEffect,useState} from "react";
+import { useNavigate } from 'react-router-dom';
+
 //import { Container, Row, Col,Table,Button ,Form} from "reactstrap";
-import Header from "../../HeaderSiectAff";
+import Header from "../HeaderTrainer";
 import ReactPaginate from 'react-paginate';
 import axios from 'axios'
-import ReactModal from 'react-modal';
-import * as AiIcons from "react-icons/ai";
-import AuthUser from  '../../../Auth/AuthUser';
+import AuthUser from  '../../Auth/AuthUser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -24,8 +24,7 @@ import {
   DialogActions,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import HeaderSiectAff from "../../HeaderSiectAff";
-
+import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   questionContainer: {
@@ -47,27 +46,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const questions = [
-  {
-    id: 1,
-    question: 'What is your name?',
-    subject: 'Personal Information',
-  },
-  {
-    id: 2,
-    question: 'What is your favorite color?',
-    subject: 'Personal Preferences',
-  },
-  {
-    id: 3,
-    question: 'What is your favorite food?',
-    subject: 'Personal Preferences',
-  },
-];
-export const GetQuestionBank = () => {
+export default function GetQuestionBankTrainer ()  {
 const {http} = AuthUser();
 const classes = useStyles();
-
+const history = useNavigate();
+   
 const [selectedTab, setSelectedTab] = useState(0);
 const [selectedQuestions, setSelectedQuestions] = useState([]);
 const [generateFormVisible, setGenerateFormVisible] = useState(false);
@@ -158,10 +141,20 @@ const handleGenerateFormSubmit = (event) => {
   setGenerateFormVisible(false);
 };
 
+
+const location = useLocation();
+
+const data = location.state.data;
+
+const Print = async (data)=>{
+  // console.log(data);
+    history('/Trainer/QuestionBank/Print',{ state : { data } });
+}
 return (
   <div>
-    <HeaderSiectAff/>
-    <Tabs value={selectedTab} onChange={handleTabChange} >
+    <Header/>
+    
+    <Tabs value={selectedTab} onChange={handleTabChange} dir='rtl'>
       <Tab label=" كل الأسئلة" />
       <Tab label=" الأسئلة المختارة" />
     </Tabs>
@@ -195,12 +188,6 @@ return (
             value={questionSubject}
             onChange={handleQuestionSubjectChange}
           />
-          <TextField
-            className={classes.textField}
-           label="المادة"
-            value={questionSubject}
-            onChange={handleQuestionSubjectChange}
-          />
           <Button type="submit" variant="contained" color="primary">
             اضافة 
           </Button>
@@ -208,7 +195,7 @@ return (
       </div>
     )}
     {selectedTab === 1 && (
-      <div>
+      <div dir="rtl">
         {selectedQuestions.map((q) => (
           <div key={q.id} className={classes.questionContainer}>
             <div className={classes.questionText}>
@@ -265,27 +252,12 @@ return (
               style: { direction: 'rtl', textAlign: 'right' }
             }}
           />
-          <FormControl className={classes.textField} dir="rtl">
-            <InputLabel id="subject-label">المادة</InputLabel>
-            <Select
-              labelId="subject-label"
-              id="subject-select"
-              value={subject}
-              onChange={handleSubjectChange}
-              dir="rtl"
-              
-            >
-              <MenuItem value="math">Math</MenuItem>
-              <MenuItem value="science">Science</MenuItem>
-              <MenuItem value="english">English</MenuItem>
-            </Select>
-          </FormControl>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleGenerateFormClose} color="primary">
             عودة
           </Button>
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" onClick={()=>Print(selectedQuestions)}>
             انشاء
           </Button>
         </DialogActions>

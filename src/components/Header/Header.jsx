@@ -82,14 +82,18 @@ const Header = () => {
                   </li>
                 ))}
                   <li className="nav__item">
-                    
                           <Link to= {getToken() == null ? '/Login' 
                                     :getUser().roll_number===0 ?'/dashboard'
                                     :getUser().roll_number===1 ?'/dashboardScientAff'
                                     :getUser().roll_number===2 ?'/dashboardBrcMgr'
                                     :getUser().roll_number===3 ?'/dashboardRec'
+                                    :getUser().roll_number===4 ?'/DashboardTrainers'
+                                    :getUser().roll_number===5 ?'/dashboardRec'
                                     :'/'} >{ getToken() == null ? 'تسجيل الدخول ': 'لوحة التحكم' } </Link>
                    
+                  </li>
+                  <li className="nav__item">
+                    <Link to={'/Student/Courses'}>اشتراكاتي</Link>
                   </li>
                     <li className="nav__item" if>
                     <Link onClick={Logout}>تسجيل خروج </Link>

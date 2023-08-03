@@ -24,7 +24,7 @@ import QRScanner from "./components/Receptionist/Cards/Scan";
 import GetSubscribe from "./components/Receptionist/ManagementStudent/RecordStudent/Subscribe";
 import GetPayment from "./components/Receptionist/ManagementStudent/RecordStudent/Payment";
 import GetReceipt from "./components/Receptionist/ManagementStudent/RecordStudent/Receipt";
-
+import PaymentReceiptCard from "./components/Receptionist/Cards/PaymentCard";
 
 //Branch_Manger
 import DashboardBrMgr from "./components/Branch_Manger/DashboardBrMgr";
@@ -44,6 +44,16 @@ import DashboardScientAff from "./components/Scientific_Affairs/DashboardScientA
 import GetSubjects from "./components/Scientific_Affairs/Management_Content/Subjects/index";
 import {GetQuestionBank} from "./components/Scientific_Affairs/Management_Content/QuestionBank/index";
 
+//Student
+import GetStdCourses from "./components/Student/Courses/index" 
+
+
+
+//Trainer
+import GetQuestionBankTrainer from "./components/Trainer/QuestionBank/index";
+import DashboardTrainers from "./components/Trainer/DashboardTrainers";
+import CourseTrainer from "./components/Trainer/Courses/index"
+import Print from "./components/Trainer/QuestionBank/Print"
 
 function App() {
 
@@ -77,6 +87,7 @@ function App() {
         <Route path ='/RecordStudent/Payment' element={<GetPayment/>} /> 
         <Route path ='/RecordStudent/Receipt' element={<GetReceipt/>} /> 
         <Route path ='/PaymentCard' element={<GetPaymentCard/>} /> 
+        <Route path ='/PaymentReceiptCard' element={<PaymentReceiptCard/>} /> 
         <Route path ='/Cards/Cardexample' element={<Cardexample/>} /> 
         
 
@@ -97,6 +108,21 @@ function App() {
        <Route path="/Subjects/index" element={<GetSubjects />} />
        <Route path="/QuestionBank/index" element={<GetQuestionBank />} />
        
+
+       {/* Student */}
+       <Route path="/Student/Courses" element={<GetStdCourses />} />
+
+
+
+       {/* Trainer */}
+       
+       <Route path="/DashboardTrainers" element={<DashboardTrainers />} />
+       <Route path="/Trainer/CoursesById" element={<CourseTrainer />} />
+       <Route path="/Trainer/QuestionBank" element={<GetQuestionBankTrainer />} />
+       <Route path="/Trainer/QuestionBank/Print" element={<Print  />} />
+
+
+
       </Routes>
     </Router>
   );

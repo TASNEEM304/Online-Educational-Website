@@ -226,199 +226,197 @@ const approve = async (id)=>{
 
 {/* <div className="container-fluid"></div> */}
  
-<Container>
+<div className="container-fluid">
+<Row>
     
-   <Row>
-    
-     <Col lg="12" lang="ar">
+    <Col lg="12" lang="ar">
 
-       
-     <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: 'white', marginTop:'15px', border: 'none',boxShadow: 'none'}}>
-               <div className="card-header" style={{background: 'white'}} dir="rtl">
-                
-                <div className="row">
-                
-                <div className="col-lg-3">
+      
+    <div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: 'white', marginTop:'15px', border: 'none',boxShadow: 'none'}}>
+              <div className="card-header" style={{background: 'white'}} dir="rtl">
+               
+               <div className="row">
+               
+               <div className="col-lg-3">
 
-                <div className="input-group mb-4">
-  <input
-    type="text"
-    className="form-control"
-    placeholder="إبحث عن التاريخ"
-    value={searchTerm}
-    onChange={handleSearchChange}
-    style={{ borderTop: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: '1px solid #ccc' }}
-  />
-  <div className="input-group-append">
-    <span className="input-group-text">
-      <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
-    </span>
-  </div>
+               <div className="input-group mb-4">
+ <input
+   type="text"
+   className="form-control"
+   placeholder="إبحث عن التاريخ"
+   value={searchTerm}
+   onChange={handleSearchChange}
+   style={{ borderTop: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: '1px solid #ccc' }}
+ />
+ <div className="input-group-append">
+   <span className="input-group-text">
+     <AiIcons.AiOutlineSearch onClick={handleSearchClick} style={{ fontSize:'30px',alignItems:"center" }} />
+   </span>
+ </div>
 </div>
 
 
 </div>
 <div className="col-lg-4">
-  
+ 
 <div className="input-group mb-4" style={{ fontSize:'20px',alignItems:"center" }}>
-  
-  <label>تاريخ النهاية:</label>
-                          <input type="date" className="form-control" placeholder="Enter birth_day"
-                              onChange={e=>setEnddate(e.target.value)}
-                              
-  value={end_date}
-                          id="birth_day" />
-  
-                  </div>
+ 
+ <label>تاريخ النهاية:</label>
+                         <input type="date" className="form-control" placeholder="Enter birth_day"
+                             onChange={e=>setEnddate(e.target.value)}
+                             
+ value={end_date}
+                         id="birth_day" />
+ 
+                 </div>
 </div>
 <div className="col-lg-4">
 <div className="input-group mb-4" style={{ fontSize:'20px',alignItems:"center" }}>
-  
-  <label>تاريخ البداية:</label>
-                          <input type="date" className="form-control" placeholder="Enter birth_day"
-                              onChange={e=>setFirstdate(e.target.value)}
-                              
-  value={start_date}
-                          id="start_date" />
-  
-                  </div>
+ 
+ <label>تاريخ البداية:</label>
+                         <input type="date" className="form-control" placeholder="Enter birth_day"
+                             onChange={e=>setFirstdate(e.target.value)}
+                             
+ value={start_date}
+                         id="start_date" />
+ 
+                 </div>
 </div>
 <div className="col-lg-1">
- </div>
+</div>
+
+               </div>
+            
+
+             </div>
+             <div className="card-body" style={{ textAlign: 'center' ,fontSize: "16px", 
+                        width: "100%",
+                        height : "100%",
+                        padding: "0"
+                        }}>
+                  
+                  
+             <Table style={{fontSize: "16px", 
+                        width: "100%"
+                        }}>
+       <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
+       }}>
+         
+         <tr >
+           <th style={{ width: "10%" }}></th>
+           <th style={{ width: "10%" }}>الاعتماد</th>
+           <th style={{ width: "10%" }}>تاريخ الإنتهاء</th>
+           <th style={{ width: "10%" }}>تاريخ البدء</th>
+           <th style={{ width: "10%" }}>عدد الجلسات</th>
+           <th style={{ width: "10%" }}>عدد الساعات</th>
+           <th style={{ width: "10%" }}>التسعير</th>
+           <th style={{ width: "10%" }}>اسم المدرب</th>
+           <th style={{ width: "20%" }}>اسم المادة</th>
+         </tr>
+       </thead>
+       <tbody>
+         {data  && data.length === 0 ? (
+           <tr>
+             <td colSpan={8} className="text-center">
+               لا يوجد بيانات
+             </td>
+           </tr>
+         ) : (
+           data && data.map((data) => (
+             <tr key={data.id}>
+ 
+                         
+               {/* <td>
+
+               {!editing || editedItem.id !== data.id ? (
+               <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+               
+               ) : (
+                 <>
+                   <button onClick={handleSaveClick}>Save</button>
+                   <button onClick={handleCancelClick}>Cancel</button>
+                 </>
+               )}
+               <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
+                  
+             </td> */}
+             <td >
+               
+       <button className="btn btn-primary" onClick={()=>approve(data.id)}>اعتماد</button>
+           
+             </td>
+               <td>{data.approved === 0 ? 'ليس معتمد' : 'معتمد'}</td>
+               <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.end}</td>
+               <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.start}</td>
+               <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.number_of_lessons}</td>
+               <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.houers}</td>
+               <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.price}</td>
+               <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name+' '+data.last_name}</td>
+               <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.No} onChange={handleInputChange} /> : data.subjectName}</td>
+   
+             </tr>
+           ))
+         )}
+       </tbody>
+             </Table>
+             </div>
+             <div className="card-footer text-muted" style={{background: 'white'}}>
+               <div className="row">
+                  
+                   
+                 <div className="col-lg-3"> 
+                     
+                     <div className="input-group mb-4">
+                          
+                     <AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'secondary' ,
+                             border: 'none', alignItems:"center" }} />
+                       
+                     </div>
+                </div>
+                <div className="col-lg-6">
+                        
+                        <div className="input-group mb-4">
+                        </div>
+                </div>
+                 
+
+                <div className="col-lg-3">
+                        
+                     <div className="input-group mb-4">
+                         
+                         
+                     <ReactPaginate
+                                     pageCount={pageCount} // Total number of pages
+                                     onPageChange={handlePageClick}
+                                     containerClassName={'pagination'}
+                                     pageClassName={'page-item'}
+                                     activeClassName={'active'}
+                                     previousClassName={'page-item'}
+                                     nextClassName={'page-item'}
+                                     breakClassName={'page-item'}
+                                     pageLinkClassName={'page-link #550505'}
+                                     previousLinkClassName={'page-link'}
+                                     nextLinkClassName={'page-link'}
+                                     breakLinkClassName={'page-link'}
+                                     disableInitialCallback={true}
+                                     previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+                                     nextLabel={<AiIcons.AiOutlineDoubleRight />}/>
+
+                     </div>
 
                 </div>
-             
-
-              </div>
-              <div className="card-body" style={{ textAlign: 'center' ,fontSize: "16px", 
-                         width: "100%",
-                         height : "100%",
-                         padding: "0"
-                         }}>
-                   
-                   
-              <Table style={{fontSize: "16px", 
-                         width: "100%"
-                         }}>
-        <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
-        }}>
-          
-          <tr >
-            <th style={{ width: "10%" }}></th>
-            <th style={{ width: "10%" }}>الاعتماد</th>
-            <th style={{ width: "10%" }}>تاريخ الإنتهاء</th>
-            <th style={{ width: "10%" }}>تاريخ البدء</th>
-            <th style={{ width: "10%" }}>عدد الجلسات</th>
-            <th style={{ width: "10%" }}>عدد الساعات</th>
-            <th style={{ width: "10%" }}>التسعير</th>
-            <th style={{ width: "10%" }}>اسم المدرب</th>
-            <th style={{ width: "20%" }}>اسم المادة</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data  && data.length === 0 ? (
-            <tr>
-              <td colSpan={8} className="text-center">
-                لا يوجد بيانات
-              </td>
-            </tr>
-          ) : (
-            data && data.map((data) => (
-              <tr key={data.id}>
-  
-                          
-                {/* <td>
-
-                {!editing || editedItem.id !== data.id ? (
-                <AiIcons.AiOutlineEdit onClick={() => handleEditClick(data)} style={{ color: 'green' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-                
-                ) : (
-                  <>
-                    <button onClick={handleSaveClick}>Save</button>
-                    <button onClick={handleCancelClick}>Cancel</button>
-                  </>
-                )}
-                <AiIcons.AiFillDelete onClick={() => Delete(data.id)} style={{ color: 'red' , width : '10%' , height: '10%' ,alignItems:"center" }} />
-                   
-              </td> */}
-              <td >
-                
-        <button className="btn btn primary" onClick={()=>approve(data.id)}>اعتماد</button>
-            
-              </td>
-                <td>{data.approved === 0 ? 'ليس معتمد' : 'معتمد'}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.end}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.start}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.number_of_lessons}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.houers}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="no" value={editedItem.No} onChange={handleInputChange} /> : data.price}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.first_name+' '+data.last_name}</td>
-                <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.No} onChange={handleInputChange} /> : data.subjectName}</td>
-    
-              </tr>
-            ))
-          )}
-        </tbody>
-              </Table>
-              </div>
-              <div className="card-footer text-muted" style={{background: 'white'}}>
-                <div className="row">
-                   
-                    
-                  <div className="col-lg-3"> 
-                      
-                      <div className="input-group mb-4">
-                           
-                      <AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'#5b5ac9' ,
-                              border: 'none', alignItems:"center" }} />
-                        
-                      </div>
-                 </div>
-                 <div className="col-lg-6">
-                         
-                         <div className="input-group mb-4">
-                         </div>
-                 </div>
-                  
-
-                 <div className="col-lg-3">
-                         
-                      <div className="input-group mb-4">
-                          
-                          
-                      <ReactPaginate
-                                      pageCount={pageCount} // Total number of pages
-                                      onPageChange={handlePageClick}
-                                      containerClassName={'pagination'}
-                                      pageClassName={'page-item'}
-                                      activeClassName={'active'}
-                                      previousClassName={'page-item'}
-                                      nextClassName={'page-item'}
-                                      breakClassName={'page-item'}
-                                      pageLinkClassName={'page-link #550505'}
-                                      previousLinkClassName={'page-link'}
-                                      nextLinkClassName={'page-link'}
-                                      breakLinkClassName={'page-link'}
-                                      disableInitialCallback={true}
-                                      previousLabel={<AiIcons.AiOutlineDoubleLeft />}
-                                      nextLabel={<AiIcons.AiOutlineDoubleRight />}/>
-
-                      </div>
-
-                 </div>
-                 </div>
-                                </div>
-            </div>
-      
-
-      
-     </Col>
+                </div>
+                               </div>
+           </div>
+     
 
      
-   </Row>
+    </Col>
 
     
-</Container>
+  </Row>
+
+</div>
 
 
 

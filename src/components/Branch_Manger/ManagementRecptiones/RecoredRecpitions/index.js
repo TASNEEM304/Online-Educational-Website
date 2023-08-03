@@ -73,7 +73,7 @@ useEffect(() => {
          }, []);
 const loadData = async () => {
 debugger
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=3&page=1`).then((res)=>{
+http.get(`branch_admin/user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=3&page=1`).then((res)=>{
 setData(res.data.data.data);
 setpageCount(res.data.data.total/res.data.data.data.length);
 }).catch(function (error) {
@@ -108,7 +108,7 @@ http.get('branch/index').then((res)=>{
 ///=============================
 
 const handlePageClick = async ({ selected }) => {
-http.get(`user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=3&page=${selected+1}`).then((res)=>{
+http.get(`branch_admin/user/search/${searchTerm === "" ? 'null' : searchTerm}?roll_number=3&page=${selected+1}`).then((res)=>{
 setData(res.data.data.data);
 setCurrentPage(selected);
 }).catch(function (error) {
@@ -185,7 +185,7 @@ const details = async (data)=>{
 <Col md="12" lang="ar" style={{padding:'10px'}} >
 
        
-<div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
+<div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px', border: 'none',boxShadow: 'none'}}>
           <div className="card-header">
            <div className="row">
            
@@ -214,7 +214,7 @@ onChange={handleSearchChange}
            </div>
 <div className="col-md-6">
 
-<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+<button className="btn btn-primary" onClick={openModal}>إضافة سجل جديد</button>
 </div>
 
            </div>
@@ -270,7 +270,7 @@ onChange={handleSearchChange}
         <button>Show</button>
                 </Link> */}
 
-<button className="btn btn primary" onClick={()=>details(data)}>التفاصيل</button>
+<button className="btn btn-primary" onClick={()=>details(data)}>التفاصيل</button>
 
          </td>
          <td>{editing && editedItem.id === data.id ? <input type="text" name="name" value={editedItem.name} onChange={handleInputChange} /> : data.phone_number}</td>
