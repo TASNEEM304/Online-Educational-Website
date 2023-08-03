@@ -8,12 +8,14 @@ import * as AiIcons from "react-icons/ai";
 import AuthUser from  '../Auth/AuthUser';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as Yup from 'yup';
+import Validate from "./Validate";
 
 
 const Getbranches = () => {
 
   const {http} = AuthUser();
-  const [No ,setNo] = useState("");
+  const [No ,setNo] = useState(0);
   const [name ,setName] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState([]);
@@ -22,33 +24,58 @@ const Getbranches = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editing, setEditing] = useState(false);
   const [editedItem, setEditedItem] = useState({});
-  
+  const[errors,setErorrs]=useState({});
   const openModal = () => setModalIsOpen(true);
   const closeModal = () => setModalIsOpen(false);
   
-  
+  const schema = Yup.object().shape({
+    No: Yup.number().required(),
+    name: Yup.string().required(),
+  });
 ///============================
 /// store
 ///=============================
-
-
-const store = () =>{
+// const store = () =>{
+//   schema.validate({ No, name }).then(() => {
       
-  http.post('general_admin/branch/store',{No:No,name:name}).then((res)=>{
-    const data=res.data;
-    toast.success("تمت العملية بنجاح")
-  //alert("تمت العملية بنجاح ")
+//   http.post('branch/store',{No:No,name:name}).then((res)=>{
+//     const data=res.data;
+//     toast.success("تمت العملية بنجاح")
+//   //alert("تمت العملية بنجاح ")
    
-  }).catch(function (error) {
-    toast.error("error")
-    });
+//   }).catch(function (error) {
+//     toast.error("error")
+//     });
  
-    setNo('');
-    setName('');
-    closeModal();
-    loadData();
-}
+//     setNo('');
+//     setName('');
+//     closeModal();
+//     loadData();
+// }
 
+
+const store = (event) => {
+//event.perventDefault();
+setErorrs(Validate(data));
+  schema.validate({ No, name }).then(() => {
+    
+    http.post('branch/store', { No, name })
+      .then((res) => {
+        const data = res.data;
+        toast.success('تمت العملية بنجاح');
+        setNo('');
+        setName('');
+        closeModal();
+        loadData();
+      })
+      .catch(function (error) {
+        toast.error('error');
+      });
+  }).catch((err) => {
+    toast.error("اكمل تعبئة الحقول ");
+    
+  });
+};
   
 
 ///============================
@@ -58,8 +85,7 @@ const store = () =>{
   const Delete= async (id) =>{
     
        http.post(`general_admin/branch/destroy/${id}`).then((res)=>{
-     
-        toast.success("تمت العملية بنجاح")
+        alert(res.data.message);
         loadData();
         
      })
@@ -113,7 +139,7 @@ http.get(`general_admin/branch/search/${searchTerm === "" ? 'null' : searchTerm}
 
 const Update = async (editedItem) => {
   debugger
-  http.post(`branch/update/${editedItem.id}`,editedItem).catch(function (error) {
+  http.post(`general_admin/branch/update/${editedItem.id}`,editedItem).catch(function (error) {
   console.log(error);
 });
 }
@@ -182,8 +208,9 @@ const Update = async (editedItem) => {
 <div className="col-md-2">
                 </div>
 <div className="col-md-6">
+<Button variant="success"  onClick={openModal} style={{  background :  "linear-gradient(to left, #2980b9, #2c3e50)" , borderColor: 'blue' }}>أضف فرع جديد
 
-<button className="btn btn primary" onClick={openModal}>إضافة سجل جديد</button>
+</Button>
 </div>
 
                 </div>
@@ -278,83 +305,36 @@ const Update = async (editedItem) => {
       <div>
 
 
-
+<form onSubmit={store}>
 <ReactModal isOpen={modalIsOpen}
 style={{
-  overlay: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    zIndex: 9999,
-    display: 'flex',
-  },
-  content: {
-    width: '800px',
-    height: '500px',
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    borderRadius: '10px',
-    background: '#fff',
-    boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-    padding: '0px',
-    paddingTop :'0px',
-    display: 'flex',
-  }
- }}>
+ overlay: {
+   backgroundColor: 'rgba(0, 0, 0, 0.5)',
+   zIndex: 9999,
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center'
+ },
+ content: {
+   width: '800px',
+   height: 'auto',
+   position: 'absolute',
+   top: '50%',
+   left: '50%',
+   transform: 'translate(-50%, -50%)',
+   borderRadius: '10px',
+   background: '#fff',
+   boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
+   padding: 0,
+   paddingTop :0,
+   display: 'flex',
+   justifyContent: 'center',
+   alignItems: 'center'
+ }
+}}>
 
 
 <div class="card" style={{ 
-textAlign: 'right',
-width: '800px',
-height: 'auto',
-padding: 0,
-background: '#fff',
-boxShadow: '0 0 5px rgba(0, 0, 0, 0.3)',
-display: 'flex',
-flexDirection: 'column',
-}}>
-      <div class="card-header">
-
-           <div className="row">
-               <div className="col-md-6">سجل جديد </div>
-               <div className="col-md-6">
-               <AiIcons.AiOutlineClose onClick={closeModal} /></div>
-
-           </div>
-
-     </div>
-     <div class="card-body" dir="rtl">
-     <div className="row">
-     <div className="col-md-6">
-               <div className="form-group mt-2">
-                        <label>الرقم:</label>
-                        <input type='number' 
-                               className='form-control' 
-                               Value={No} 
-                               onChange={(e)=>setNo(e.target.value)}
-                               />
-               </div>   
-         </div>
-         <div className="col-md-6">
-                <div className="form-group mt-2">
-                        <label>الأسم:</label>
-                        
-                       <input type='text' 
-                        className='form-control' 
-                        Value={name} 
-                        onChange={(e)=>setName(e.target.value)}
-                        />
-                </div>
-         </div>
-                    </div>
-           
-     </div>
-     <div class="card-footer text-muted">
-          <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
-     </div>
-   </div>
-
-{/* <div class="card" style={{ 
 textAlign: 'right',
 width: '800px',
 height: 'auto',
@@ -387,6 +367,7 @@ flexDirection: 'column',
                                Value={No} 
                                onChange={(e)=>setNo(e.target.value)}
                                />
+                                {errors.No && <span style={{color:"red"}}>{errors.No}</span>}
                </div>   
          </div>
          <div className="col-md-6">
@@ -399,6 +380,7 @@ flexDirection: 'column',
                         Value={name} 
                         onChange={(e)=>setName(e.target.value)}
                         />
+                         {errors.name && <span style={{color:"red"}}>{errors.name}</span>}
                 </div>
          </div>
  </div>
@@ -409,12 +391,12 @@ flexDirection: 'column',
           <a href="#" onClick={store} class="btn btn-primary">حفظ</a> 
        
      </div>
-   </div> */}
+   </div>
 
 
 
 </ReactModal> 
-
+</form>
 <ToastContainer/>
 
 
