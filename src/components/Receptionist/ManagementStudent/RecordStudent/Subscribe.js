@@ -5,6 +5,7 @@ import {useNavigate,Link,useHistory}  from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import ReactModal from 'react-modal';
 import * as AiIcons from "react-icons/ai";
+import Select from "react-select";
 import AuthUser from  '../../../Auth/AuthUser';
 import "./Style.css";
 import { ToastContainer, toast } from 'react-toastify';
@@ -26,11 +27,38 @@ function GetSubscribe () {
     const [currentPage, setCurrentPage] = useState(0);
     const [pageCount, setpageCount] = useState(0);  
     const history = useNavigate();
-    
+    const options = [
+      { value: 'apple', label: 'Apple' },
+      { value: 'banana', label: 'Banana' },
+      { value: 'orange', label: 'Orange' },
+      { value: 'grape', label: 'Grape' }
+    ]; 
+    const [selectedOption, setSelectedOption] = useState(null);
+    const handleSelectChange = (selectedOption) => {
+      setSelectedOption(selectedOption);
+    };
+   
     const NewDate=new Date();
     const [start_date, setFirstdate] =useState(new Date(NewDate.getFullYear(), NewDate.getMonth() - 1, NewDate.getDate()).toISOString().substr(0, 10));// useState(NewDate.toISOString().substr(0, 10));
     const [end_date, setEnddate] = useState(new Date(NewDate.getFullYear(), NewDate.getMonth() + 1, NewDate.getDate()).toISOString().substr(0, 10));
+
     
+    
+//=============================
+// GetCards
+//=============================
+useEffect(()=>{
+  GetCards()
+  
+},[])
+
+const GetCards = async ()=>{
+http.get('receptionist/card/index').then((res)=>{
+  setCards(res.data.data);
+  console.log(Cards);
+});
+}
+
 ///============================
 /// Modal
 ///=============================
@@ -45,6 +73,7 @@ const store = () =>{
       
     http.post('receptionist/store',{course_id:course_id, card_id:card_id}).then((res)=>{
       const data=res.data;
+      setpageCount(0);
       loadData();
       toast.success("تمت العملية بنجاح")
     }).catch(function (error) {
@@ -94,7 +123,7 @@ const payment = async (data)=>{
   debugger
 http.post(`receptionist/payment/store/${data}`).then((res)=>{
   
-  toast.success("تمت العملية بنجاح")
+  toast.success(res.data.message)
   loadData();
   //setCards(res.data.data);
 });
@@ -108,19 +137,6 @@ http.post(`receptionist/payment/store/${data}`).then((res)=>{
 
 
 
-//=============================
-// GetCards
-//=============================
-useEffect(()=>{
-    GetCards()
-    
-},[])
-
-const GetCards = async ()=>{
-http.get('receptionist/card/index').then((res)=>{
-    setCards(res.data.data);
-});
-}
 //=============================
 // GetCards
 //=============================
@@ -211,7 +227,7 @@ const Receipt = async (data)=>{
 <Col md="12" lang="ar" style={{padding:'10px'}} >
 
        
-<div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: '#f8f9fa', marginTop:'15px'}}>
+<div className="card" style={{   textAlign: 'right' ,height: '500px' ,fontSize: "10px",background: 'white', marginTop:'15px', border: 'none',boxShadow: 'none'}}>
 <div className="card-header" style={{background: 'white'}} dir="rtl">
                 
                 <div className="row">
@@ -276,10 +292,10 @@ const Receipt = async (data)=>{
               </div>
             
          <div className="card-body"style={{ textAlign: 'center' ,fontSize: "16px", 
-                    width: "100%",
-                    height : "100%",
-                    padding: "0"
-                    }}>
+                         width: "100%",
+                         height : "100%",
+                         padding: "0"
+                         }}>
               
            
               
@@ -290,9 +306,9 @@ const Receipt = async (data)=>{
      <tr >
        <th style={{ width: "10%" }}></th>
        <th style={{ width: "20%" }}>حالة الاشتراك</th>
-       <th style={{ width: "20%" }}>سعرالمادة</th>
        <th style={{ width: "10%" }}>المادة</th>
        <th style={{ width: "10%" }}>الاسم</th>
+       <th style={{ width: "10%" }}>تاريخ الإشتراك</th>
      </tr>
    </thead>
    <tbody>
@@ -327,11 +343,10 @@ const Receipt = async (data)=>{
         {/* <a href="#" onClick={() => payment(data.id)} disabled={data.state != 1} className="btn btn-primary">انشاء فاتورة</a>
         <a href="#" onClick={() => Receipt(data)} className="btn btn-primary">الدفع</a> */}
          </td>
-           <td>{data.state}</td>
-           <td>{data.price}</td>
+           <td>{data.state === 1 ? 'قيد الإشتراك' : data.state === 2 ? 'اشتراك مبدأي' : data.state === 3 ? 'الإشتراك ملغى':'انتهاء الإشتراك' }</td>
            <td>{data.subjectName}</td>
            <td>{data.first_name+" "+data.last_name}</td>
-
+           <td>{data.date}</td>
          </tr>
        ))
      )}
@@ -339,18 +354,34 @@ const Receipt = async (data)=>{
          </Table>
          </div>
          <div className="card-footer text-muted" style={{background: 'white'}}>
-                <div className="row">
+           <div className="row">
                    
+                 <div className="col-lg-3">
+                         
+                         <div className="input-group mb-4">
+                             
+                             
+                         <ReactPaginate
+                                         pageCount={pageCount} // Total number of pages
+                                         onPageChange={handlePageClick}
+                                         containerClassName={'pagination'}
+                                         pageClassName={'page-item'}
+                                         activeClassName={'active'}
+                                         previousClassName={'page-item'}
+                                         nextClassName={'page-item'}
+                                         breakClassName={'page-item'}
+                                         pageLinkClassName={'page-link #550505'}
+                                         previousLinkClassName={'page-link'}
+                                         nextLinkClassName={'page-link'}
+                                         breakLinkClassName={'page-link'}
+                                         disableInitialCallback={true}
+                                         previousLabel={<AiIcons.AiOutlineDoubleLeft />}
+                                         nextLabel={<AiIcons.AiOutlineDoubleRight />}/>
+   
+                         </div>
+   
+                    </div>
                     
-                  <div className="col-lg-3"> 
-                      
-                      <div className="input-group mb-4">
-                           
-                      <AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'#5b5ac9' ,
-                              border: 'none', alignItems:"center" }} />
-                        
-                      </div>
-                 </div>
                  <div className="col-lg-6">
                          
                          <div className="input-group mb-4">
@@ -358,33 +389,17 @@ const Receipt = async (data)=>{
                  </div>
                   
 
-                 <div className="col-lg-3">
-                         
-                      <div className="input-group mb-4">
-                          
-                          
-                      <ReactPaginate
-                                      pageCount={pageCount} // Total number of pages
-                                      onPageChange={handlePageClick}
-                                      containerClassName={'pagination'}
-                                      pageClassName={'page-item'}
-                                      activeClassName={'active'}
-                                      previousClassName={'page-item'}
-                                      nextClassName={'page-item'}
-                                      breakClassName={'page-item'}
-                                      pageLinkClassName={'page-link #550505'}
-                                      previousLinkClassName={'page-link'}
-                                      nextLinkClassName={'page-link'}
-                                      breakLinkClassName={'page-link'}
-                                      disableInitialCallback={true}
-                                      previousLabel={<AiIcons.AiOutlineDoubleLeft />}
-                                      nextLabel={<AiIcons.AiOutlineDoubleRight />}/>
-
-                      </div>
-
+                 
+                 <div className="col-lg-3"> 
+                      
+                           
+                      <AiIcons.AiFillPlusCircle onClick={openModal} style={{ fontSize:'60px', color:'#5b5ac9' ,
+                              border: 'none', alignItems:"center" }} />
+                        
+                      
                  </div>
-                 </div>
-                                </div>
+            </div>
+         </div>
        </div>
  
 
@@ -447,7 +462,12 @@ flexDirection: 'column',
                         <div className="col-md-6">
                                 <div className="form-group mt-2">
                                         <label>الطالب:</label>
-
+                                        {/* <Select
+      value={selectedOption}
+      onChange={handleSelectChange}
+      options={Cards}
+      isSearchable={true}
+    /> */}
                                         <select  onChange={(e)=>setCards_Id(e.target.value)}>
                                                    <option value=""> اختر طالب  </option>
                                                    

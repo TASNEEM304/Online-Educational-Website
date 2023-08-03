@@ -140,11 +140,12 @@
         display: flex;
         column-gap: 1.3rem;
     }
+    /* color: #8d8cd1; */
     
     .nav__item a {
         font-weight: 500;
         font-size: 1.1rem;
-        color: #8d8cd1;
+        color: #01010c;
         text-decoration: none;
         transition: 0.3s;
     }

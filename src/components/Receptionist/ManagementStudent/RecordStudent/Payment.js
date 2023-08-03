@@ -144,6 +144,16 @@ loadData();
 };
 
 
+
+///============================
+/// Modal
+///=============================
+
+const openModalWithdraw1 = (data) => {
+  debugger
+  history('/PaymentReceiptCard' , { state : { data } });
+}
+
     return (
     
 <Fragment>
@@ -229,8 +239,9 @@ onChange={handleSearchChange}
                {/* <button className="btn btn primary" onClick={() => Receipt(data)}>الدفع</button> */}
                         
                <div class="d-flex justify-content-between g-0">
+                   <button class="btn btn-secondary" onClick={() => openModalWithdraw1(data.students[0])} disabled={data.students[0].subscribes_state == 1}>الإيصال</button>
                    <button class="btn btn-primary" onClick={() => openModal(data)} disabled={data.students[0].remaining_balance == 0}>الدفع</button>
-                   <button class="btn btn-secondary" onClick={() => openModalWithdraw(data)} disabled={data.students[0].subscribes_state == 4}> سحب المبلغ</button>
+                   <button class="btn btn-secondary" onClick={() => openModalWithdraw(data)} disabled={data.students[0].subscribes_state == 1}> سحب المبلغ</button>
                </div>
          </td>
            <td>{data.students[0].remaining_balance}</td>

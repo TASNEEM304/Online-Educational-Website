@@ -25,12 +25,12 @@ const Testimonials = () => {
                 <img src={img} alt="" className="w-100" />
               </div>
 
-              <div className="testimonial__content w-50">
+              <div className="testimonial__content w-50"  dir="rtl">
                 <h2 className="mb-4">Our Students Voice</h2>
 
-                <Slider {...settings}>
+                <Slider {...settings}  >
                   <div>
-                    <div className="single__testimonial">
+                    <div className="single__testimonial"  dir="rtl">
                       <h6 className="mb-3 fw-bold">
                         Excellent course of materials
                       </h6>
@@ -48,7 +48,7 @@ const Testimonials = () => {
                   </div>
 
                   <div>
-                    <div className="single__testimonial">
+                    <div className="single__testimonial"  dir="rtl">
                       <h6 className="mb-3 fw-bold">
                         Excellent course of materials
                       </h6>
@@ -58,7 +58,7 @@ const Testimonials = () => {
                         voluptas earum at molestiae neque!
                       </p>
 
-                      <div className="student__info mt-4">
+                      <div className="student__info mt-4"  dir="rtl">
                         <h6 className="fw-bold">Jhon Doe</h6>
                         <p>California, United State</p>
                       </div>
@@ -66,7 +66,7 @@ const Testimonials = () => {
                   </div>
 
                   <div>
-                    <div className="single__testimonial">
+                    <div className="single__testimonial"  dir="rtl">
                       <h6 className="mb-3 fw-bold">
                         Excellent course of materials
                       </h6>

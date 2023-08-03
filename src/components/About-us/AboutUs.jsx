@@ -19,8 +19,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const AboutUs = () => {
 
 
-  const {http} = AuthUser();
-  
+  const {http,getToken,getUser} = AuthUser();
+    
   const [first ,setfirst] = useState("");
   const [full_name ,setfull_name] = useState("");
   const [poll_date, setpolldate] = useState('');
@@ -43,21 +43,6 @@ const AboutUs = () => {
       toast.error(error);
       });
    
-      // setfull_name_ar('');
-      // setfull_name_en('');
-      // setmothername('');
-      // setaddress();
-      // setphone_numb();
-      // setBranchId();
-      // setnotice('');
-      // setwhatsapp_numb();
-      // setfirstsubj();
-      // setsecoundsubj();
-      // setthirdsubj();
-      // setfirsttime();
-      // setsecoundtime();
-      // setthirdtime();
-      
   }
 
   useEffect(()=>{
@@ -74,7 +59,7 @@ const AboutUs = () => {
       },[])
       
       const Getbranches = async ()=>{
-      http.get('branch/index').then((res)=>{
+      http.get('receptionist/branch/index').then((res)=>{
        setbranches(res.data.data.data);
       });
       }
@@ -91,7 +76,6 @@ const AboutUs = () => {
               <img src={aboutImg} alt="" className="w-100" />
             </div>
           </Col>
-
           <Col lg="6" md="6">
             <div className="about__content">
               <h2>هل ترغب في الاشتراك بدوراتنا التدريبية
@@ -111,7 +95,7 @@ const AboutUs = () => {
 <div lang="ar" className="row" dir="rtl">
      
                   
-                  <div className="col-md-6">
+                  <div className="col-md-6" hidden="getUser().roll_number==1">
                         <div className="form-group mt-2">
                                  <label>الاسم الثلاثي </label>
                                  <input type='text' 

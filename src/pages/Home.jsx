@@ -23,15 +23,16 @@ const Home = () => {
   return (
     <Fragment>
       <Header />
+      <Testimonials />
       <HeroSection />
-      {/* <CompanySection />  */}
-      {/* <AboutUs />
-      <Courses /> */}
-      {/* <ChooseUs />
+      <CompanySection /> 
+      <AboutUs />
+      <Courses />
+      <ChooseUs />
       <Features />
       <FreeCourse />
       <Testimonials />
-      <Newsletter /> */}
+      <Newsletter />
       <Footer />
     </Fragment>
   );

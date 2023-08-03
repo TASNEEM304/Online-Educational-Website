@@ -47,7 +47,7 @@ useEffect(()=>{
 },[])
 
 const Getcourse = async ()=>{
-http.get('receptionist/course/index').then((res)=>{
+http.get('branch_admin/course/indexAvailable').then((res)=>{
   
 
   setCourse(res.data.data);
@@ -58,25 +58,25 @@ http.get('receptionist/course/index').then((res)=>{
 ///============================
 /// loadData
 ///=============================
-useEffect(() => {
-  loadData();
-       }, []);
-  const loadData = async () => {
-  debugger
-  http.get('attend/index').then((res)=>{
-  setData(res.data.data);
-  }).catch(function (error) {
+// useEffect(() => {
+//   loadData();
+//        }, []);
+//   const loadData = async () => {
+//   debugger
+//   http.get('attend/index').then((res)=>{
+//   setData(res.data.data);
+//   }).catch(function (error) {
   
-  });
-  };    
+//   });
+//   };    
   
 // ${result === "" ? 'null' : result}
 
 const scanAttend = async ()=>{
   debugger
-  http.post(`scan_attend/${result === "" ? 'null' : result}?course_id=${course_id}`).then((res)=>{
+  http.post(`receptionist/scan_attend/${result === "" ? 'null' : result}?course_id=${course_id}`).then((res)=>{
     toast.success(res.data.message)
-    loadData();
+    // loadData();
   });
 }
   return (
@@ -144,45 +144,38 @@ const scanAttend = async ()=>{
  				</div>
  				<div class="col-lg-6">
 
-         <Table dir='rtl' style={{fontSize: "16px", 
-                         width: "100%"
-                         }}>
-        <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)" , 
-        }}>
-          <tr >
-            <th style={{ width: "30%" }}>التاريخ</th>
-            <th style={{ width: "30%" }}> الدورة</th>
-            <th style={{ width: "40%" }}> الطالب</th>
-        
-           
-            <th></th>
-                   
-                              
-          </tr>
-        </thead>
-        <tbody>
-          {Data.length === 0 ? (
-            <tr>
-              <td colSpan={4} className="text-center">
-                لا يوجد بيانات
-              </td>
-            </tr>
-          ) : (
-            Data.map((data) => (
-              <tr key={data.id}>
-  
-                   
-                <td>{data.date}</td>
-              
-                <td>{data.subjectName}</td>
-
-                <td>{data.first_name+" "+data.last_name}</td>
-                
-                </tr>
-            ))
-          )}
-        </tbody>
-              </Table> 					
+         <Table dir='rtl' style={{fontSize: "16px",width: "100%"}}>
+                          <thead style={{background: " linear-gradient(to left, #2980b9, #2c3e50)"}}>
+                            <tr >
+                              <th style={{ width: "30%" }}>التاريخ</th>
+                              <th style={{ width: "30%" }}> الدورة</th>
+                              <th style={{ width: "40%" }}> الطالب</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {Data.length === 0 ? (
+                              <tr>
+                                <td colSpan={4} className="text-center">
+                                  لا يوجد بيانات
+                                </td>
+                              </tr>
+                            ) : (
+                              Data.map((data) => (
+                                <tr key={data.id}>
+                    
+                                     
+                                  <td>{data.date}</td>
+                                
+                                  <td>{data.subjectName}</td>
+                  
+                                  <td>{data.first_name+" "+data.last_name}</td>
+                                  
+                                  </tr>
+                              ))
+                            )}
+                          </tbody>
+         </Table> 					
  				</div>
  			</div>
  		</div>

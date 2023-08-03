@@ -17,7 +17,7 @@ useEffect(() => {
          }, []);
 const loadData = async () => {
 debugger
-http.get(`branch_admin/polls_counting_byBranch&Date/?branch=2&date=${poll_date}`).then((res)=>{
+http.get(`branch_admin/polls_counting_byBranch&Date?branch=2&date=${poll_date}`).then((res)=>{
 setData(res.data.data);
 
 
